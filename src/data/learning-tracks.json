@@ -1,0 +1,575 @@
+[
+  {
+    "id": "beginner",
+    "title": "입문 트랙",
+    "description": "Claude Code를 처음 접하는 분들을 위한 기초 과정입니다. 설치부터 첫 번째 워크플로우까지 단계별로 학습합니다.",
+    "difficulty": "beginner",
+    "estimatedHours": 4,
+    "icon": "🌱",
+    "order": 1,
+    "lessons": [
+      {
+        "id": "overview",
+        "trackId": "beginner",
+        "title": "Claude Code란 무엇인가",
+        "description": "Claude Code의 개념, 특징, 그리고 개발 워크플로우에서의 역할을 이해합니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 30,
+        "order": 1,
+        "objectives": [
+          "Claude Code의 정의와 핵심 개념 이해",
+          "터미널 기반 AI 코딩 도구의 장점 파악",
+          "Claude Code가 해결하는 개발 문제 이해"
+        ],
+        "sourceDocs": ["0-index.md", "1-overview.md"],
+        "tags": ["기초", "개요", "소개"]
+      },
+      {
+        "id": "installation",
+        "trackId": "beginner",
+        "title": "설치 및 초기 설정",
+        "description": "Claude Code를 설치하고 개발 환경을 구성하는 방법을 학습합니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 40,
+        "order": 2,
+        "objectives": [
+          "Node.js 및 npm 요구사항 확인",
+          "Claude Code CLI 설치 완료",
+          "Anthropic API 키 설정",
+          "첫 번째 실행 확인"
+        ],
+        "sourceDocs": ["1.1-quickstart.md", "1.2-setup.md"],
+        "prerequisites": ["overview"],
+        "tags": ["설치", "환경설정", "CLI"]
+      },
+      {
+        "id": "desktop-setup",
+        "trackId": "beginner",
+        "title": "데스크톱 앱 & IDE 연동",
+        "description": "Claude Code 데스크톱 앱 설치 및 VS Code와의 통합 방법을 알아봅니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 40,
+        "order": 3,
+        "objectives": [
+          "Claude Code 데스크톱 앱 설치",
+          "VS Code 확장 프로그램 설치 및 설정",
+          "IDE에서 Claude Code 활용 방법 이해"
+        ],
+        "sourceDocs": ["1.3-desktop-quickstart.md", "3.2-vs-code.md"],
+        "prerequisites": ["installation"],
+        "tags": ["데스크톱", "VS Code", "IDE"]
+      },
+      {
+        "id": "how-it-works",
+        "trackId": "beginner",
+        "title": "Claude Code 동작 원리",
+        "description": "Claude Code가 코드베이스를 분석하고 작업을 수행하는 내부 메커니즘을 이해합니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 30,
+        "order": 4,
+        "objectives": [
+          "Claude Code의 컨텍스트 윈도우 개념 이해",
+          "파일 읽기 및 코드 분석 과정 파악",
+          "안전한 실행 모델 이해"
+        ],
+        "sourceDocs": ["1.4-how-claude-code-works.md"],
+        "prerequisites": ["installation"],
+        "tags": ["동작원리", "컨텍스트", "보안"]
+      },
+      {
+        "id": "first-workflow",
+        "trackId": "beginner",
+        "title": "첫 번째 워크플로우 실행",
+        "description": "실제 개발 작업에서 Claude Code를 활용하는 일반적인 워크플로우를 실습합니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 50,
+        "order": 5,
+        "objectives": [
+          "코드 작성 및 수정 워크플로우 이해",
+          "버그 수정 작업 흐름 파악",
+          "코드 리뷰 및 개선 방법 학습"
+        ],
+        "sourceDocs": ["2-common-workflows.md"],
+        "prerequisites": ["how-it-works"],
+        "tags": ["워크플로우", "실습", "코딩"]
+      },
+      {
+        "id": "interactive-mode",
+        "trackId": "beginner",
+        "title": "인터랙티브 모드 활용",
+        "description": "Claude Code의 인터랙티브 모드를 활용하여 더 효율적인 개발 경험을 만드는 방법을 배웁니다.",
+        "difficulty": "beginner",
+        "estimatedMinutes": 30,
+        "order": 6,
+        "objectives": [
+          "인터랙티브 모드와 비인터랙티브 모드 차이 이해",
+          "대화형 코딩 세션 활용 방법 학습",
+          "컨텍스트 유지 전략 습득"
+        ],
+        "sourceDocs": ["2.2-interactive-mode.md"],
+        "prerequisites": ["first-workflow"],
+        "tags": ["인터랙티브", "대화형", "세션"]
+      }
+    ]
+  },
+  {
+    "id": "core-features",
+    "title": "핵심 기능 트랙",
+    "description": "Claude Code의 주요 기능과 CLI 명령어를 심층적으로 학습합니다. 메모리 시스템, 체크포인팅, 터미널 설정 등을 다룹니다.",
+    "difficulty": "intermediate",
+    "estimatedHours": 5,
+    "icon": "⚙️",
+    "order": 2,
+    "lessons": [
+      {
+        "id": "cli-reference",
+        "trackId": "core-features",
+        "title": "CLI 명령어 완벽 가이드",
+        "description": "Claude Code의 모든 CLI 명령어와 옵션을 체계적으로 학습합니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 50,
+        "order": 1,
+        "objectives": [
+          "모든 주요 CLI 명령어 숙지",
+          "명령어 옵션과 플래그 활용 방법 습득",
+          "파이프라인 및 자동화에서의 CLI 활용"
+        ],
+        "sourceDocs": ["3-cli-reference.md"],
+        "tags": ["CLI", "명령어", "터미널"]
+      },
+      {
+        "id": "memory-system",
+        "trackId": "core-features",
+        "title": "메모리 시스템 이해",
+        "description": "Claude Code의 메모리 시스템이 어떻게 컨텍스트를 관리하고 정보를 유지하는지 학습합니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 40,
+        "order": 2,
+        "objectives": [
+          "CLAUDE.md 파일의 역할과 활용법 이해",
+          "프로젝트 메모리와 사용자 메모리 구분",
+          "효과적인 컨텍스트 관리 전략 학습"
+        ],
+        "sourceDocs": ["2.3-memory.md"],
+        "tags": ["메모리", "CLAUDE.md", "컨텍스트"]
+      },
+      {
+        "id": "checkpointing",
+        "trackId": "core-features",
+        "title": "체크포인팅과 세션 관리",
+        "description": "작업 체크포인트를 생성하고 세션을 효과적으로 관리하는 방법을 알아봅니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 40,
+        "order": 3,
+        "objectives": [
+          "체크포인트 생성 및 복원 방법 학습",
+          "장시간 작업에서의 세션 관리 전략",
+          "작업 중단 후 재개 방법 이해"
+        ],
+        "sourceDocs": ["2.4-checkpointing.md"],
+        "tags": ["체크포인팅", "세션", "복원"]
+      },
+      {
+        "id": "output-styles",
+        "trackId": "core-features",
+        "title": "출력 스타일과 Fast 모드",
+        "description": "Claude Code의 다양한 출력 스타일과 Fast 모드를 활용하여 개발 속도를 높입니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 30,
+        "order": 4,
+        "objectives": [
+          "출력 스타일 커스터마이징 방법 학습",
+          "Fast 모드의 장단점 이해 및 활용",
+          "상황에 맞는 출력 설정 선택"
+        ],
+        "sourceDocs": ["2.5-output-styles.md", "2.6-fast-mode.md"],
+        "tags": ["출력스타일", "Fast모드", "성능"]
+      },
+      {
+        "id": "terminal-config",
+        "trackId": "core-features",
+        "title": "터미널 설정 최적화",
+        "description": "Claude Code를 위한 최적의 터미널 환경을 구성하는 방법을 배웁니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 40,
+        "order": 5,
+        "objectives": [
+          "터미널 호환성 설정 이해",
+          "셸 환경 최적화 방법 학습",
+          "자동완성 및 단축키 설정"
+        ],
+        "sourceDocs": ["3.1-terminal-config.md"],
+        "tags": ["터미널", "환경설정", "최적화"]
+      },
+      {
+        "id": "ide-integration",
+        "trackId": "core-features",
+        "title": "IDE 통합",
+        "description": "JetBrains, Claude 데스크톱 등 다양한 IDE와의 통합 방법을 학습합니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 50,
+        "order": 6,
+        "objectives": [
+          "JetBrains 플러그인 설치 및 설정",
+          "Claude 데스크톱 앱 통합 방법",
+          "IDE별 최적 설정 방법 학습"
+        ],
+        "sourceDocs": ["3.3-jetbrains.md", "3.4-desktop.md"],
+        "tags": ["JetBrains", "IDE", "통합"]
+      },
+      {
+        "id": "web-chrome-slack",
+        "trackId": "core-features",
+        "title": "웹, Chrome, Slack 연동",
+        "description": "Claude Code를 웹 브라우저, Chrome 확장 프로그램, Slack과 연동하는 방법을 알아봅니다.",
+        "difficulty": "intermediate",
+        "estimatedMinutes": 50,
+        "order": 7,
+        "objectives": [
+          "Claude Code on the Web 활용 방법",
+          "Chrome 확장 프로그램 설치 및 사용",
+          "Slack에서 Claude Code 활용"
+        ],
+        "sourceDocs": ["3.5-claude-code-on-the-web.md", "3.6-chrome.md", "3.7-slack.md"],
+        "tags": ["웹", "Chrome", "Slack"]
+      }
+    ]
+  },
+  {
+    "id": "advanced",
+    "title": "고급 기능 트랙",
+    "description": "커스텀 스킬, Hooks, MCP 통합, 에이전트 시스템 등 Claude Code의 고급 기능을 마스터합니다.",
+    "difficulty": "advanced",
+    "estimatedHours": 8,
+    "icon": "🚀",
+    "order": 3,
+    "lessons": [
+      {
+        "id": "features-overview",
+        "trackId": "advanced",
+        "title": "고급 기능 개요",
+        "description": "Claude Code의 고급 기능들을 전체적으로 조망하고 학습 방향을 설정합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 30,
+        "order": 1,
+        "objectives": [
+          "고급 기능 생태계 이해",
+          "각 기능의 용도와 활용 시나리오 파악",
+          "학습 우선순위 설정"
+        ],
+        "sourceDocs": ["5-features-overview.md"],
+        "tags": ["고급기능", "개요", "생태계"]
+      },
+      {
+        "id": "skills",
+        "trackId": "advanced",
+        "title": "커스텀 스킬 만들기",
+        "description": "Claude Code의 스킬 시스템을 이해하고 커스텀 스킬을 작성하는 방법을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 2,
+        "objectives": [
+          "스킬 아키텍처와 동작 원리 이해",
+          "YAML 프론트매터 스키마 학습",
+          "커스텀 스킬 작성 및 테스트"
+        ],
+        "sourceDocs": ["5.1-skills.md"],
+        "tags": ["스킬", "커스터마이징", "YAML"]
+      },
+      {
+        "id": "hooks",
+        "trackId": "advanced",
+        "title": "Hooks 가이드",
+        "description": "이벤트 기반 자동화를 위한 Hooks 시스템을 깊이 있게 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 3,
+        "objectives": [
+          "Hooks 이벤트 시스템 이해",
+          "PreToolUse, PostToolUse 등 훅 타입 학습",
+          "실용적인 Hooks 활용 사례 구현"
+        ],
+        "sourceDocs": ["5.2-hooks-guide.md", "5.3-hooks-reference.md"],
+        "tags": ["Hooks", "이벤트", "자동화"]
+      },
+      {
+        "id": "mcp",
+        "trackId": "advanced",
+        "title": "MCP 통합",
+        "description": "Model Context Protocol을 통해 외부 도구와 Claude Code를 연동하는 방법을 알아봅니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 4,
+        "objectives": [
+          "MCP 프로토콜 개념 이해",
+          "MCP 서버 설정 및 연결",
+          "커스텀 MCP 서버 개발"
+        ],
+        "sourceDocs": ["5.4-mcp.md"],
+        "tags": ["MCP", "프로토콜", "통합"]
+      },
+      {
+        "id": "sub-agents",
+        "trackId": "advanced",
+        "title": "Sub-agents 활용",
+        "description": "서브에이전트를 활용하여 복잡한 작업을 분산 처리하는 방법을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 5,
+        "objectives": [
+          "서브에이전트 아키텍처 이해",
+          "Task 도구를 사용한 에이전트 위임",
+          "서브에이전트 간 통신 패턴 학습"
+        ],
+        "sourceDocs": ["5.5-sub-agents.md"],
+        "tags": ["서브에이전트", "위임", "병렬처리"]
+      },
+      {
+        "id": "agent-teams",
+        "trackId": "advanced",
+        "title": "Agent Teams 구축",
+        "description": "여러 에이전트가 협력하는 Agent Teams를 구성하고 운영하는 방법을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 6,
+        "objectives": [
+          "Agent Teams 아키텍처 설계",
+          "팀 생성 및 에이전트 협력 패턴 구현",
+          "병렬 작업 실행 최적화"
+        ],
+        "sourceDocs": ["5.6-agent-teams.md"],
+        "tags": ["팀", "협력", "병렬"]
+      },
+      {
+        "id": "headless",
+        "trackId": "advanced",
+        "title": "Headless 모드 자동화",
+        "description": "CI/CD 파이프라인과 자동화 환경에서 Claude Code를 Headless 모드로 활용합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 7,
+        "objectives": [
+          "Headless 모드 개념과 활용 시나리오",
+          "CI/CD 파이프라인 통합 방법",
+          "비인터랙티브 자동화 스크립트 작성"
+        ],
+        "sourceDocs": ["5.7-headless.md"],
+        "tags": ["헤드리스", "CI/CD", "자동화"]
+      },
+      {
+        "id": "plugins-sandbox",
+        "trackId": "advanced",
+        "title": "플러그인 & 샌드박싱",
+        "description": "Claude Code 플러그인 시스템과 보안 샌드박싱 환경을 이해하고 활용합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 8,
+        "objectives": [
+          "플러그인 아키텍처와 배포 방법 학습",
+          "샌드박싱 보안 모델 이해",
+          "안전한 플러그인 개발 방법 습득"
+        ],
+        "sourceDocs": ["5.8-sandboxing.md", "5.9-plugins.md"],
+        "tags": ["플러그인", "샌드박싱", "보안"]
+      }
+    ]
+  },
+  {
+    "id": "professional",
+    "title": "전문가 트랙",
+    "description": "베스트 프랙티스, 고급 설정, 권한 모델, 키바인딩 등 Claude Code를 전문적으로 활용하는 방법을 학습합니다.",
+    "difficulty": "advanced",
+    "estimatedHours": 5,
+    "icon": "💼",
+    "order": 4,
+    "lessons": [
+      {
+        "id": "best-practices",
+        "trackId": "professional",
+        "title": "베스트 프랙티스",
+        "description": "Claude Code를 최대한 효과적으로 활용하기 위한 검증된 방법들을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 1,
+        "objectives": [
+          "효과적인 프롬프트 작성 기법 습득",
+          "코드 품질 향상을 위한 워크플로우 구성",
+          "팀 환경에서의 Claude Code 활용 전략"
+        ],
+        "sourceDocs": ["2.1-best-practices.md"],
+        "tags": ["베스트프랙티스", "프롬프트", "효율"]
+      },
+      {
+        "id": "settings-deep",
+        "trackId": "professional",
+        "title": "설정 심층 가이드",
+        "description": "Claude Code의 모든 설정 옵션을 심층적으로 이해하고 최적화합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 2,
+        "objectives": [
+          "설정 계층 구조 이해 (글로벌, 프로젝트, 로컬)",
+          "환경 변수와 설정 파일 관계 파악",
+          "팀 설정 공유 전략 수립"
+        ],
+        "sourceDocs": ["4-settings.md"],
+        "tags": ["설정", "환경변수", "구성"]
+      },
+      {
+        "id": "permissions",
+        "trackId": "professional",
+        "title": "권한 모델 이해",
+        "description": "Claude Code의 권한 시스템을 이해하고 보안 요구사항에 맞게 설정합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 3,
+        "objectives": [
+          "권한 모델의 계층 구조 이해",
+          "도구별 권한 설정 방법 학습",
+          "기업 환경에서의 권한 관리 전략"
+        ],
+        "sourceDocs": ["4.1-permissions.md"],
+        "tags": ["권한", "보안", "기업"]
+      },
+      {
+        "id": "keybindings-model",
+        "trackId": "professional",
+        "title": "키바인딩 & 모델 설정",
+        "description": "커스텀 키바인딩과 AI 모델 설정을 통해 개인화된 개발 환경을 구성합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 40,
+        "order": 4,
+        "objectives": [
+          "커스텀 키바인딩 설정 방법 학습",
+          "모델 선택 및 파라미터 설정 이해",
+          "성능과 비용 최적화를 위한 모델 전략"
+        ],
+        "sourceDocs": ["4.2-keybindings.md", "4.3-model-config.md"],
+        "tags": ["키바인딩", "모델", "개인화"]
+      },
+      {
+        "id": "statusline",
+        "trackId": "professional",
+        "title": "상태표시줄 커스터마이징",
+        "description": "터미널 상태표시줄을 커스터마이징하여 Claude Code 작업 상태를 시각화합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 30,
+        "order": 5,
+        "objectives": [
+          "상태표시줄 구성 옵션 이해",
+          "커스텀 상태 정보 표시 방법 학습",
+          "주요 셸 프레임워크와의 통합"
+        ],
+        "sourceDocs": ["4.4-statusline.md"],
+        "tags": ["상태표시줄", "UI", "터미널"]
+      },
+      {
+        "id": "troubleshooting",
+        "trackId": "professional",
+        "title": "문제 해결 & 변경 로그",
+        "description": "Claude Code 사용 중 발생하는 일반적인 문제를 해결하는 방법과 최신 변경사항을 파악합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 6,
+        "objectives": [
+          "일반적인 오류 원인과 해결책 학습",
+          "디버깅 방법과 로그 분석 기법 습득",
+          "최신 변경사항 및 마이그레이션 가이드 이해"
+        ],
+        "sourceDocs": ["8-troubleshooting.md", "8.1-changelog.md"],
+        "tags": ["문제해결", "디버깅", "변경로그"]
+      }
+    ]
+  },
+  {
+    "id": "enterprise",
+    "title": "기업 활용 트랙",
+    "description": "기업 환경에서 Claude Code를 도입하고 운영하는 방법을 학습합니다. 보안, 컴플라이언스, CI/CD 통합을 다룹니다.",
+    "difficulty": "advanced",
+    "estimatedHours": 5,
+    "icon": "🏢",
+    "order": 5,
+    "lessons": [
+      {
+        "id": "third-party",
+        "trackId": "enterprise",
+        "title": "서드파티 통합 개요",
+        "description": "다양한 외부 도구와 서비스를 Claude Code와 통합하는 방법의 전반적인 개요를 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 40,
+        "order": 1,
+        "objectives": [
+          "지원되는 서드파티 통합 목록 파악",
+          "통합 아키텍처 패턴 이해",
+          "통합 시 고려사항 학습"
+        ],
+        "sourceDocs": ["6-third-party-integrations.md"],
+        "tags": ["통합", "서드파티", "생태계"]
+      },
+      {
+        "id": "auth-network",
+        "trackId": "enterprise",
+        "title": "인증 & 네트워크 설정",
+        "description": "기업 환경에서의 인증 방법과 네트워크 구성을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 2,
+        "objectives": [
+          "OAuth 및 API 키 인증 방법 학습",
+          "프록시 및 방화벽 설정 이해",
+          "SSO 통합 방법 파악"
+        ],
+        "sourceDocs": ["6.1-authentication.md", "6.2-network-config.md"],
+        "tags": ["인증", "네트워크", "보안"]
+      },
+      {
+        "id": "ci-cd",
+        "trackId": "enterprise",
+        "title": "CI/CD 파이프라인",
+        "description": "GitHub Actions와 GitLab CI/CD에 Claude Code를 통합하는 방법을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 60,
+        "order": 3,
+        "objectives": [
+          "GitHub Actions 워크플로우 작성 방법",
+          "GitLab CI/CD 파이프라인 구성",
+          "자동화된 코드 리뷰 및 테스트 설정"
+        ],
+        "sourceDocs": ["6.6-github-actions.md", "6.7-gitlab-ci-cd.md"],
+        "tags": ["CI/CD", "GitHub Actions", "GitLab"]
+      },
+      {
+        "id": "cloud-providers",
+        "trackId": "enterprise",
+        "title": "클라우드 제공자 연동",
+        "description": "AWS Bedrock, Google Vertex AI, Microsoft Azure에서 Claude Code를 사용하는 방법을 알아봅니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 4,
+        "objectives": [
+          "Amazon Bedrock 설정 및 활용",
+          "Google Vertex AI 통합 방법",
+          "Microsoft Azure Foundry 연동"
+        ],
+        "sourceDocs": ["6.8-amazon-bedrock.md", "6.9-google-vertex-ai.md", "6.10-microsoft-foundry.md"],
+        "tags": ["클라우드", "AWS", "GCP", "Azure"]
+      },
+      {
+        "id": "security-compliance",
+        "trackId": "enterprise",
+        "title": "보안, 컴플라이언스",
+        "description": "기업 보안 요구사항을 충족하고 규제 컴플라이언스를 준수하는 방법을 학습합니다.",
+        "difficulty": "advanced",
+        "estimatedMinutes": 50,
+        "order": 5,
+        "objectives": [
+          "보안 모델 및 데이터 처리 방침 이해",
+          "법적 요구사항과 컴플라이언스 준수",
+          "데이터 프라이버시 설정 방법"
+        ],
+        "sourceDocs": ["7-security.md", "7.1-legal-and-compliance.md", "7.2-data-usage.md"],
+        "tags": ["보안", "컴플라이언스", "프라이버시"]
+      }
+    ]
+  }
+]

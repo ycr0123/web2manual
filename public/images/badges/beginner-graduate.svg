@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>입문 수료 배지</title>
+  <defs>
+    <radialGradient id="bg-grad-beginner" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#4ade80" />
+      <stop offset="100%" stop-color="#16a34a" />
+    </radialGradient>
+    <filter id="shadow-beginner" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#00000033" />
+    </filter>
+  </defs>
+  <!-- Badge circle background -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg-grad-beginner)" filter="url(#shadow-beginner)" />
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#15803d" stroke-width="2" />
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#bbf7d0" stroke-width="1" opacity="0.5" />
+  <!-- GraduationCap icon (centered, white) -->
+  <!-- Mortar board top -->
+  <polygon points="32,14 50,22 32,30 14,22" fill="white" opacity="0.95" />
+  <!-- Cap board line -->
+  <line x1="14" y1="22" x2="50" y2="22" stroke="#d1fae5" stroke-width="0.5" />
+  <!-- Tassel string -->
+  <line x1="50" y1="22" x2="50" y2="34" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.85" />
+  <circle cx="50" cy="35" r="2" fill="white" opacity="0.85" />
+  <!-- Hood/gown part -->
+  <path d="M22,26 L22,38 Q22,44 32,46 Q42,44 42,38 L42,26" fill="white" opacity="0.85" />
+  <!-- Rarity label -->
+  <rect x="16" y="50" width="32" height="8" rx="4" fill="#15803d" opacity="0.8" />
+  <text x="32" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="white">COMMON</text>
+</svg>

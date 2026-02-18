@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>핵심 마스터 배지</title>
+  <defs>
+    <radialGradient id="bg-grad-core" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </radialGradient>
+    <filter id="shadow-core" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#00000033" />
+    </filter>
+  </defs>
+  <!-- Badge circle background -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg-grad-core)" filter="url(#shadow-core)" />
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#1e40af" stroke-width="2" />
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#bfdbfe" stroke-width="1" opacity="0.5" />
+  <!-- Star icon (Lucide-style, 5-point star) -->
+  <polygon
+    points="32,13 35.5,23.5 47,23.5 37.5,30 41,40.5 32,34 23,40.5 26.5,30 17,23.5 28.5,23.5"
+    fill="white"
+    opacity="0.95"
+  />
+  <!-- Rarity label -->
+  <rect x="12" y="50" width="40" height="8" rx="4" fill="#1e40af" opacity="0.8" />
+  <text x="32" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="white">UNCOMMON</text>
+</svg>

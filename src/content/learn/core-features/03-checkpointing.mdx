@@ -1,0 +1,63 @@
+---
+title: "체크포인팅과 세션 관리"
+description: "작업 체크포인트를 생성하고 세션을 효과적으로 관리하는 방법을 알아봅니다."
+trackId: "core-features"
+lessonId: "checkpointing"
+difficulty: "intermediate"
+estimatedMinutes: 40
+order: 3
+objectives:
+  - "체크포인트 생성 및 복원 방법 학습"
+  - "장시간 작업에서의 세션 관리 전략"
+  - "작업 중단 후 재개 방법 이해"
+sourceDocs:
+  - "2.4-checkpointing.md"
+tags:
+  - "체크포인팅"
+  - "세션"
+  - "복원"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code에서 세션을 재개할 때 사용하는 플래그는?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "--resume"
+        - id: "b"
+          text: "--continue"
+        - id: "c"
+          text: "-r"
+        - id: "d"
+          text: "--reload"
+      correctOptionId: "b"
+      explanation: "--continue 플래그를 사용하면 이전 세션을 재개합니다. claude --continue 명령어로 마지막 세션을 이어받을 수 있습니다."
+---
+
+## 체크포인팅과 세션 관리
+
+이 레슨은 준비 중입니다.
+
+## 세션 재개 방법
+
+<CLIExample
+  command="claude --continue"
+  description="마지막 세션을 재개합니다."
+/>
+
+<CLIExample
+  command="claude --resume [session-id]"
+  description="특정 세션 ID로 세션을 재개합니다."
+/>
+
+## 세션 목록 확인
+
+<CLIExample
+  command="claude --list-sessions"
+  description="이전 세션 목록을 확인합니다."
+/>
+
+<Callout type="note">
+체크포인팅 기능을 사용하면 장시간 작업 중에 세션이 중단되더라도 작업을 이어갈 수 있습니다. 중요한 작업 전에 Git 커밋을 생성해두는 것도 좋은 방법입니다.
+</Callout>

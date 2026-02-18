@@ -1,0 +1,59 @@
+---
+title: "출력 스타일과 Fast 모드"
+description: "Claude Code의 다양한 출력 스타일과 Fast 모드를 활용하여 개발 속도를 높입니다."
+trackId: "core-features"
+lessonId: "output-styles"
+difficulty: "intermediate"
+estimatedMinutes: 30
+order: 4
+objectives:
+  - "출력 스타일 커스터마이징 방법 학습"
+  - "Fast 모드의 장단점 이해 및 활용"
+  - "상황에 맞는 출력 설정 선택"
+sourceDocs:
+  - "2.5-output-styles.md"
+  - "2.6-fast-mode.md"
+tags:
+  - "출력스타일"
+  - "Fast모드"
+  - "성능"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Fast 모드(--fast)를 사용했을 때의 주요 특징은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "더 많은 기능을 사용할 수 있습니다"
+        - id: "b"
+          text: "응답 속도가 빨라지지만 일부 기능이 제한될 수 있습니다"
+        - id: "c"
+          text: "무료로 사용할 수 있습니다"
+        - id: "d"
+          text: "로컬에서 실행됩니다"
+      correctOptionId: "b"
+      explanation: "Fast 모드는 더 빠른 모델을 사용하여 응답 속도를 높이지만, 복잡한 추론이 필요한 작업에서는 품질이 낮아질 수 있습니다."
+---
+
+## 출력 스타일과 Fast 모드
+
+이 레슨은 준비 중입니다.
+
+## 출력 스타일 옵션
+
+<CLIExample
+  command="claude --output-format json"
+  description="JSON 형식으로 결과를 출력합니다."
+/>
+
+## Fast 모드
+
+<CLIExample
+  command="claude --fast '간단한 질문'"
+  description="더 빠른 모델로 응답을 받습니다."
+/>
+
+<Callout type="tip">
+빠른 응답이 필요하고 간단한 작업이라면 Fast 모드를 사용하세요. 복잡한 코드 분석이나 리팩토링은 기본 모드가 더 좋은 결과를 제공합니다.
+</Callout>

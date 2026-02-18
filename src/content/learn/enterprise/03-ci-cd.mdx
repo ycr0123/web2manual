@@ -1,0 +1,328 @@
+---
+title: "CI/CD 파이프라인"
+description: "GitHub Actions와 GitLab CI/CD에서 Claude Code를 활용한 자동화 파이프라인 구축 방법을 학습합니다."
+trackId: "enterprise"
+lessonId: "ci-cd"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 3
+objectives:
+  - "GitHub Actions 워크플로우 작성 방법"
+  - "GitLab CI/CD 파이프라인 구성"
+  - "자동화된 코드 리뷰 및 테스트 설정"
+sourceDocs:
+  - "6.6-github-actions.md"
+  - "6.7-gitlab-ci-cd.md"
+tags:
+  - "CI/CD"
+  - "GitHub Actions"
+  - "GitLab"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "GitHub Actions에서 Claude Code를 사용하기 위해 반드시 설정해야 하는 것은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "GitHub Pages 활성화"
+        - id: "b"
+          text: "Repository Secrets에 ANTHROPIC_API_KEY 등록"
+        - id: "c"
+          text: "GitHub Copilot 구독"
+        - id: "d"
+          text: "GitHub Enterprise 라이선스"
+      correctOptionId: "b"
+      explanation: "GitHub Actions에서 Claude Code를 사용하려면 Anthropic API 키를 Repository Secrets에 안전하게 등록해야 합니다. 워크플로우에서 이 시크릿을 환경 변수로 참조합니다."
+    - id: "q2"
+      question: "CI/CD 파이프라인에서 Claude Code를 사용한 자동 코드 리뷰의 장점이 아닌 것은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Pull Request마다 일관된 코드 리뷰 제공"
+        - id: "b"
+          text: "보안 취약점 자동 탐지"
+        - id: "c"
+          text: "인간 리뷰어를 완전히 대체"
+        - id: "d"
+          text: "코딩 스타일 가이드 준수 여부 확인"
+      correctOptionId: "c"
+      explanation: "Claude Code의 자동 코드 리뷰는 인간 리뷰어를 보완하는 역할이지, 완전히 대체하는 것이 아닙니다. 비즈니스 로직 검증, 아키텍처 결정 등은 여전히 인간 리뷰어의 판단이 필요합니다."
+    - id: "q3"
+      question: "GitLab CI/CD에서 Claude Code 파이프라인을 구성할 때 사용하는 설정 파일은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Jenkinsfile"
+        - id: "b"
+          text: ".github/workflows/*.yml"
+        - id: "c"
+          text: ".gitlab-ci.yml"
+        - id: "d"
+          text: "docker-compose.yml"
+      correctOptionId: "c"
+      explanation: "GitLab CI/CD는 저장소 루트의 .gitlab-ci.yml 파일에서 파이프라인을 정의합니다. 이 파일에 Claude Code 실행 단계를 추가하여 자동화합니다."
+    - id: "q4"
+      question: "CI/CD에서 Claude Code 비용을 관리하기 위한 가장 효과적인 전략은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "모든 커밋에 Claude Code 리뷰를 실행한다"
+        - id: "b"
+          text: "PR 이벤트에만 트리거하고 변경된 파일만 분석한다"
+        - id: "c"
+          text: "시간 기반으로 하루 한 번만 실행한다"
+        - id: "d"
+          text: "무료 티어만 사용한다"
+      correctOptionId: "b"
+      explanation: "PR 이벤트에만 트리거하고 변경된 파일만 분석하면 불필요한 API 호출을 줄이고, 의미 있는 시점에서만 리뷰를 수행하여 비용 효율성을 높일 수 있습니다."
+---
+
+## CI/CD에서의 Claude Code 활용
+
+CI/CD 파이프라인에 Claude Code를 통합하면 코드 리뷰 자동화, 테스트 생성, 문서 업데이트 등 다양한 개발 작업을 자동화할 수 있습니다. 이 레슨에서는 GitHub Actions와 GitLab CI/CD에서의 구체적인 설정 방법을 다룹니다.
+
+### 주요 활용 사례
+
+| 활용 사례 | 트리거 | 효과 |
+|----------|--------|------|
+| 자동 코드 리뷰 | PR 생성/업데이트 | 일관된 코드 품질 검증 |
+| 테스트 생성 | 새 파일 추가 | 테스트 커버리지 유지 |
+| 문서 자동 생성 | API 변경 | 문서-코드 동기화 |
+| 보안 스캔 | 모든 PR | 취약점 조기 발견 |
+| 커밋 메시지 검증 | 커밋 push | 컨벤션 준수 |
+
+## GitHub Actions 워크플로우
+
+### 기본 워크플로우 설정
+
+GitHub Actions에서 Claude Code를 사용하는 기본 워크플로우입니다.
+
+```yaml
+# .github/workflows/claude-review.yml
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Run Code Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude --print "이 PR의 변경사항을 리뷰해주세요. \
+            코드 품질, 보안 이슈, 성능 문제를 중점적으로 확인해주세요."
+```
+
+<Callout type="warning">
+ANTHROPIC_API_KEY는 반드시 GitHub Repository Secrets에 등록하세요. 워크플로우 파일에 직접 키를 포함하면 보안 위험이 발생합니다.
+</Callout>
+
+### 변경 파일 기반 리뷰
+
+효율적인 리뷰를 위해 변경된 파일만 분석하는 워크플로우입니다:
+
+```yaml
+# .github/workflows/claude-targeted-review.yml
+name: Claude Targeted Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'src/**'
+      - '!src/**/*.test.*'
+
+jobs:
+  targeted-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed
+        run: |
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'src/' | tr '\n' ' ')
+          echo "files=$FILES" >> $GITHUB_OUTPUT
+
+      - name: Setup and Review
+        if: steps.changed.outputs.files != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --print "다음 파일들의 변경사항을 리뷰해주세요: \
+            ${{ steps.changed.outputs.files }}"
+```
+
+<CLIExample
+  command="gh workflow run claude-review.yml --ref feature-branch"
+  description="수동으로 Claude 리뷰 워크플로우를 트리거합니다"
+/>
+
+### PR 코멘트로 결과 출력
+
+리뷰 결과를 PR 코멘트로 자동 게시하는 패턴입니다:
+
+```yaml
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review-result.md', 'utf8');
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## Claude Code Review\n\n${review}`
+            });
+```
+
+<Callout type="tip">
+GitHub Actions의 `pull_request` 이벤트와 `pull_request_target` 이벤트의 차이를 이해하세요. 포크된 PR에서 시크릿에 접근하려면 `pull_request_target`을 사용해야 하지만, 보안 위험이 있으므로 신중하게 구성해야 합니다.
+</Callout>
+
+## GitLab CI/CD 파이프라인
+
+### 기본 파이프라인 설정
+
+```yaml
+# .gitlab-ci.yml
+stages:
+  - review
+  - test
+  - deploy
+
+claude-review:
+  stage: review
+  image: node:20
+  only:
+    - merge_requests
+  variables:
+    ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
+  before_script:
+    - npm install -g @anthropic-ai/claude-code
+  script:
+    - |
+      CHANGED_FILES=$(git diff --name-only $CI_MERGE_REQUEST_DIFF_BASE_SHA...HEAD -- 'src/')
+      if [ -n "$CHANGED_FILES" ]; then
+        claude --print "다음 변경 파일들을 리뷰해주세요: $CHANGED_FILES"
+      fi
+  artifacts:
+    paths:
+      - review-report.md
+    expire_in: 1 week
+```
+
+<CLIExample
+  command="gitlab-runner exec docker claude-review"
+  description="로컬에서 GitLab CI 파이프라인을 테스트합니다"
+/>
+
+### 고급 파이프라인 패턴
+
+```yaml
+# 테스트 생성 자동화
+claude-test-generation:
+  stage: test
+  image: node:20
+  only:
+    - merge_requests
+  variables:
+    ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
+  before_script:
+    - npm install -g @anthropic-ai/claude-code
+    - npm ci
+  script:
+    - |
+      NEW_FILES=$(git diff --name-only --diff-filter=A $CI_MERGE_REQUEST_DIFF_BASE_SHA...HEAD -- 'src/' | grep -v '.test.')
+      for FILE in $NEW_FILES; do
+        claude --print "이 파일에 대한 단위 테스트를 생성해주세요: $FILE"
+      done
+    - npm test
+```
+
+## 보안 모범 사례
+
+### 시크릿 관리
+
+```bash
+# GitHub: Repository Secrets 설정
+# Settings > Secrets and variables > Actions > New repository secret
+# Name: ANTHROPIC_API_KEY
+# Value: sk-ant-...
+
+# GitLab: CI/CD Variables 설정
+# Settings > CI/CD > Variables > Add variable
+# Key: ANTHROPIC_API_KEY
+# Value: sk-ant-...
+# Masked: Yes
+# Protected: Yes
+```
+
+<Callout type="danger">
+CI/CD 로그에 API 키가 노출되지 않도록 반드시 시크릿/변수 마스킹을 활성화하세요. 마스킹이 설정되면 로그에서 해당 값이 `***`로 표시됩니다.
+</Callout>
+
+### 비용 최적화 전략
+
+CI/CD에서 Claude Code 사용 시 비용을 관리하기 위한 전략:
+
+1. **트리거 범위 제한**: 모든 커밋이 아닌 PR 이벤트에만 실행
+2. **파일 필터링**: 변경된 소스 파일만 분석
+3. **캐싱**: 동일한 분석 결과 재사용
+4. **배치 처리**: 여러 파일을 한 번에 분석
+
+```yaml
+# 비용 최적화 예시: 조건부 실행
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'src/**/*.ts'
+      - 'src/**/*.tsx'
+      - '!**/*.test.*'
+      - '!**/*.spec.*'
+```
+
+<Collapsible title="CI/CD 통합 체크리스트">
+
+파이프라인 설정 전 확인사항:
+
+- [ ] API 키가 시크릿으로 안전하게 저장되었는가
+- [ ] 워크플로우 트리거 조건이 적절한가
+- [ ] 변경된 파일만 분석하도록 필터링이 설정되었는가
+- [ ] 리뷰 결과를 PR 코멘트로 게시하는 로직이 있는가
+- [ ] 비용 제한(예: 월별 API 호출 한도)을 설정했는가
+- [ ] 에러 발생 시 파이프라인이 실패하지 않도록 에러 핸들링이 되어 있는가
+- [ ] 로그에 민감 정보가 노출되지 않는가
+
+</Collapsible>
+
+## 다음 단계
+
+CI/CD 파이프라인 구성을 마쳤으면, 다음 레슨에서 AWS Bedrock, Google Vertex AI, Azure 등 클라우드 제공자와의 연동 방법을 학습합니다.

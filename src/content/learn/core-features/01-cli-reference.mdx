@@ -1,0 +1,80 @@
+---
+title: "CLI 명령어 완벽 가이드"
+description: "Claude Code의 모든 CLI 명령어와 옵션을 체계적으로 학습합니다."
+trackId: "core-features"
+lessonId: "cli-reference"
+difficulty: "intermediate"
+estimatedMinutes: 50
+order: 1
+objectives:
+  - "모든 주요 CLI 명령어 숙지"
+  - "명령어 옵션과 플래그 활용 방법 습득"
+  - "파이프라인 및 자동화에서의 CLI 활용"
+sourceDocs:
+  - "3-cli-reference.md"
+tags:
+  - "CLI"
+  - "명령어"
+  - "터미널"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code에서 단일 명령을 실행하고 종료하는 플래그는?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "--single"
+        - id: "b"
+          text: "-p 또는 --print"
+        - id: "c"
+          text: "--once"
+        - id: "d"
+          text: "-s"
+      correctOptionId: "b"
+      explanation: "-p 또는 --print 플래그를 사용하면 단일 명령을 실행하고 결과를 출력한 후 종료합니다. CI/CD나 스크립트 자동화에 유용합니다."
+    - id: "q2"
+      question: "claude --help 명령어의 역할은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Claude 계정 도움말 페이지 열기"
+        - id: "b"
+          text: "사용 가능한 CLI 옵션과 명령어 목록 출력"
+        - id: "c"
+          text: "기술 지원 요청"
+        - id: "d"
+          text: "Claude Code 업데이트"
+      correctOptionId: "b"
+      explanation: "--help 플래그는 사용 가능한 모든 CLI 옵션과 명령어의 설명을 출력합니다."
+---
+
+## Claude Code CLI 완벽 가이드
+
+이 레슨은 준비 중입니다. 현재 Claude Code 공식 문서의 CLI 레퍼런스 섹션을 참고하세요.
+
+## 기본 명령어 구조
+
+```bash
+claude [options] [command]
+```
+
+## 주요 플래그
+
+| 플래그 | 설명 |
+|--------|------|
+| `-p, --print` | 단일 명령 실행 후 종료 |
+| `--model` | 사용할 모델 지정 |
+| `--verbose` | 상세 출력 모드 |
+| `--no-color` | 색상 출력 비활성화 |
+| `--version` | 버전 출력 |
+| `--help` | 도움말 출력 |
+
+<CLIExample
+  command="claude --help"
+  description="사용 가능한 모든 CLI 옵션을 확인합니다."
+/>
+
+<Callout type="note">
+이 레슨의 전체 내용은 업데이트 예정입니다. 자세한 CLI 레퍼런스는 공식 문서를 참고하세요.
+</Callout>

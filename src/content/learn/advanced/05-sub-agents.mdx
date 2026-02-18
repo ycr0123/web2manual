@@ -1,0 +1,60 @@
+---
+title: "Sub-agents 활용"
+description: "서브에이전트를 활용하여 복잡한 작업을 분산 처리하는 방법을 학습합니다."
+trackId: "advanced"
+lessonId: "sub-agents"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 5
+objectives:
+  - "서브에이전트 아키텍처 이해"
+  - "Task 도구를 사용한 에이전트 위임"
+  - "서브에이전트 간 통신 패턴 학습"
+sourceDocs:
+  - "5.5-sub-agents.md"
+tags:
+  - "서브에이전트"
+  - "위임"
+  - "병렬처리"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "서브에이전트(Sub-agent)의 주요 특징은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "메인 에이전트보다 더 많은 권한을 가집니다"
+        - id: "b"
+          text: "독립된 컨텍스트 창을 가지며 특정 작업을 위임받아 실행합니다"
+        - id: "c"
+          text: "병렬 처리가 불가능합니다"
+        - id: "d"
+          text: "인터넷 접근이 가능합니다"
+      correctOptionId: "b"
+      explanation: "서브에이전트는 메인 에이전트로부터 작업을 위임받아 독립된 컨텍스트 창에서 실행되는 에이전트입니다. 복잡한 작업을 여러 에이전트에게 나누어 처리할 수 있습니다."
+---
+
+## Sub-agents 활용
+
+이 레슨은 준비 중입니다.
+
+## 서브에이전트 생성
+
+서브에이전트는 `.claude/agents/` 디렉토리에 마크다운 파일로 정의합니다.
+
+```markdown
+---
+name: code-reviewer
+description: 코드 리뷰를 전문으로 하는 에이전트
+tools: Read, Grep, Glob
+---
+
+# 코드 리뷰 에이전트
+
+당신은 코드 리뷰 전문가입니다...
+```
+
+<Callout type="note">
+서브에이전트는 Task() 도구를 통해 호출됩니다. 각 서브에이전트는 독립된 200K 토큰 컨텍스트를 가집니다.
+</Callout>

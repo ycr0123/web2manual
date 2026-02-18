@@ -1,0 +1,53 @@
+---
+title: "권한 모델 이해"
+description: "Claude Code의 권한 시스템을 이해하고 보안 요구사항에 맞게 설정합니다."
+trackId: "professional"
+lessonId: "permissions"
+difficulty: "advanced"
+estimatedMinutes: 50
+order: 3
+objectives:
+  - "권한 모델의 계층 구조 이해"
+  - "도구별 권한 설정 방법 학습"
+  - "기업 환경에서의 권한 관리 전략"
+sourceDocs:
+  - "4.1-permissions.md"
+tags:
+  - "권한"
+  - "보안"
+  - "기업"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code에서 특정 명령어 실행을 항상 허용하려면?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "--allow-all 플래그 사용"
+        - id: "b"
+          text: "settings.json의 allowedTools에 명령어 패턴 추가"
+        - id: "c"
+          text: "root 권한으로 실행"
+        - id: "d"
+          text: "허용 불가"
+      correctOptionId: "b"
+      explanation: "settings.json의 allowedTools 배열에 허용할 도구와 명령어 패턴을 추가하면 해당 작업을 자동으로 승인합니다."
+---
+
+## 권한 모델 이해
+
+이 레슨은 준비 중입니다.
+
+## 권한 설정 예시
+
+```json
+{
+  "allowedTools": ["Read", "Write", "Edit", "Bash(npm test)"],
+  "disallowedTools": ["Bash(rm -rf)"]
+}
+```
+
+<Callout type="warning">
+권한 설정은 보안에 직접적인 영향을 미칩니다. 최소 권한 원칙에 따라 필요한 도구만 허용하세요.
+</Callout>

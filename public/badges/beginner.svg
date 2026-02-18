@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#22c55e" />
+  <circle cx="32" cy="32" r="27" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1" />
+  <!-- GraduationCap icon -->
+  <g transform="translate(32, 24)" fill="white">
+    <polygon points="0,-8 12,0 0,4 -12,0" />
+    <line x1="0" y1="0" x2="0" y2="8" stroke="white" stroke-width="1.5" />
+    <path d="M-7,2 L-7,7 Q0,12 7,7 L7,2" fill="none" stroke="white" stroke-width="1.5" />
+    <circle cx="0" cy="8" r="1.5" />
+  </g>
+  <text x="32" y="52" font-family="system-ui, sans-serif" font-size="7" font-weight="600" text-anchor="middle" fill="white">입문 완료</text>
+</svg>

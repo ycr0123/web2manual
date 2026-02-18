@@ -1,0 +1,222 @@
+---
+title: "설치 및 초기 설정"
+description: "Claude Code를 설치하고 개발 환경을 구성하는 방법을 학습합니다."
+trackId: "beginner"
+lessonId: "installation"
+difficulty: "beginner"
+estimatedMinutes: 40
+order: 2
+objectives:
+  - "Node.js 및 npm 요구사항 확인"
+  - "Claude Code CLI 설치 완료"
+  - "Anthropic API 키 설정"
+  - "첫 번째 실행 확인"
+sourceDocs:
+  - "1.1-quickstart.md"
+  - "1.2-setup.md"
+tags:
+  - "설치"
+  - "환경설정"
+  - "CLI"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code를 설치하기 위한 최소 Node.js 버전은 무엇인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Node.js 14 이상"
+        - id: "b"
+          text: "Node.js 16 이상"
+        - id: "c"
+          text: "Node.js 18 이상"
+        - id: "d"
+          text: "Node.js 20 이상"
+      correctOptionId: "c"
+      explanation: "Claude Code는 Node.js 18 이상이 필요합니다. Node.js 18은 LTS(Long Term Support) 버전으로 안정성이 검증되어 있습니다."
+    - id: "q2"
+      question: "Claude Code의 API 키는 어디서 설정할 수 있나요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "CLAUDE_API_KEY 환경 변수만 사용 가능"
+        - id: "b"
+          text: "ANTHROPIC_API_KEY 환경 변수 또는 claude login 명령어"
+        - id: "c"
+          text: "~/.claude/config 파일에 직접 입력"
+        - id: "d"
+          text: "GUI 설정 화면에서만 설정 가능"
+      correctOptionId: "b"
+      explanation: "Claude Code의 API 키는 ANTHROPIC_API_KEY 환경 변수로 설정하거나, claude login 명령어를 실행하면 자동으로 설정됩니다."
+    - id: "q3"
+      question: "Claude Code를 글로벌로 설치하는 올바른 명령어는 무엇인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "npm install claude-code"
+        - id: "b"
+          text: "pip install claude-code"
+        - id: "c"
+          text: "npm install -g @anthropic-ai/claude-code"
+        - id: "d"
+          text: "brew install claude-code"
+      correctOptionId: "c"
+      explanation: "Claude Code는 npm 패키지로 제공됩니다. npm install -g @anthropic-ai/claude-code 명령어로 전역 설치합니다."
+---
+
+## 사전 요구사항
+
+Claude Code를 설치하기 전에 다음 사항을 확인하세요.
+
+### Node.js 확인
+
+Claude Code는 **Node.js 18 이상**이 필요합니다.
+
+<CLIExample
+  command="node --version"
+  output="v20.11.0"
+  description="Node.js 버전을 확인합니다. v18 이상이어야 합니다."
+/>
+
+Node.js가 설치되어 있지 않다면 [nodejs.org](https://nodejs.org)에서 LTS 버전을 다운로드하세요.
+
+<CLIExample
+  command="npm --version"
+  output="10.2.4"
+  description="npm 버전도 함께 확인합니다."
+/>
+
+## Claude Code 설치
+
+### npm으로 설치 (권장)
+
+<CLIExample
+  command="npm install -g @anthropic-ai/claude-code"
+  description="Claude Code를 전역으로 설치합니다. -g 플래그는 시스템 전체에서 사용 가능하게 합니다."
+/>
+
+<Callout type="tip">
+macOS나 Linux에서 권한 오류가 발생한다면, sudo를 사용하거나 npm 글로벌 설치 경로를 사용자 디렉토리로 변경하세요.
+</Callout>
+
+설치가 완료되면 버전을 확인합니다:
+
+<CLIExample
+  command="claude --version"
+  output="@anthropic-ai/claude-code@1.x.x"
+  description="설치된 Claude Code 버전을 확인합니다."
+/>
+
+## API 키 설정
+
+Claude Code를 사용하려면 Anthropic API 키가 필요합니다.
+
+### 방법 1: claude login 명령어 사용 (권장)
+
+<CLIExample
+  command="claude login"
+  description="브라우저가 열리며 Anthropic 계정으로 로그인합니다. API 키가 자동으로 설정됩니다."
+/>
+
+### 방법 2: 환경 변수 직접 설정
+
+```bash
+# macOS/Linux - ~/.bashrc 또는 ~/.zshrc에 추가
+export ANTHROPIC_API_KEY="your-api-key-here"
+
+# Windows PowerShell
+$env:ANTHROPIC_API_KEY = "your-api-key-here"
+```
+
+<Callout type="warning">
+API 키를 코드에 직접 하드코딩하지 마세요. 환경 변수나 안전한 비밀 관리 도구를 사용하세요. API 키가 Git 저장소에 커밋되면 보안 위험이 발생합니다.
+</Callout>
+
+### API 키 발급 방법
+
+1. [console.anthropic.com](https://console.anthropic.com)에 접속합니다
+2. 계정이 없다면 회원가입을 진행합니다
+3. **API Keys** 메뉴로 이동합니다
+4. **Create Key** 버튼을 클릭하여 새 키를 생성합니다
+5. 생성된 키를 안전한 곳에 저장합니다 (한 번만 표시됩니다)
+
+## 첫 번째 실행
+
+설치와 API 키 설정이 완료되었다면 Claude Code를 실행해봅시다.
+
+### 인터랙티브 모드 시작
+
+원하는 프로젝트 디렉토리로 이동한 후:
+
+<CLIExample
+  command="claude"
+  description="Claude Code의 인터랙티브 세션을 시작합니다."
+/>
+
+아래와 같은 프롬프트가 표시되면 성공입니다:
+
+```
+Welcome to Claude Code!
+>
+```
+
+### 첫 번째 명령 입력
+
+```
+> 현재 디렉토리의 구조를 설명해줘
+```
+
+Claude Code가 프로젝트를 분석하고 설명을 제공합니다.
+
+<Callout type="note">
+Claude Code를 종료하려면 `/exit` 명령어를 입력하거나 `Ctrl+C`를 누르세요.
+</Callout>
+
+## 설치 확인 체크리스트
+
+설치가 올바르게 완료되었는지 확인해보세요:
+
+| 항목 | 확인 방법 |
+|------|-----------|
+| Node.js 18+ 설치 | `node --version` 실행 후 v18 이상인지 확인 |
+| Claude Code 설치 | `claude --version` 실행 후 버전 표시 확인 |
+| API 키 설정 | `claude` 실행 후 오류 없이 시작되는지 확인 |
+
+## 문제 해결
+
+### "claude: command not found" 오류
+
+npm 글로벌 설치 경로가 PATH에 등록되어 있지 않을 수 있습니다:
+
+<CLIExample
+  command="npm config get prefix"
+  description="npm 글로벌 설치 경로를 확인합니다."
+/>
+
+반환된 경로의 `bin` 디렉토리를 PATH에 추가하세요.
+
+### "ANTHROPIC_API_KEY not found" 오류
+
+API 키가 설정되지 않은 경우입니다. `claude login`을 다시 실행하거나 환경 변수를 확인하세요:
+
+<CLIExample
+  command="echo $ANTHROPIC_API_KEY"
+  description="환경 변수가 설정되어 있는지 확인합니다."
+/>
+
+<Collapsible title="Windows에서 설치 시 추가 설정">
+Windows에서는 다음 추가 설정이 필요할 수 있습니다:
+
+**PowerShell 실행 정책 설정:**
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+**Windows Terminal 권장:**
+Claude Code는 Windows Terminal에서 가장 잘 작동합니다. Microsoft Store에서 설치하세요.
+
+**WSL2 활용 (선택사항):**
+WSL2(Windows Subsystem for Linux 2)를 사용하면 Linux 환경에서 Claude Code를 더 원활하게 사용할 수 있습니다.
+</Collapsible>

@@ -1,0 +1,215 @@
+---
+title: "서드파티 통합 개요"
+description: "Claude Code와 연동 가능한 서드파티 서비스들의 전체 목록과 통합 아키텍처 패턴을 이해합니다."
+trackId: "enterprise"
+lessonId: "third-party"
+difficulty: "advanced"
+estimatedMinutes: 40
+order: 1
+objectives:
+  - "지원되는 서드파티 통합 목록 파악"
+  - "통합 아키텍처 패턴 이해"
+  - "통합 시 고려사항 학습"
+sourceDocs:
+  - "6-third-party-integrations.md"
+tags:
+  - "통합"
+  - "서드파티"
+  - "생태계"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code의 서드파티 통합에서 MCP(Model Context Protocol)의 역할은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "코드 컴파일을 위한 프로토콜"
+        - id: "b"
+          text: "외부 도구와 데이터 소스를 Claude Code에 연결하는 표준 프로토콜"
+        - id: "c"
+          text: "네트워크 암호화 프로토콜"
+        - id: "d"
+          text: "파일 압축 프로토콜"
+      correctOptionId: "b"
+      explanation: "MCP(Model Context Protocol)는 Claude Code가 외부 도구, 데이터베이스, API 등 다양한 서드파티 서비스와 통신할 수 있게 해주는 표준 프로토콜입니다."
+    - id: "q2"
+      question: "Claude Code와 서드파티 서비스를 통합할 때 가장 중요한 고려사항은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "UI 디자인의 일관성"
+        - id: "b"
+          text: "보안 자격 증명 관리와 데이터 프라이버시"
+        - id: "c"
+          text: "서비스의 가격 정책"
+        - id: "d"
+          text: "서비스 제공자의 회사 규모"
+      correctOptionId: "b"
+      explanation: "서드파티 통합 시 API 키와 같은 자격 증명이 안전하게 관리되어야 하며, 데이터가 외부 서비스로 전송될 때의 프라이버시 정책을 반드시 검토해야 합니다."
+    - id: "q3"
+      question: "MCP 서버 설정 파일의 올바른 위치는?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "package.json"
+        - id: "b"
+          text: ".mcp.json (프로젝트 루트) 또는 ~/.claude/mcp.json (전역)"
+        - id: "c"
+          text: "tsconfig.json"
+        - id: "d"
+          text: ".env 파일"
+      correctOptionId: "b"
+      explanation: "MCP 서버 설정은 프로젝트별로 .mcp.json에, 전역 설정은 ~/.claude/mcp.json에 정의합니다. 프로젝트 설정이 전역 설정보다 우선합니다."
+---
+
+## 서드파티 통합 개요
+
+Claude Code는 독립적으로도 강력하지만, 다양한 서드파티 서비스와 통합하면 그 능력이 비약적으로 확장됩니다. 이 레슨에서는 Claude Code 생태계의 통합 가능한 서비스들과 아키텍처 패턴을 살펴봅니다.
+
+### 통합 카테고리
+
+Claude Code와 연동할 수 있는 서드파티 서비스는 크게 다음과 같은 카테고리로 분류됩니다:
+
+| 카테고리 | 주요 서비스 | 용도 |
+|---------|-----------|------|
+| 소스 코드 관리 | GitHub, GitLab, Bitbucket | PR, 이슈, 코드 리뷰 |
+| CI/CD | GitHub Actions, GitLab CI | 자동화 파이프라인 |
+| 클라우드 제공자 | AWS Bedrock, GCP Vertex AI, Azure | 엔터프라이즈 배포 |
+| IDE 통합 | VS Code, JetBrains | 에디터 연동 |
+| 데이터 도구 | PostgreSQL, MongoDB, Redis | 데이터베이스 연결 |
+| 커뮤니케이션 | Slack, Linear, Jira | 팀 협업 |
+
+<Callout type="note">
+모든 서드파티 통합은 MCP(Model Context Protocol)를 기반으로 합니다. MCP는 Claude Code가 외부 도구와 데이터 소스에 안전하게 접근할 수 있도록 설계된 개방형 표준 프로토콜입니다.
+</Callout>
+
+## MCP 기반 통합 아키텍처
+
+### MCP란 무엇인가
+
+MCP(Model Context Protocol)는 AI 에이전트가 외부 도구, 데이터베이스, API 등과 상호작용할 수 있게 해주는 표준 프로토콜입니다. Claude Code는 MCP 클라이언트 역할을 하며, 각 서드파티 서비스는 MCP 서버로 동작합니다.
+
+```json
+// .mcp.json - MCP 서버 설정 예시
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "ghp_..."
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://user:pass@localhost/db"
+      }
+    }
+  }
+}
+```
+
+<CLIExample
+  command="claude mcp list"
+  description="현재 설정된 MCP 서버 목록을 확인합니다"
+/>
+
+### 아키텍처 패턴
+
+Claude Code의 서드파티 통합은 세 가지 주요 패턴을 따릅니다:
+
+**패턴 1: 직접 API 통합**
+Claude Code가 서드파티 API를 직접 호출하는 방식입니다. 간단한 통합에 적합하며, API 키 기반 인증을 사용합니다.
+
+**패턴 2: MCP 서버 중개**
+MCP 서버가 Claude Code와 서드파티 서비스 사이에서 중개자 역할을 합니다. 복잡한 인증 흐름이나 데이터 변환이 필요할 때 사용합니다.
+
+**패턴 3: 파이프라인 통합**
+CI/CD 파이프라인에서 Claude Code가 자동화된 단계로 실행됩니다. GitHub Actions나 GitLab CI와 연동하여 코드 리뷰, 테스트 생성 등을 자동화합니다.
+
+<Callout type="tip">
+처음 서드파티 통합을 시작할 때는 패턴 1(직접 API 통합)부터 시작하세요. 요구사항이 복잡해지면 패턴 2(MCP 서버)로 전환하는 것이 좋습니다.
+</Callout>
+
+## 통합 설정 기본 구조
+
+### 설정 파일 위치
+
+```bash
+# 프로젝트별 MCP 설정 (우선 적용)
+.mcp.json
+
+# 전역 MCP 설정
+~/.claude/mcp.json
+
+# Claude Code 설정
+~/.claude/settings.json
+
+# 프로젝트별 Claude 설정
+.claude/settings.json
+```
+
+### 환경 변수 관리
+
+서드파티 서비스의 자격 증명은 반드시 환경 변수로 관리해야 합니다:
+
+```bash
+# .env 파일 (Git에 커밋하지 않음!)
+GITHUB_TOKEN=ghp_xxxxxxxxxxxx
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
+DATABASE_URL=postgresql://user:pass@localhost/mydb
+
+# .gitignore에 반드시 추가
+echo ".env" >> .gitignore
+echo ".env.local" >> .gitignore
+```
+
+<Callout type="danger">
+절대로 API 키나 비밀번호를 코드에 직접 포함하거나 Git 저장소에 커밋하지 마세요. `.env` 파일은 반드시 `.gitignore`에 등록하고, 팀원 간에는 `.env.example` 파일로 필요한 변수 목록만 공유하세요.
+</Callout>
+
+## 통합 시 고려사항
+
+### 보안
+
+- API 키와 토큰은 환경 변수 또는 시크릿 관리 서비스 사용
+- 최소 권한 원칙 적용 (필요한 권한만 부여)
+- 정기적인 자격 증명 로테이션
+
+### 성능
+
+- API 호출 빈도 제한(Rate Limiting) 확인
+- 캐싱 전략 수립
+- 비동기 처리로 응답 시간 최적화
+
+### 안정성
+
+- 서드파티 서비스 장애 시 폴백(Fallback) 전략
+- 타임아웃 설정
+- 재시도(Retry) 로직 구현
+
+<CLIExample
+  command='claude "GitHub PR #42의 코드 리뷰를 진행해줘"'
+  description="GitHub 통합이 설정된 경우 PR 정보를 직접 분석할 수 있습니다"
+/>
+
+<Collapsible title="커뮤니티 MCP 서버 예시">
+
+Claude Code 커뮤니티에서는 다양한 MCP 서버를 개발하고 공유하고 있습니다:
+
+- **@modelcontextprotocol/server-github**: GitHub API 통합
+- **@modelcontextprotocol/server-postgres**: PostgreSQL 데이터베이스 접근
+- **@modelcontextprotocol/server-slack**: Slack 메시지 및 채널 관리
+- **@modelcontextprotocol/server-filesystem**: 확장된 파일 시스템 접근
+- **@modelcontextprotocol/server-puppeteer**: 브라우저 자동화
+
+공식 MCP 서버 레지스트리에서 검증된 서버를 확인할 수 있습니다.
+
+</Collapsible>
+
+## 다음 단계
+
+서드파티 통합의 전체 구조를 이해했으면, 다음 레슨에서는 엔터프라이즈 환경에서 가장 중요한 인증 및 네트워크 설정을 깊이 있게 다룹니다.

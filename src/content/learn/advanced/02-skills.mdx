@@ -1,0 +1,62 @@
+---
+title: "커스텀 스킬 만들기"
+description: "Claude Code의 스킬 시스템을 이해하고 커스텀 스킬을 작성하는 방법을 학습합니다."
+trackId: "advanced"
+lessonId: "skills"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 2
+objectives:
+  - "스킬 아키텍처와 동작 원리 이해"
+  - "YAML 프론트매터 스키마 학습"
+  - "커스텀 스킬 작성 및 테스트"
+sourceDocs:
+  - "5.1-skills.md"
+tags:
+  - "스킬"
+  - "커스터마이징"
+  - "YAML"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code 스킬 파일의 위치는 어디인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "~/skills/"
+        - id: "b"
+          text: ".claude/skills/ 디렉토리"
+        - id: "c"
+          text: "node_modules/claude-skills/"
+        - id: "d"
+          text: "/etc/claude/skills/"
+      correctOptionId: "b"
+      explanation: "프로젝트별 스킬은 .claude/skills/ 디렉토리에 위치합니다. 개인 스킬은 ~/.claude/skills/에 저장할 수 있습니다."
+---
+
+## 커스텀 스킬 만들기
+
+이 레슨은 준비 중입니다.
+
+## 스킬 파일 구조
+
+```yaml
+---
+name: my-skill
+description: >
+  이 스킬의 설명입니다.
+---
+
+# 스킬 내용
+
+여기에 Claude Code에게 전달할 지시사항을 작성합니다.
+```
+
+## 스킬 활용 예시
+
+스킬을 사용하면 반복적인 프롬프트를 재사용할 수 있습니다.
+
+<Callout type="tip">
+스킬은 팀 전체가 공유할 수 있도록 Git에 커밋하세요. 이를 통해 일관된 AI 활용 패턴을 유지할 수 있습니다.
+</Callout>

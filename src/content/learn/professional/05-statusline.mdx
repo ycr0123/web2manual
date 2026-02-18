@@ -1,0 +1,48 @@
+---
+title: "상태표시줄 커스터마이징"
+description: "터미널 상태표시줄을 커스터마이징하여 Claude Code 작업 상태를 시각화합니다."
+trackId: "professional"
+lessonId: "statusline"
+difficulty: "advanced"
+estimatedMinutes: 30
+order: 5
+objectives:
+  - "상태표시줄 구성 옵션 이해"
+  - "커스텀 상태 정보 표시 방법 학습"
+  - "주요 셸 프레임워크와의 통합"
+sourceDocs:
+  - "4.4-statusline.md"
+tags:
+  - "상태표시줄"
+  - "UI"
+  - "터미널"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code 상태표시줄에서 표시할 수 없는 정보는?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "현재 모델 이름"
+        - id: "b"
+          text: "남은 토큰 수"
+        - id: "c"
+          text: "사용자의 Anthropic 계정 잔액"
+        - id: "d"
+          text: "현재 작업 디렉토리"
+      correctOptionId: "c"
+      explanation: "Claude Code 상태표시줄은 모델 정보, 토큰 사용량, 현재 디렉토리 등을 표시할 수 있지만, 계정 잔액과 같은 민감한 정보는 표시하지 않습니다."
+---
+
+## 상태표시줄 커스터마이징
+
+이 레슨은 준비 중입니다.
+
+## 상태표시줄 설정
+
+Claude Code는 zsh, bash, fish 등의 셸 프롬프트에 상태 정보를 추가할 수 있습니다.
+
+<Callout type="note">
+상태표시줄 기능은 터미널이 ANSI 색상 코드를 지원해야 합니다. 대부분의 현대 터미널은 이를 지원합니다.
+</Callout>

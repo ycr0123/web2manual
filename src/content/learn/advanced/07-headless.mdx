@@ -1,0 +1,60 @@
+---
+title: "Headless 모드 자동화"
+description: "CI/CD 파이프라인과 자동화 환경에서 Claude Code를 Headless 모드로 활용합니다."
+trackId: "advanced"
+lessonId: "headless"
+difficulty: "advanced"
+estimatedMinutes: 50
+order: 7
+objectives:
+  - "Headless 모드 개념과 활용 시나리오"
+  - "CI/CD 파이프라인 통합 방법"
+  - "비인터랙티브 자동화 스크립트 작성"
+sourceDocs:
+  - "5.7-headless.md"
+tags:
+  - "헤드리스"
+  - "CI/CD"
+  - "자동화"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "GitHub Actions에서 Claude Code를 사용할 때 API 키를 안전하게 전달하는 방법은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "워크플로우 파일에 직접 입력"
+        - id: "b"
+          text: "GitHub Secrets에 저장하고 환경 변수로 전달"
+        - id: "c"
+          text: "코드에 하드코딩"
+        - id: "d"
+          text: "별도 파일에 저장"
+      correctOptionId: "b"
+      explanation: "GitHub Actions에서 민감한 정보는 반드시 GitHub Secrets에 저장하고, 워크플로우에서 ${{ secrets.ANTHROPIC_API_KEY }} 형식으로 환경 변수로 전달해야 합니다."
+---
+
+## Headless 모드 자동화
+
+이 레슨은 준비 중입니다.
+
+## GitHub Actions 예시
+
+```yaml
+name: AI Code Review
+on: [pull_request]
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: claude -p "변경된 파일들을 코드 리뷰해줘"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+```
+
+<Callout type="warning">
+CI/CD 환경에서는 반드시 --allowedTools 플래그를 사용하여 Claude Code가 실행할 수 있는 도구를 제한하세요. 보안을 위해 최소 권한 원칙을 적용합니다.
+</Callout>

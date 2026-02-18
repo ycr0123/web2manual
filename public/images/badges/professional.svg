@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>프로페셔널 배지</title>
+  <defs>
+    <radialGradient id="bg-grad-professional" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#fb923c" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </radialGradient>
+    <filter id="shadow-professional" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#00000033" />
+    </filter>
+  </defs>
+  <!-- Badge circle background -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg-grad-professional)" filter="url(#shadow-professional)" />
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#b45309" stroke-width="2" />
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="#ffedd5" stroke-width="1" opacity="0.5" />
+  <!-- Briefcase icon (Lucide-style) -->
+  <!-- Briefcase body -->
+  <rect x="16" y="26" width="32" height="22" rx="3" fill="white" opacity="0.95" />
+  <!-- Briefcase handle top -->
+  <path d="M24,26 L24,22 Q24,18 28,18 L36,18 Q40,18 40,22 L40,26" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9" />
+  <!-- Center divider line -->
+  <line x1="16" y1="34" x2="48" y2="34" stroke="#ea580c" stroke-width="1.5" opacity="0.5" />
+  <!-- Center latch -->
+  <rect x="28" y="31" width="8" height="6" rx="2" fill="#ea580c" opacity="0.7" />
+  <!-- Rarity label -->
+  <rect x="18" y="50" width="28" height="8" rx="4" fill="#b45309" opacity="0.8" />
+  <text x="32" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="5" font-weight="bold" fill="white">RARE</text>
+</svg>

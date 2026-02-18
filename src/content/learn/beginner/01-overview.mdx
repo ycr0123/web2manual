@@ -1,0 +1,179 @@
+---
+title: "Claude Code란 무엇인가"
+description: "Claude Code의 개념, 특징, 그리고 개발 워크플로우에서의 역할을 이해합니다."
+trackId: "beginner"
+lessonId: "overview"
+difficulty: "beginner"
+estimatedMinutes: 30
+order: 1
+objectives:
+  - "Claude Code의 정의와 핵심 개념 이해"
+  - "터미널 기반 AI 코딩 도구의 장점 파악"
+  - "Claude Code가 해결하는 개발 문제 이해"
+sourceDocs:
+  - "0-index.md"
+  - "1-overview.md"
+tags:
+  - "기초"
+  - "개요"
+  - "소개"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code는 어떤 종류의 도구인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "그래픽 기반 코드 에디터"
+        - id: "b"
+          text: "터미널 기반 AI 코딩 에이전트"
+        - id: "c"
+          text: "웹 브라우저 확장 프로그램"
+        - id: "d"
+          text: "코드 컴파일러"
+      correctOptionId: "b"
+      explanation: "Claude Code는 Anthropic이 개발한 터미널 기반 AI 코딩 에이전트입니다. 터미널에서 직접 실행되며 코드베이스를 분석하고 개발 작업을 자동화합니다."
+    - id: "q2"
+      question: "Claude Code가 다른 AI 코딩 도구와 차별화되는 주요 특징은 무엇인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "오직 Python만 지원"
+        - id: "b"
+          text: "인터넷 없이 완전히 오프라인 작동"
+        - id: "c"
+          text: "실제 파일 시스템에 직접 접근하여 코드 수정"
+        - id: "d"
+          text: "무료로 무제한 사용 가능"
+      correctOptionId: "c"
+      explanation: "Claude Code는 실제 파일 시스템에 직접 접근하여 코드를 읽고, 수정하고, 실행할 수 있습니다. 이는 단순한 코드 제안을 넘어 실제 개발 작업을 수행할 수 있게 해줍니다."
+    - id: "q3"
+      question: "CLAUDE.md 파일의 역할은 무엇인가요?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Claude Code의 소스 코드 파일"
+        - id: "b"
+          text: "프로젝트별 AI 지시사항과 컨텍스트를 담은 설정 파일"
+        - id: "c"
+          text: "마크다운 문서 변환 도구"
+        - id: "d"
+          text: "Claude 계정 정보를 저장하는 파일"
+      correctOptionId: "b"
+      explanation: "CLAUDE.md는 프로젝트 루트에 위치하는 설정 파일로, Claude Code에게 프로젝트 구조, 코딩 규칙, 특별 지시사항 등의 컨텍스트를 제공합니다. Claude Code는 세션 시작 시 이 파일을 자동으로 읽습니다."
+---
+
+## Claude Code 소개
+
+Claude Code는 Anthropic이 개발한 **터미널 기반 AI 코딩 에이전트**입니다. 단순한 코드 자동완성이나 제안 도구가 아니라, 실제로 코드베이스를 이해하고, 파일을 수정하고, 명령을 실행하며 개발 작업을 수행하는 자율적인 에이전트입니다.
+
+<Callout type="note">
+Claude Code는 2024년 말에 공개되었으며, Claude 3.5 Sonnet 모델을 기반으로 작동합니다. 터미널에서 `claude` 명령어로 실행하며 개발자의 작업 흐름에 자연스럽게 통합됩니다.
+</Callout>
+
+## 핵심 철학
+
+Claude Code의 설계는 세 가지 핵심 원칙을 따릅니다:
+
+### 1. 에이전틱 워크플로우
+
+Claude Code는 단순히 코드를 제안하는 것에 그치지 않습니다. 복잡한 작업을 여러 단계로 분해하고, 각 단계를 자율적으로 실행합니다:
+
+- 코드베이스 탐색 및 분석
+- 파일 읽기, 생성, 수정
+- 테스트 실행 및 결과 분석
+- 오류 디버깅 및 수정
+
+### 2. 안전성 우선
+
+모든 파일 시스템 작업과 명령 실행은 사용자의 명시적 승인을 거칩니다. Claude Code는 무엇을 할 것인지 먼저 설명하고, 사용자가 확인한 후에 실행합니다.
+
+<Callout type="tip">
+Claude Code는 **항상 현재 작업 디렉토리(cwd)** 내에서만 작업합니다. 다른 디렉토리의 파일을 무단으로 수정하지 않습니다.
+</Callout>
+
+### 3. 컨텍스트 인식
+
+Claude Code는 프로젝트 전체를 이해하려 합니다:
+
+- `CLAUDE.md` 파일에서 프로젝트 규칙과 가이드라인을 읽음
+- Git 이력을 분석하여 코딩 패턴을 파악
+- 관련 파일들을 자동으로 탐색하여 컨텍스트 수집
+
+## Claude Code가 해결하는 문제들
+
+개발자들이 일상적으로 겪는 여러 문제들을 Claude Code가 어떻게 해결하는지 살펴보겠습니다.
+
+### 반복적인 코딩 작업
+
+<CLIExample
+  command="claude '모든 API 엔드포인트에 입력 검증 로직을 추가해줘'"
+  description="자연어로 복잡한 리팩토링 작업을 지시할 수 있습니다"
+/>
+
+Claude Code는 코드베이스를 분석하고, 영향받는 파일들을 파악하여, 일관된 방식으로 변경사항을 적용합니다.
+
+### 코드 이해와 문서화
+
+새로운 프로젝트에 합류하거나 오래된 코드를 리뷰할 때, Claude Code는 코드의 동작 방식을 설명하고 문서를 자동 생성할 수 있습니다.
+
+### 버그 찾기 및 수정
+
+<CLIExample
+  command="claude '이 오류 메시지가 발생하는 원인을 찾아서 수정해줘: TypeError: Cannot read property of undefined'"
+  description="오류 메시지만으로도 관련 코드를 분석하고 수정 방법을 제안합니다"
+/>
+
+## 주요 기능 개요
+
+| 기능 | 설명 |
+|------|------|
+| 파일 시스템 접근 | 프로젝트 파일 읽기, 쓰기, 수정 |
+| 명령 실행 | 빌드, 테스트, 스크립트 실행 |
+| 코드 분석 | 버그 탐지, 성능 문제 파악 |
+| 자연어 이해 | 한국어 포함 다국어 지원 |
+| 컨텍스트 관리 | 긴 세션에서도 일관된 작업 유지 |
+| 에이전트 시스템 | 복잡한 작업의 자율적 분해 및 실행 |
+
+## CLAUDE.md: 프로젝트 메모리
+
+`CLAUDE.md`는 Claude Code에게 프로젝트를 설명하는 핵심 파일입니다. 이 파일에 다음과 같은 정보를 담을 수 있습니다:
+
+```markdown
+# 프로젝트 개요
+이 프로젝트는 React + TypeScript로 구현된 전자상거래 플랫폼입니다.
+
+## 코딩 규칙
+- ESLint + Prettier를 사용합니다
+- 컴포넌트는 함수형으로 작성합니다
+- 타입은 반드시 명시적으로 선언합니다
+
+## 자주 사용하는 명령어
+- npm test: 테스트 실행
+- npm run build: 프로덕션 빌드
+```
+
+<Callout type="warning">
+CLAUDE.md 파일은 Git에 커밋하여 팀 전체가 공유하세요. 팀의 모든 멤버가 동일한 컨텍스트로 Claude Code를 사용할 수 있습니다.
+</Callout>
+
+## 다음 단계
+
+Claude Code의 기본 개념을 이해했다면, 다음 레슨에서 실제 설치와 초기 설정을 진행합니다. Claude Code를 직접 설치하고 첫 번째 명령을 실행해보겠습니다.
+
+<Collapsible title="더 알아보기: Claude Code vs. GitHub Copilot">
+Claude Code와 GitHub Copilot은 모두 AI 기반 코딩 도구이지만, 접근 방식이 다릅니다:
+
+**GitHub Copilot:**
+- 코드 에디터(VS Code 등)에 통합된 인라인 제안 도구
+- 실시간 코드 자동완성에 최적화
+- 파일 시스템 직접 접근 불가
+
+**Claude Code:**
+- 터미널 기반 독립 실행 에이전트
+- 전체 코드베이스를 이해하고 복잡한 작업 수행
+- 파일 생성, 수정, 명령 실행 가능
+
+두 도구는 상호 보완적으로 사용할 수 있습니다.
+</Collapsible>

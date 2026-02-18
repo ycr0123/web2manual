@@ -1,0 +1,57 @@
+---
+title: "MCP 통합"
+description: "Model Context Protocol을 통해 외부 도구와 Claude Code를 연동하는 방법을 알아봅니다."
+trackId: "advanced"
+lessonId: "mcp"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 4
+objectives:
+  - "MCP 프로토콜 개념 이해"
+  - "MCP 서버 설정 및 연결"
+  - "커스텀 MCP 서버 개발"
+sourceDocs:
+  - "5.4-mcp.md"
+tags:
+  - "MCP"
+  - "프로토콜"
+  - "통합"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "MCP(Model Context Protocol)의 주요 역할은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Claude Code의 응답 속도 향상"
+        - id: "b"
+          text: "외부 도구와 데이터 소스를 Claude Code에 연결"
+        - id: "c"
+          text: "Claude Code 라이선스 관리"
+        - id: "d"
+          text: "코드 컴파일 및 실행"
+      correctOptionId: "b"
+      explanation: "MCP는 Claude Code가 외부 도구(데이터베이스, API, 파일 시스템 등)와 표준화된 방식으로 상호작용할 수 있게 해주는 프로토콜입니다."
+---
+
+## MCP 통합
+
+이 레슨은 준비 중입니다.
+
+## MCP 설정 예시
+
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@my-org/mcp-server"]
+    }
+  }
+}
+```
+
+<Callout type="tip">
+MCP 서버는 .mcp.json 파일 또는 Claude Code 설정에서 구성할 수 있습니다. 프로젝트별로 다른 MCP 서버를 사용할 수 있습니다.
+</Callout>

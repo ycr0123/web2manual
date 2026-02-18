@@ -1,0 +1,61 @@
+---
+title: "플러그인 & 샌드박싱"
+description: "Claude Code 플러그인 시스템과 보안 샌드박싱 환경을 이해하고 활용합니다."
+trackId: "advanced"
+lessonId: "plugins-sandbox"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 8
+objectives:
+  - "플러그인 아키텍처와 배포 방법 학습"
+  - "샌드박싱 보안 모델 이해"
+  - "안전한 플러그인 개발 방법 습득"
+sourceDocs:
+  - "5.8-sandboxing.md"
+  - "5.9-plugins.md"
+tags:
+  - "플러그인"
+  - "샌드박싱"
+  - "보안"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code 플러그인의 manifest 파일 이름은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "plugin.yaml"
+        - id: "b"
+          text: ".claude-plugin/plugin.json"
+        - id: "c"
+          text: "claude.config.json"
+        - id: "d"
+          text: "manifest.json"
+      correctOptionId: "b"
+      explanation: "Claude Code 플러그인은 .claude-plugin/plugin.json 파일을 통해 정의됩니다. 이 파일에 플러그인의 이름, 버전, 포함 컴포넌트 등을 명시합니다."
+---
+
+## 플러그인 & 샌드박싱
+
+이 레슨은 준비 중입니다.
+
+## 플러그인 구조
+
+```
+my-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+├── commands/
+├── agents/
+├── skills/
+└── hooks/
+```
+
+## 샌드박싱
+
+샌드박싱은 Claude Code의 실행을 안전한 환경으로 격리합니다.
+
+<Callout type="note">
+플러그인은 GitHub 저장소로 배포하고 claude plugin install 명령어로 설치할 수 있습니다.
+</Callout>

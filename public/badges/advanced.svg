@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#8b5cf6" />
+  <circle cx="32" cy="32" r="27" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1" />
+  <!-- Rocket icon -->
+  <g transform="translate(32, 26)" fill="white">
+    <path d="M0,-12 C4,-8 6,-2 6,4 L2,6 L0,4 L-2,6 L-6,4 C-6,-2 -4,-8 0,-12Z" />
+    <circle cx="0" cy="-2" r="2" fill="#8b5cf6" />
+    <path d="M-6,4 L-9,8 L-4,6Z" />
+    <path d="M6,4 L9,8 L4,6Z" />
+    <path d="M-2,6 L-3,10 L0,8 L3,10 L2,6Z" fill="white" opacity="0.8" />
+  </g>
+  <text x="32" y="52" font-family="system-ui, sans-serif" font-size="7" font-weight="600" text-anchor="middle" fill="white">고급 실천가</text>
+</svg>

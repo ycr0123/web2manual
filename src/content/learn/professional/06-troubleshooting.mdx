@@ -1,0 +1,306 @@
+---
+title: "문제 해결 & 변경 로그"
+description: "Claude Code 사용 중 발생할 수 있는 일반적인 오류와 해결책, 디버깅 기법, 그리고 최신 변경사항을 학습합니다."
+trackId: "professional"
+lessonId: "troubleshooting"
+difficulty: "advanced"
+estimatedMinutes: 50
+order: 6
+objectives:
+  - "일반적인 오류 원인과 해결책 학습"
+  - "디버깅 방법과 로그 분석 기법 습득"
+  - "최신 변경사항 및 마이그레이션 가이드 이해"
+sourceDocs:
+  - "8-troubleshooting.md"
+  - "8.1-changelog.md"
+tags:
+  - "문제해결"
+  - "디버깅"
+  - "변경로그"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Claude Code에서 '컨텍스트 윈도우 초과' 오류가 발생했을 때 가장 적절한 해결 방법은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Claude Code를 재설치한다"
+        - id: "b"
+          text: "/clear 명령으로 컨텍스트를 정리하고 세션을 새로 시작한다"
+        - id: "c"
+          text: "컴퓨터를 재부팅한다"
+        - id: "d"
+          text: "더 큰 모니터를 사용한다"
+      correctOptionId: "b"
+      explanation: "/clear 명령은 현재 세션의 컨텍스트를 비우고 새로운 대화를 시작합니다. 컨텍스트 윈도우 초과 시 가장 효과적인 해결 방법입니다."
+    - id: "q2"
+      question: "Claude Code의 인증 오류를 디버깅할 때 먼저 확인해야 할 것은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "모니터 해상도 설정"
+        - id: "b"
+          text: "API 키 유효성과 환경 변수 설정"
+        - id: "c"
+          text: "키보드 드라이버 버전"
+        - id: "d"
+          text: "디스크 남은 용량"
+      correctOptionId: "b"
+      explanation: "인증 오류는 대부분 API 키가 만료되었거나 환경 변수(ANTHROPIC_API_KEY)가 올바르게 설정되지 않았을 때 발생합니다. 이를 먼저 확인하는 것이 가장 효율적입니다."
+    - id: "q3"
+      question: "Claude Code 업데이트 후 기존 설정이 동작하지 않을 때 확인해야 할 것은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "변경 로그(Changelog)에서 Breaking Changes 확인"
+        - id: "b"
+          text: "운영체제를 재설치한다"
+        - id: "c"
+          text: "이전 버전을 계속 사용한다"
+        - id: "d"
+          text: "모든 설정 파일을 삭제한다"
+      correctOptionId: "a"
+      explanation: "변경 로그의 Breaking Changes 섹션에서 API 변경사항, 설정 형식 변경, 삭제된 기능 등을 확인하면 마이그레이션에 필요한 정보를 얻을 수 있습니다."
+    - id: "q4"
+      question: "Claude Code에서 권한 관련 오류가 반복적으로 발생할 때 적절한 조치는?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "sudo를 사용하여 강제 실행한다"
+        - id: "b"
+          text: "settings.json의 permissions 설정을 확인하고 필요한 권한을 허용한다"
+        - id: "c"
+          text: "방화벽을 완전히 비활성화한다"
+        - id: "d"
+          text: "다른 AI 도구로 전환한다"
+      correctOptionId: "b"
+      explanation: "settings.json에서 allowedTools, permissions 설정을 검토하여 필요한 도구와 디렉토리에 대한 접근 권한이 올바르게 설정되어 있는지 확인해야 합니다."
+---
+
+## 일반적인 오류와 해결책
+
+Claude Code를 사용하면서 다양한 오류 상황을 마주할 수 있습니다. 이 섹션에서는 가장 자주 발생하는 문제들과 그 해결책을 체계적으로 다룹니다.
+
+### 인증 및 연결 오류
+
+가장 흔한 오류 유형은 인증과 네트워크 연결 관련 문제입니다. Claude Code는 Anthropic API에 연결하여 작동하므로, 인증 정보가 올바르지 않거나 네트워크 문제가 있으면 정상 작동하지 않습니다.
+
+<Callout type="warning">
+API 키를 코드에 직접 하드코딩하지 마세요. 반드시 환경 변수나 시스템 키체인을 통해 관리해야 합니다. API 키가 유출되면 즉시 Anthropic 콘솔에서 키를 재생성하세요.
+</Callout>
+
+```bash
+# API 키 환경 변수 확인
+echo $ANTHROPIC_API_KEY
+
+# API 키가 설정되지 않은 경우
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# 연결 상태 테스트
+claude --version
+claude "안녕하세요, 연결 테스트입니다"
+```
+
+인증 오류가 발생하는 주요 원인:
+
+| 원인 | 증상 | 해결책 |
+|------|------|--------|
+| API 키 만료 | `401 Unauthorized` | Anthropic 콘솔에서 키 재생성 |
+| 환경 변수 미설정 | `API key not found` | `.bashrc`/`.zshrc`에 export 추가 |
+| 네트워크 차단 | `Connection timeout` | 프록시/방화벽 설정 확인 |
+| 잘못된 키 형식 | `Invalid API key` | 키 앞뒤 공백 제거 확인 |
+
+### 컨텍스트 윈도우 오류
+
+긴 세션이나 대규모 코드베이스 작업 시 컨텍스트 윈도우 한계에 도달할 수 있습니다.
+
+<CLIExample
+  command="claude /clear"
+  description="컨텍스트를 정리하고 새로운 세션을 시작합니다"
+/>
+
+컨텍스트 관리 전략:
+
+- 작업 단위를 작게 분리하여 하나의 세션에서 처리
+- 대규모 리팩토링은 파일 단위로 나누어 진행
+- `/clear` 후 필요한 컨텍스트만 다시 제공
+- `CLAUDE.md`에 핵심 정보를 기록하여 세션 간 연속성 유지
+
+```bash
+# 현재 컨텍스트 사용량 확인 (세션 정보에서 표시)
+# 컨텍스트가 150K 토큰을 넘으면 /clear 고려
+
+# 효율적인 작업 분할 예시
+claude "src/auth/ 디렉토리의 로그인 로직만 리뷰해줘"  # 범위를 명확히
+claude "이전 리뷰 결과를 바탕으로 login.ts만 수정해줘"  # 작은 단위로 실행
+```
+
+<Callout type="tip">
+`CLAUDE.md` 파일에 프로젝트 구조와 핵심 규칙을 기록해두면, `/clear` 후에도 Claude Code가 프로젝트 컨텍스트를 빠르게 복원할 수 있습니다.
+</Callout>
+
+### 파일 시스템 및 권한 오류
+
+Claude Code가 파일을 읽거나 수정할 때 권한 문제가 발생할 수 있습니다.
+
+```bash
+# settings.json에서 허용된 디렉토리 확인
+cat ~/.claude/settings.json | grep -A 5 "permissions"
+
+# 작업 디렉토리 권한 확인
+ls -la .
+
+# Claude Code 권한 설정 예시 (settings.json)
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash(npm test)",
+      "Bash(npm run build)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)"
+    ]
+  }
+}
+```
+
+## 디버깅 방법과 로그 분석
+
+### 체계적 디버깅 접근법
+
+Claude Code에서 문제를 효과적으로 디버깅하려면 체계적인 접근이 필요합니다. 다음 단계를 순서대로 수행하세요:
+
+1. **증상 확인**: 정확한 오류 메시지와 발생 조건을 기록
+2. **환경 검증**: Node.js 버전, Claude Code 버전, OS 확인
+3. **설정 검토**: `settings.json`, `CLAUDE.md`, `.claude/` 디렉토리 확인
+4. **격리 테스트**: 최소한의 재현 가능한 케이스 생성
+5. **로그 분석**: 상세 로그 출력으로 원인 파악
+
+<CLIExample
+  command="claude --verbose '현재 프로젝트의 문제를 진단해줘'"
+  description="상세 로그 모드로 실행하여 내부 동작을 확인합니다"
+/>
+
+### 로그 위치 및 분석
+
+Claude Code의 로그는 시스템에 따라 다른 위치에 저장됩니다:
+
+```bash
+# macOS/Linux 로그 위치
+ls ~/.claude/logs/
+
+# 최근 로그 확인
+tail -50 ~/.claude/logs/claude-code.log
+
+# 오류 로그만 필터링
+grep -i "error\|fail\|exception" ~/.claude/logs/claude-code.log
+
+# 특정 세션 로그 확인
+grep "session_id" ~/.claude/logs/claude-code.log
+```
+
+<Callout type="note">
+로그 파일에는 민감한 정보(API 키의 일부, 파일 경로 등)가 포함될 수 있으므로, 로그를 공유할 때는 민감 정보를 마스킹하세요.
+</Callout>
+
+### 일반적인 디버깅 시나리오
+
+**시나리오 1: 명령 실행 실패**
+
+```bash
+# Claude Code가 bash 명령을 실행하지 못할 때
+# 1. 직접 터미널에서 명령 실행 가능 여부 확인
+npm test  # 직접 실행
+
+# 2. Claude Code 권한 확인
+# settings.json에서 Bash 도구가 허용되어 있는지 확인
+
+# 3. 경로 문제 확인
+pwd  # 현재 작업 디렉토리
+which node  # Node.js 경로
+```
+
+**시나리오 2: 파일 수정이 반영되지 않을 때**
+
+Claude Code가 파일을 수정했다고 하지만 실제로 변경이 적용되지 않은 경우:
+
+```bash
+# Git으로 변경사항 확인
+git diff
+
+# 파일 타임스탬프 확인
+stat src/target-file.ts
+
+# 캐시 문제 시 서버 재시작
+npm run dev -- --force
+```
+
+## 최신 변경사항 및 마이그레이션
+
+### 변경 로그 확인 방법
+
+Claude Code는 지속적으로 업데이트됩니다. 업데이트 전후로 변경 로그를 확인하는 습관이 중요합니다.
+
+<CLIExample
+  command="claude --version && npm view @anthropic-ai/claude-code versions --json | tail -5"
+  description="현재 버전과 최신 버전을 비교합니다"
+/>
+
+### 주요 업데이트 체크 포인트
+
+업데이트 시 반드시 확인해야 할 항목들:
+
+1. **Breaking Changes**: API 변경, 설정 형식 변경, 삭제된 기능
+2. **새로운 기능**: 활용할 수 있는 새 기능 확인
+3. **보안 패치**: 보안 취약점 수정 사항
+4. **성능 개선**: 최적화된 동작 방식
+
+```bash
+# Claude Code 업데이트
+npm update -g @anthropic-ai/claude-code
+
+# 업데이트 후 설정 호환성 확인
+claude doctor  # 내장 진단 도구 실행
+
+# 설정 파일 백업 (업데이트 전 권장)
+cp -r ~/.claude ~/.claude.backup
+```
+
+<Callout type="warning">
+메이저 버전 업데이트(예: v1.x -> v2.x)에서는 설정 파일 형식이 변경될 수 있습니다. 업데이트 전 반드시 현재 설정을 백업하고, 변경 로그의 마이그레이션 가이드를 따르세요.
+</Callout>
+
+### 마이그레이션 체크리스트
+
+버전 업데이트 시 다음 체크리스트를 활용하세요:
+
+- [ ] 현재 설정 파일 백업 (`~/.claude/`, `CLAUDE.md`)
+- [ ] 변경 로그에서 Breaking Changes 확인
+- [ ] 업데이트 실행
+- [ ] `claude doctor` 또는 `claude --version`으로 정상 동작 확인
+- [ ] 기존 프로젝트에서 테스트 실행
+- [ ] 새로운 기능 설정 적용
+
+<Collapsible title="자주 묻는 질문 (FAQ)">
+
+**Q: Claude Code가 갑자기 응답하지 않습니다.**
+A: 먼저 네트워크 연결을 확인하세요. Anthropic API 서버 상태(status.anthropic.com)를 확인하고, 로컬 프록시 설정이 변경되지 않았는지 검토하세요.
+
+**Q: 이전에 작동하던 명령이 더 이상 작동하지 않습니다.**
+A: Claude Code 버전이 업데이트되었을 수 있습니다. `claude --version`으로 버전을 확인하고, 해당 버전의 변경 로그를 확인하세요.
+
+**Q: 컨텍스트가 자주 초과됩니다.**
+A: 작업 범위를 좁히고, `/clear` 후 필요한 정보만 제공하세요. `CLAUDE.md`에 핵심 컨텍스트를 기록하면 매번 반복 설명할 필요가 줄어듭니다.
+
+**Q: API 사용량이 예상보다 많습니다.**
+A: 불필요하게 큰 파일을 읽거나 반복적인 작업을 피하세요. `/compact` 명령으로 대화 내용을 요약하여 토큰 사용량을 줄일 수 있습니다.
+
+</Collapsible>
+
+## 다음 단계
+
+문제 해결 역량을 갖추었으면, 다음 단계로 엔터프라이즈 환경에서의 서드파티 통합을 학습하여 Claude Code를 조직 전체에 효과적으로 배포하는 방법을 알아보세요.

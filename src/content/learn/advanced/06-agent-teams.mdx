@@ -1,0 +1,55 @@
+---
+title: "Agent Teams 구축"
+description: "여러 에이전트가 협력하는 Agent Teams를 구성하고 운영하는 방법을 학습합니다."
+trackId: "advanced"
+lessonId: "agent-teams"
+difficulty: "advanced"
+estimatedMinutes: 60
+order: 6
+objectives:
+  - "Agent Teams 아키텍처 설계"
+  - "팀 생성 및 에이전트 협력 패턴 구현"
+  - "병렬 작업 실행 최적화"
+sourceDocs:
+  - "5.6-agent-teams.md"
+tags:
+  - "팀"
+  - "협력"
+  - "병렬"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Agent Teams를 사용하기 위한 필수 조건은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Claude Pro 구독 필요"
+        - id: "b"
+          text: "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 환경 변수 설정"
+        - id: "c"
+          text: "별도 라이선스 구매"
+        - id: "d"
+          text: "특별한 설정 없이 사용 가능"
+      correctOptionId: "b"
+      explanation: "Agent Teams는 실험적 기능으로, CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 환경 변수를 설정해야 활성화됩니다."
+---
+
+## Agent Teams 구축
+
+이 레슨은 준비 중입니다.
+
+## Agent Teams 활성화
+
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+claude
+```
+
+## 팀 패턴
+
+Agent Teams를 사용하면 여러 에이전트가 병렬로 작업을 수행할 수 있습니다.
+
+<Callout type="warning">
+Agent Teams는 실험적 기능입니다. 프로덕션 환경에서 사용하기 전에 충분히 테스트하세요.
+</Callout>

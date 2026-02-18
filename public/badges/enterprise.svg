@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#ef4444" />
+  <circle cx="32" cy="32" r="27" fill="none" stroke="white" stroke-opacity="0.3" stroke-width="1" />
+  <!-- Trophy icon -->
+  <g transform="translate(32, 25)" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-6,-10 L6,-10 L5,0 Q4,5 0,6 Q-4,5 -5,0Z" fill="white" />
+    <path d="M6,-8 Q11,-6 10,-1 Q9,3 5,2" stroke="white" fill="none" />
+    <path d="M-6,-8 Q-11,-6 -10,-1 Q-9,3 -5,2" stroke="white" fill="none" />
+    <line x1="0" y1="6" x2="0" y2="10" />
+    <line x1="-5" y1="10" x2="5" y2="10" />
+  </g>
+  <text x="32" y="52" font-family="system-ui, sans-serif" font-size="7" font-weight="600" text-anchor="middle" fill="white">기업 전문가</text>
+</svg>

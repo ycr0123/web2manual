@@ -1,0 +1,274 @@
+---
+title: "클라우드 제공자 연동"
+description: "Amazon Bedrock, Google Vertex AI, Microsoft Azure Foundry를 통해 Claude Code를 엔터프라이즈 환경에서 활용하는 방법을 학습합니다."
+trackId: "enterprise"
+lessonId: "cloud-providers"
+difficulty: "advanced"
+estimatedMinutes: 50
+order: 4
+objectives:
+  - "Amazon Bedrock 설정 및 활용"
+  - "Google Vertex AI 통합 방법"
+  - "Microsoft Azure Foundry 연동"
+sourceDocs:
+  - "6.8-amazon-bedrock.md"
+  - "6.9-google-vertex-ai.md"
+  - "6.10-microsoft-foundry.md"
+tags:
+  - "클라우드"
+  - "AWS"
+  - "GCP"
+  - "Azure"
+quiz:
+  passingScore: 70
+  questions:
+    - id: "q1"
+      question: "Amazon Bedrock을 통해 Claude Code를 사용할 때의 주요 장점은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "무료로 무제한 사용 가능"
+        - id: "b"
+          text: "AWS 인프라 내에서 데이터가 처리되어 데이터 레지던시 요구사항 충족"
+        - id: "c"
+          text: "더 빠른 응답 속도를 보장"
+        - id: "d"
+          text: "추가 모델을 무료로 사용 가능"
+      correctOptionId: "b"
+      explanation: "Amazon Bedrock을 사용하면 데이터가 AWS 리전 내에서 처리되므로, 데이터 레지던시(Data Residency) 및 규정 준수 요구사항을 충족할 수 있습니다. 이는 금융, 의료 등 규제 산업에서 중요합니다."
+    - id: "q2"
+      question: "Google Vertex AI에서 Claude를 사용하기 위해 필요한 것은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "Google Workspace 구독"
+        - id: "b"
+          text: "GCP 프로젝트와 Vertex AI API 활성화"
+        - id: "c"
+          text: "Chrome 브라우저"
+        - id: "d"
+          text: "Android 기기"
+      correctOptionId: "b"
+      explanation: "Google Vertex AI에서 Claude를 사용하려면 GCP 프로젝트를 생성하고, Vertex AI API를 활성화한 뒤, 서비스 계정 또는 사용자 인증 정보를 설정해야 합니다."
+    - id: "q3"
+      question: "클라우드 제공자를 통한 Claude Code 사용 시 공통적으로 필요한 설정은?"
+      type: "multiple-choice"
+      options:
+        - id: "a"
+          text: "전용 GPU 인스턴스 구매"
+        - id: "b"
+          text: "적절한 IAM 권한과 API 엔드포인트 환경 변수 설정"
+        - id: "c"
+          text: "로컬 모델 다운로드"
+        - id: "d"
+          text: "VPN 전용 연결"
+      correctOptionId: "b"
+      explanation: "모든 클라우드 제공자에서 Claude Code를 사용하려면 IAM(Identity and Access Management) 권한을 적절히 설정하고, 해당 제공자의 API 엔드포인트를 환경 변수로 지정해야 합니다."
+---
+
+## 클라우드 제공자 통합 개요
+
+엔터프라이즈 환경에서는 Anthropic API를 직접 사용하는 대신, 클라우드 제공자(AWS, GCP, Azure)를 통해 Claude 모델에 접근하는 경우가 많습니다. 이를 통해 기존 클라우드 인프라, 보안 정책, 결제 체계를 그대로 활용할 수 있습니다.
+
+### 클라우드 제공자 비교
+
+| 항목 | Amazon Bedrock | Google Vertex AI | Azure Foundry |
+|-----|---------------|-----------------|---------------|
+| 인증 | AWS IAM | GCP IAM / ADC | Azure AD |
+| 리전 | us-east-1, us-west-2 등 | us-central1 등 | East US 등 |
+| 결제 | AWS 통합 결제 | GCP 통합 결제 | Azure 통합 결제 |
+| 규정 준수 | HIPAA, SOC2 | ISO 27001, SOC2 | HIPAA, SOC2 |
+| 데이터 레지던시 | AWS 리전 내 | GCP 리전 내 | Azure 리전 내 |
+
+<Callout type="note">
+클라우드 제공자를 통해 Claude를 사용하면 데이터가 해당 클라우드 리전 내에서만 처리됩니다. 이는 GDPR, HIPAA 등 규정 준수가 필요한 조직에 핵심적인 장점입니다.
+</Callout>
+
+## Amazon Bedrock 설정
+
+### 사전 준비
+
+Amazon Bedrock에서 Claude를 사용하려면 다음 단계를 완료해야 합니다:
+
+1. AWS 계정에서 Bedrock 서비스 활성화
+2. Claude 모델 접근 요청 및 승인
+3. IAM 역할/사용자에 Bedrock 권한 부여
+
+```bash
+# AWS CLI 설정 확인
+aws configure list
+
+# Bedrock 모델 접근 확인
+aws bedrock list-foundation-models \
+  --query "modelSummaries[?contains(modelId, 'claude')]" \
+  --output table
+
+# Claude Code에서 Bedrock 사용 설정
+export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_REGION=us-east-1
+export AWS_PROFILE=bedrock-user
+```
+
+<CLIExample
+  command="claude --model bedrock:anthropic.claude-sonnet-4-20250514-v1:0 '프로젝트 구조를 분석해줘'"
+  description="Amazon Bedrock을 통해 Claude Code를 실행합니다"
+/>
+
+### IAM 권한 설정
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": "arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-*"
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+프로덕션 환경에서는 IAM 역할(Role)을 사용하고, 개발 환경에서만 IAM 사용자(User)를 사용하세요. 역할 기반 접근은 임시 자격 증명을 사용하므로 더 안전합니다.
+</Callout>
+
+## Google Vertex AI 통합
+
+### 사전 준비
+
+```bash
+# GCP CLI 설정
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# Vertex AI API 활성화
+gcloud services enable aiplatform.googleapis.com
+
+# 서비스 계정 생성 및 키 발급
+gcloud iam service-accounts create claude-code-sa \
+  --display-name="Claude Code Service Account"
+
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+  --member="serviceAccount:claude-code-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+  --role="roles/aiplatform.user"
+```
+
+### Claude Code에서 Vertex AI 사용
+
+```bash
+# 환경 변수 설정
+export CLAUDE_CODE_USE_VERTEX=1
+export CLOUD_ML_REGION=us-central1
+export ANTHROPIC_VERTEX_PROJECT_ID=your-project-id
+
+# ADC(Application Default Credentials) 설정
+gcloud auth application-default login
+
+# 실행
+claude --model vertex:claude-sonnet-4-20250514 "코드 리뷰를 진행해줘"
+```
+
+<CLIExample
+  command="gcloud auth application-default print-access-token"
+  description="현재 ADC 토큰 상태를 확인합니다"
+/>
+
+<Callout type="warning">
+서비스 계정 키 파일(.json)은 반드시 안전한 위치에 보관하고 Git 저장소에 커밋하지 마세요. 가능하면 Workload Identity Federation을 사용하여 키 파일 없이 인증하세요.
+</Callout>
+
+## Microsoft Azure Foundry 연동
+
+### 사전 준비
+
+```bash
+# Azure CLI 설정
+az login
+az account set --subscription YOUR_SUBSCRIPTION_ID
+
+# Azure AI Foundry 리소스 생성
+az cognitiveservices account create \
+  --name claude-code-resource \
+  --resource-group your-resource-group \
+  --kind AIServices \
+  --sku S0 \
+  --location eastus
+```
+
+### Claude Code에서 Azure 사용
+
+```bash
+# 환경 변수 설정
+export CLAUDE_CODE_USE_AZURE=1
+export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+export AZURE_API_KEY="your-azure-api-key"
+
+# Azure AD 토큰 기반 인증 (권장)
+export AZURE_USE_MANAGED_IDENTITY=1
+
+# 실행
+claude "Azure 환경에서 프로젝트를 분석해줘"
+```
+
+<Callout type="tip">
+Azure에서는 Managed Identity를 사용하면 별도의 API 키 관리 없이 Azure 리소스 간 안전한 인증이 가능합니다. 특히 Azure VM이나 App Service에서 실행할 때 권장됩니다.
+</Callout>
+
+## 클라우드 제공자 공통 설정
+
+### 환경 변수 요약
+
+```bash
+# Amazon Bedrock
+export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=AKIA...
+export AWS_SECRET_ACCESS_KEY=...
+
+# Google Vertex AI
+export CLAUDE_CODE_USE_VERTEX=1
+export CLOUD_ML_REGION=us-central1
+export ANTHROPIC_VERTEX_PROJECT_ID=your-project
+
+# Azure Foundry
+export CLAUDE_CODE_USE_AZURE=1
+export AZURE_OPENAI_ENDPOINT=https://...
+export AZURE_API_KEY=...
+```
+
+### 멀티 클라우드 전략
+
+대규모 조직에서는 여러 클라우드 제공자를 동시에 사용하는 멀티 클라우드 전략을 채택하기도 합니다:
+
+- **주요 워크로드**: 기존 클라우드 인프라 사용 (AWS/GCP/Azure)
+- **재해 복구**: 대체 클라우드 제공자를 백업으로 구성
+- **리전별 분산**: 데이터 레지던시 요구사항에 따라 리전 선택
+
+<Collapsible title="클라우드 제공자 선택 가이드">
+
+어떤 클라우드 제공자를 선택할지 결정하는 기준:
+
+**Amazon Bedrock 선택 시:**
+- 이미 AWS 인프라를 사용 중인 경우
+- AWS 통합 결제를 선호하는 경우
+- S3, Lambda 등 AWS 서비스와 깊은 통합이 필요한 경우
+
+**Google Vertex AI 선택 시:**
+- GCP 인프라를 사용 중인 경우
+- BigQuery, Cloud Storage 등 GCP 서비스와 연동이 필요한 경우
+- Google Workspace와의 통합을 원하는 경우
+
+**Azure Foundry 선택 시:**
+- Azure 및 Microsoft 365를 사용 중인 경우
+- Active Directory 기반 인증 체계를 활용하는 경우
+- Azure DevOps 파이프라인과 통합이 필요한 경우
+
+</Collapsible>
+
+## 다음 단계
+
+클라우드 제공자 연동을 마쳤으면, 다음 레슨에서 엔터프라이즈 환경에서의 보안, 컴플라이언스, 데이터 프라이버시 관리 방법을 학습합니다.
