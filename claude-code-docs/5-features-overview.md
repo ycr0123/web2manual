@@ -10,167 +10,167 @@ fetchedDate: "2026-02-19"
 
 # Source: https://code.claude.com/docs/en/features-overview.md
 
-# Extend Claude Code
+# 기능 개요
 
-> Understand when to use CLAUDE.md, Skills, subagents, hooks, MCP, and plugins.
+> CLAUDE.md, 스킬, 서브에이전트, 훅, MCP, 플러그인을 언제 사용할지 이해합니다.
 
-Claude Code combines a model that reasons about your code with built-in tools for file operations, search, execution, and web access. The built-in tools cover most coding tasks. This guide covers the extension layer: features you add to customize what Claude knows, connect it to external services, and automate workflows.
+Claude Code는 코드를 추론하는 모델과 파일 작업, 검색, 실행, 웹 접근을 위한 내장 도구를 결합합니다. 내장 도구는 대부분의 코딩 작업을 처리합니다. 이 가이드는 확장 레이어를 다룹니다: Claude가 아는 것을 커스터마이즈하고, 외부 서비스에 연결하며, 워크플로우를 자동화하기 위해 추가하는 기능들입니다.
 
-> **Note**: For how the core agentic loop works, see [How Claude Code works](/en/how-claude-code-works).
+> **참고**: 핵심 에이전트 루프의 작동 방식은 [Claude Code의 작동 방식](/en/how-claude-code-works)을 참조하세요.
 
-**New to Claude Code?** Start with [CLAUDE.md](/en/memory) for project conventions. Add other extensions as you need them.
+**Claude Code가 처음이신가요?** 프로젝트 규칙을 위해 [CLAUDE.md](/en/memory)부터 시작하세요. 필요에 따라 다른 확장을 추가하세요.
 
-## Overview
+## 개요
 
-Extensions plug into different parts of the agentic loop:
+확장은 에이전트 루프의 다양한 부분에 연결됩니다:
 
-* **[CLAUDE.md](/en/memory)** adds persistent context Claude sees every session
-* **[Skills](/en/skills)** add reusable knowledge and invocable workflows
-* **[MCP](/en/mcp)** connects Claude to external services and tools
-* **[Subagents](/en/sub-agents)** run their own loops in isolated context, returning summaries
-* **[Agent teams](/en/agent-teams)** coordinate multiple independent sessions with shared tasks and peer-to-peer messaging
-* **[Hooks](/en/hooks)** run outside the loop entirely as deterministic scripts
-* **[Plugins](/en/plugins)** and **[marketplaces](/en/plugin-marketplaces)** package and distribute these features
+* **[CLAUDE.md](/en/memory)** - Claude가 모든 세션에서 보는 영구 컨텍스트를 추가합니다
+* **[스킬](/en/skills)** - 재사용 가능한 지식과 호출 가능한 워크플로우를 추가합니다
+* **[MCP](/en/mcp)** - Claude를 외부 서비스 및 도구에 연결합니다
+* **[서브에이전트](/en/sub-agents)** - 격리된 컨텍스트에서 자체 루프를 실행하고 요약을 반환합니다
+* **[에이전트 팀](/en/agent-teams)** - 공유 작업 및 P2P 메시징으로 여러 독립적인 세션을 조율합니다
+* **[Hooks](/en/hooks)** - 루프 외부에서 완전히 결정론적 스크립트로 실행됩니다
+* **[플러그인](/en/plugins)** 및 **[마켓플레이스](/en/plugin-marketplaces)** - 이러한 기능을 패키징하고 배포합니다
 
-[Skills](/en/skills) are the most flexible extension. A skill is a markdown file containing knowledge, workflows, or instructions. You can invoke skills with a slash command like `/deploy`, or Claude can load them automatically when relevant. Skills can run in your current conversation or in an isolated context via subagents.
+[스킬](/en/skills)은 가장 유연한 확장입니다. 스킬은 지식, 워크플로우 또는 지침이 포함된 markdown 파일입니다. `/deploy`와 같은 슬래시 명령으로 스킬을 호출하거나, Claude가 관련성이 있을 때 자동으로 로드할 수 있습니다. 스킬은 현재 대화에서 실행하거나 서브에이전트를 통해 격리된 컨텍스트에서 실행할 수 있습니다.
 
-## Match features to your goal
+## 목표에 맞는 기능 선택
 
-Features range from always-on context that Claude sees every session, to on-demand capabilities you or Claude can invoke, to background automation that runs on specific events. The table below shows what's available and when each one makes sense.
+기능은 Claude가 모든 세션에서 보는 항상 켜져 있는 컨텍스트부터, 사용자나 Claude가 호출할 수 있는 주문형 기능, 특정 이벤트에서 실행되는 백그라운드 자동화까지 다양합니다. 아래 표는 사용 가능한 것과 각 기능이 의미 있는 경우를 보여줍니다.
 
-| Feature                            | What it does                                               | When to use it                                                                  | Example                                                                          |
+| 기능 | 하는 일 | 사용 시점 | 예시 |
 | ---------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| **CLAUDE.md**                      | Persistent context loaded every conversation               | Project conventions, "always do X" rules                                        | "Use pnpm, not npm. Run tests before committing."                                |
-| **Skill**                          | Instructions, knowledge, and workflows Claude can use      | Reusable content, reference docs, repeatable tasks                              | `/review` runs your code review checklist; API docs skill with endpoint patterns |
-| **Subagent**                       | Isolated execution context that returns summarized results | Context isolation, parallel tasks, specialized workers                          | Research task that reads many files but returns only key findings                |
-| **Agent teams**                    | Coordinate multiple independent Claude Code sessions       | Parallel research, new feature development, debugging with competing hypotheses | Spawn reviewers to check security, performance, and tests simultaneously         |
-| **MCP**                            | Connect to external services                               | External data or actions                                                        | Query your database, post to Slack, control a browser                            |
-| **Hook**                           | Deterministic script that runs on events                   | Predictable automation, no LLM involved                                         | Run ESLint after every file edit                                                 |
+| **CLAUDE.md** | 모든 대화에서 로드되는 영구 컨텍스트 | 프로젝트 규칙, "항상 X를 수행" 규칙 | "npm 대신 pnpm을 사용하세요. 커밋 전에 테스트를 실행하세요." |
+| **스킬** | Claude가 사용할 수 있는 지침, 지식, 워크플로우 | 재사용 가능한 콘텐츠, 참조 문서, 반복 가능한 작업 | `/review`는 코드 리뷰 체크리스트를 실행하고, 엔드포인트 패턴이 있는 API 문서 스킬 |
+| **서브에이전트** | 요약된 결과를 반환하는 격리된 실행 컨텍스트 | 컨텍스트 격리, 병렬 작업, 특화된 작업자 | 많은 파일을 읽지만 핵심 결과만 반환하는 리서치 작업 |
+| **에이전트 팀** | 여러 독립적인 Claude Code 세션을 조율 | 병렬 리서치, 새 기능 개발, 경쟁 가설을 가진 디버깅 | 보안, 성능, 테스트를 동시에 확인하는 리뷰어 생성 |
+| **MCP** | 외부 서비스에 연결 | 외부 데이터 또는 동작 | 데이터베이스 쿼리, Slack에 게시, 브라우저 제어 |
+| **Hook** | 이벤트에서 실행되는 결정론적 스크립트 | LLM이 관여하지 않는 예측 가능한 자동화 | 모든 파일 편집 후 ESLint 실행 |
 
-**[Plugins](/en/plugins)** are the packaging layer. A plugin bundles skills, hooks, subagents, and MCP servers into a single installable unit. Plugin skills are namespaced (like `/my-plugin:review`) so multiple plugins can coexist. Use plugins when you want to reuse the same setup across multiple repositories or distribute to others via a **[marketplace](/en/plugin-marketplaces)**.
+**[플러그인](/en/plugins)**은 패키징 레이어입니다. 플러그인은 스킬, hooks, 서브에이전트, MCP 서버를 하나의 설치 가능한 단위로 번들합니다. 플러그인 스킬은 네임스페이스가 지정됩니다 (예: `/my-plugin:review`). 여러 플러그인이 공존할 수 있습니다. 동일한 설정을 여러 저장소에서 재사용하거나 **[마켓플레이스](/en/plugin-marketplaces)**를 통해 다른 사람들에게 배포하려는 경우 플러그인을 사용하세요.
 
-## Compare similar features
+## 유사한 기능 비교
 
-### Skill vs Subagent
+### 스킬 vs 서브에이전트
 
-Skills and subagents solve different problems:
+스킬과 서브에이전트는 서로 다른 문제를 해결합니다:
 
-* **Skills** are reusable content you can load into any context
-* **Subagents** are isolated workers that run separately from your main conversation
+* **스킬**은 어떤 컨텍스트에서도 로드할 수 있는 재사용 가능한 콘텐츠입니다
+* **서브에이전트**는 메인 대화와 별도로 실행되는 격리된 작업자입니다
 
-| Aspect          | Skill                                          | Subagent                                                         |
+| 측면 | 스킬 | 서브에이전트 |
 | --------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
-| **What it is**  | Reusable instructions, knowledge, or workflows | Isolated worker with its own context                             |
-| **Key benefit** | Share content across contexts                  | Context isolation. Work happens separately, only summary returns |
-| **Best for**    | Reference material, invocable workflows        | Tasks that read many files, parallel work, specialized workers   |
+| **무엇인지** | 재사용 가능한 지침, 지식 또는 워크플로우 | 자체 컨텍스트를 가진 격리된 작업자 |
+| **핵심 이점** | 컨텍스트 간 콘텐츠 공유 | 컨텍스트 격리. 작업이 별도로 이루어지고 요약만 반환됩니다 |
+| **가장 적합한** | 참조 자료, 호출 가능한 워크플로우 | 많은 파일을 읽는 작업, 병렬 작업, 특화된 작업자 |
 
-**Skills can be reference or action.** Reference skills provide knowledge Claude uses throughout your session (like your API style guide). Action skills tell Claude to do something specific (like `/deploy` that runs your deployment workflow).
+**스킬은 참조 또는 동작이 될 수 있습니다.** 참조 스킬은 Claude가 세션 내내 사용하는 지식을 제공합니다 (예: API 스타일 가이드). 동작 스킬은 Claude에게 특정 작업을 수행하도록 지시합니다 (예: 배포 워크플로우를 실행하는 `/deploy`).
 
-**Use a subagent** when you need context isolation or when your context window is getting full. The subagent might read dozens of files or run extensive searches, but your main conversation only receives a summary. Custom subagents can have their own instructions and can preload skills.
+**컨텍스트 격리가 필요하거나 컨텍스트 창이 가득 찰 때 서브에이전트를 사용**하세요. 서브에이전트는 수십 개의 파일을 읽거나 광범위한 검색을 실행할 수 있지만, 메인 대화는 요약만 받습니다. 커스텀 서브에이전트는 자체 지침을 가질 수 있고 스킬을 미리 로드할 수 있습니다.
 
-**They can combine.** A subagent can preload specific skills (`skills:` field). A skill can run in isolated context using `context: fork`. See [Skills](/en/skills) for details.
+**결합할 수도 있습니다.** 서브에이전트는 특정 스킬을 미리 로드할 수 있습니다 (`skills:` 필드). 스킬은 `context: fork`를 사용하여 격리된 컨텍스트에서 실행될 수 있습니다. 자세한 내용은 [스킬](/en/skills)을 참조하세요.
 
-### CLAUDE.md vs Skill
+### CLAUDE.md vs 스킬
 
-Both store instructions, but they load differently and serve different purposes.
+둘 다 지침을 저장하지만 로드 방식과 목적이 다릅니다.
 
-| Aspect                    | CLAUDE.md                    | Skill                                   |
+| 측면 | CLAUDE.md | 스킬 |
 | ------------------------- | ---------------------------- | --------------------------------------- |
-| **Loads**                 | Every session, automatically | On demand                               |
-| **Can include files**     | Yes, with `@path` imports    | Yes, with `@path` imports               |
-| **Can trigger workflows** | No                           | Yes, with `/<name>`                     |
-| **Best for**              | "Always do X" rules          | Reference material, invocable workflows |
+| **로드 시점** | 모든 세션, 자동으로 | 주문형 |
+| **파일 포함 가능** | 예, `@path` imports 사용 | 예, `@path` imports 사용 |
+| **워크플로우 트리거 가능** | 아니요 | 예, `/<name>`으로 |
+| **가장 적합한** | "항상 X를 수행" 규칙 | 참조 자료, 호출 가능한 워크플로우 |
 
-**Put it in CLAUDE.md** if Claude should always know it: coding conventions, build commands, project structure, "never do X" rules.
+**CLAUDE.md에 넣기**: Claude가 항상 알아야 하는 것 - 코딩 규칙, 빌드 명령, 프로젝트 구조, "절대 X를 하지 마세요" 규칙.
 
-**Put it in a skill** if it's reference material Claude needs sometimes (API docs, style guides) or a workflow you trigger with `/<name>` (deploy, review, release).
+**스킬에 넣기**: Claude가 가끔 필요로 하는 참조 자료 (API 문서, 스타일 가이드) 또는 `/<name>`으로 트리거하는 워크플로우 (배포, 리뷰, 릴리스).
 
-**Rule of thumb:** Keep CLAUDE.md under ~500 lines. If it's growing, move reference content to skills.
+**경험 법칙:** CLAUDE.md를 ~500줄 이하로 유지하세요. 점점 커진다면 참조 콘텐츠를 스킬로 이동하세요.
 
-### Subagent vs Agent team
+### 서브에이전트 vs 에이전트 팀
 
-Both parallelize work, but they're architecturally different:
+둘 다 작업을 병렬화하지만 아키텍처가 다릅니다:
 
-* **Subagents** run inside your session and report results back to your main context
-* **Agent teams** are independent Claude Code sessions that communicate with each other
+* **서브에이전트**는 세션 내에서 실행되고 메인 컨텍스트로 결과를 보고합니다
+* **에이전트 팀**은 서로 통신하는 독립적인 Claude Code 세션입니다
 
-| Aspect            | Subagent                                         | Agent team                                          |
+| 측면 | 서브에이전트 | 에이전트 팀 |
 | ----------------- | ------------------------------------------------ | --------------------------------------------------- |
-| **Context**       | Own context window; results return to the caller | Own context window; fully independent               |
-| **Communication** | Reports results back to the main agent only      | Teammates message each other directly               |
-| **Coordination**  | Main agent manages all work                      | Shared task list with self-coordination             |
-| **Best for**      | Focused tasks where only the result matters      | Complex work requiring discussion and collaboration |
-| **Token cost**    | Lower: results summarized back to main context   | Higher: each teammate is a separate Claude instance |
+| **컨텍스트** | 자체 컨텍스트 창; 결과가 호출자에게 반환 | 자체 컨텍스트 창; 완전히 독립적 |
+| **통신** | 메인 에이전트에게만 결과를 보고 | 팀원들이 서로 직접 메시지를 주고받음 |
+| **조율** | 메인 에이전트가 모든 작업을 관리 | 자체 조율이 있는 공유 작업 목록 |
+| **가장 적합한** | 결과만 중요한 집중된 작업 | 토론과 협업이 필요한 복잡한 작업 |
+| **토큰 비용** | 낮음: 결과가 메인 컨텍스트로 요약됨 | 높음: 각 팀원이 별도의 Claude 인스턴스 |
 
-**Use a subagent** when you need a quick, focused worker: research a question, verify a claim, review a file. The subagent does the work and returns a summary. Your main conversation stays clean.
+**빠르고 집중된 작업자가 필요할 때 서브에이전트를 사용**하세요: 질문 조사, 주장 검증, 파일 리뷰. 서브에이전트가 작업을 수행하고 요약을 반환합니다. 메인 대화가 깔끔하게 유지됩니다.
 
-**Use an agent team** when teammates need to share findings, challenge each other, and coordinate independently. Agent teams are best for research with competing hypotheses, parallel code review, and new feature development where each teammate owns a separate piece.
+**팀원들이 발견한 내용을 공유하고, 서로 도전하고, 독립적으로 조율해야 할 때 에이전트 팀을 사용**하세요. 에이전트 팀은 경쟁 가설이 있는 리서치, 병렬 코드 리뷰, 각 팀원이 별도의 부분을 소유하는 새 기능 개발에 가장 적합합니다.
 
-> **Note**: Agent teams are experimental and disabled by default. See [agent teams](/en/agent-teams) for setup and current limitations.
+> **참고**: 에이전트 팀은 실험적이며 기본적으로 비활성화되어 있습니다. 설정 및 현재 제한 사항은 [에이전트 팀](/en/agent-teams)을 참조하세요.
 
-### MCP vs Skill
+### MCP vs 스킬
 
-MCP connects Claude to external services. Skills extend what Claude knows, including how to use those services effectively.
+MCP는 Claude를 외부 서비스에 연결합니다. 스킬은 이러한 서비스를 효과적으로 사용하는 방법을 포함하여 Claude가 아는 것을 확장합니다.
 
-| Aspect         | MCP                                                  | Skill                                                   |
+| 측면 | MCP | 스킬 |
 | -------------- | ---------------------------------------------------- | ------------------------------------------------------- |
-| **What it is** | Protocol for connecting to external services         | Knowledge, workflows, and reference material            |
-| **Provides**   | Tools and data access                                | Knowledge, workflows, reference material                |
-| **Examples**   | Slack integration, database queries, browser control | Code review checklist, deploy workflow, API style guide |
+| **무엇인지** | 외부 서비스에 연결하기 위한 프로토콜 | 지식, 워크플로우, 참조 자료 |
+| **제공하는 것** | 도구 및 데이터 접근 | 지식, 워크플로우, 참조 자료 |
+| **예시** | Slack 통합, 데이터베이스 쿼리, 브라우저 제어 | 코드 리뷰 체크리스트, 배포 워크플로우, API 스타일 가이드 |
 
-These solve different problems and work well together:
+이들은 서로 다른 문제를 해결하며 함께 잘 작동합니다:
 
-**MCP** gives Claude the ability to interact with external systems. Without MCP, Claude can't query your database or post to Slack.
+**MCP**는 Claude가 외부 시스템과 상호 작용하는 능력을 제공합니다. MCP 없이는 Claude가 데이터베이스를 쿼리하거나 Slack에 게시할 수 없습니다.
 
-**Skills** give Claude knowledge about how to use those tools effectively, plus workflows you can trigger with `/<name>`. A skill might include your team's database schema and query patterns, or a `/post-to-slack` workflow with your team's message formatting rules.
+**스킬**은 이러한 도구를 효과적으로 사용하는 방법에 대한 지식을 Claude에게 제공합니다. 스킬에는 팀의 데이터베이스 스키마와 쿼리 패턴이 포함되거나, 팀의 메시지 형식 규칙이 있는 `/post-to-slack` 워크플로우가 포함될 수 있습니다.
 
-## Understand how features layer
+## 기능이 계층화되는 방식 이해
 
-Features can be defined at multiple levels: user-wide, per-project, via plugins, or through managed policies. You can also nest CLAUDE.md files in subdirectories or place skills in specific packages of a monorepo. When the same feature exists at multiple levels, here's how they layer:
+기능은 사용자 전체, 프로젝트별, 플러그인을 통해, 또는 관리 정책을 통해 여러 수준에서 정의될 수 있습니다. 또한 CLAUDE.md 파일을 하위 디렉토리에 중첩하거나 모노레포의 특정 패키지에 스킬을 배치할 수 있습니다. 동일한 기능이 여러 수준에 있는 경우 계층화 방식은 다음과 같습니다:
 
-* **CLAUDE.md files** are additive: all levels contribute content to Claude's context simultaneously.
-* **Skills and subagents** override by name: when the same name exists at multiple levels, one definition wins based on priority (managed > user > project for skills; managed > CLI flag > project > user > plugin for subagents).
-* **MCP servers** override by name: local > project > user.
-* **Hooks** merge: all registered hooks fire for their matching events regardless of source.
+* **CLAUDE.md 파일**은 가산적: 모든 수준이 Claude의 컨텍스트에 동시에 콘텐츠를 기여합니다.
+* **스킬 및 서브에이전트**는 이름으로 재정의됩니다: 동일한 이름이 여러 수준에 있을 때 우선순위에 따라 하나의 정의가 승리합니다 (스킬의 경우 managed > user > project; 서브에이전트의 경우 managed > CLI 플래그 > project > user > plugin).
+* **MCP 서버**는 이름으로 재정의됩니다: local > project > user.
+* **Hooks**는 병합됩니다: 등록된 모든 hooks가 소스에 관계없이 일치하는 이벤트에 대해 발동합니다.
 
-## Combine features
+## 기능 결합
 
-Each extension solves a different problem. Real setups combine them based on your workflow.
+각 확장은 서로 다른 문제를 해결합니다. 실제 설정은 워크플로우에 따라 이들을 결합합니다.
 
-| Pattern                | How it works                                                                     | Example                                                                                            |
+| 패턴 | 작동 방식 | 예시 |
 | ---------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Skill + MCP**        | MCP provides the connection; a skill teaches Claude how to use it well           | MCP connects to your database, a skill documents your schema and query patterns                    |
-| **Skill + Subagent**   | A skill spawns subagents for parallel work                                       | `/review` skill kicks off security, performance, and style subagents that work in isolated context |
-| **CLAUDE.md + Skills** | CLAUDE.md holds always-on rules; skills hold reference material loaded on demand | CLAUDE.md says "follow our API conventions," a skill contains the full API style guide             |
-| **Hook + MCP**         | A hook triggers external actions through MCP                                     | Post-edit hook sends a Slack notification when Claude modifies critical files                      |
+| **스킬 + MCP** | MCP가 연결을 제공하고 스킬이 효과적으로 사용하는 방법을 Claude에게 가르칩니다 | MCP가 데이터베이스에 연결하고 스킬이 스키마와 쿼리 패턴을 문서화합니다 |
+| **스킬 + 서브에이전트** | 스킬이 병렬 작업을 위한 서브에이전트를 생성합니다 | `/review` 스킬이 격리된 컨텍스트에서 작동하는 보안, 성능, 스타일 서브에이전트를 시작합니다 |
+| **CLAUDE.md + 스킬** | CLAUDE.md가 항상 켜져 있는 규칙을 보유하고 스킬이 주문형으로 로드되는 참조 자료를 보유합니다 | CLAUDE.md는 "API 규칙을 따르세요"라고 하고 스킬은 전체 API 스타일 가이드를 포함합니다 |
+| **Hook + MCP** | Hook이 MCP를 통해 외부 동작을 트리거합니다 | 게시 후 Hook이 Claude가 중요한 파일을 수정할 때 Slack 알림을 보냅니다 |
 
-## Understand context costs
+## 컨텍스트 비용 이해
 
-Every feature you add consumes some of Claude's context. Understanding these trade-offs helps you build an effective setup.
+추가하는 모든 기능은 Claude의 컨텍스트 일부를 소비합니다. 이러한 트레이드오프를 이해하면 효과적인 설정을 구축하는 데 도움이 됩니다.
 
-### Context cost by feature
+### 기능별 컨텍스트 비용
 
-| Feature         | When it loads             | What loads                                    | Context cost                                 |
+| 기능 | 로드 시점 | 로드되는 내용 | 컨텍스트 비용 |
 | --------------- | ------------------------- | --------------------------------------------- | -------------------------------------------- |
-| **CLAUDE.md**   | Session start             | Full content                                  | Every request                                |
-| **Skills**      | Session start + when used | Descriptions at start, full content when used | Low (descriptions every request)*            |
-| **MCP servers** | Session start             | All tool definitions and schemas              | Every request                                |
-| **Subagents**   | When spawned              | Fresh context with specified skills           | Isolated from main session                   |
-| **Hooks**       | On trigger                | Nothing (runs externally)                     | Zero, unless hook returns additional context |
+| **CLAUDE.md** | 세션 시작 | 전체 내용 | 모든 요청 |
+| **스킬** | 세션 시작 + 사용 시 | 시작 시 설명, 호출 시 전체 내용 | 낮음 (모든 요청에서 설명)* |
+| **MCP 서버** | 세션 시작 | 모든 도구 정의 및 스키마 | 모든 요청 |
+| **서브에이전트** | 생성 시 | 지정된 스킬이 있는 새로운 컨텍스트 | 메인 세션과 격리됨 |
+| **Hooks** | 트리거 시 | 없음 (외부에서 실행) | 0 (hook이 추가 컨텍스트를 반환하지 않는 한) |
 
-*By default, skill descriptions load at session start so Claude can decide when to use them. Set `disable-model-invocation: true` in a skill's frontmatter to hide it from Claude entirely until you invoke it manually.
+*기본적으로 Claude가 언제 사용할지 결정할 수 있도록 스킬 설명이 세션 시작 시 로드됩니다. 스킬의 frontmatter에 `disable-model-invocation: true`를 설정하면 수동으로 호출할 때까지 Claude에게 완전히 숨길 수 있습니다.
 
-**Put it in CLAUDE.md** if Claude should always know it. **Keep CLAUDE.md under ~500 lines.** Move reference material to skills.
+**CLAUDE.md에 넣기**: Claude가 항상 알아야 하는 경우. **CLAUDE.md를 ~500줄 이하로 유지**하세요. 참조 자료는 스킬로 이동하세요.
 
-## Learn more
+## 더 알아보기
 
-Each feature has its own guide with setup instructions, examples, and configuration options.
+각 기능에는 설정 지침, 예시, 구성 옵션이 있는 자체 가이드가 있습니다.
 
-- **[CLAUDE.md](/en/memory)**: Store project context, conventions, and instructions
-- **[Skills](/en/skills)**: Give Claude domain expertise and reusable workflows
-- **[Subagents](/en/sub-agents)**: Offload work to isolated context
-- **[Agent teams](/en/agent-teams)**: Coordinate multiple sessions working in parallel
-- **[MCP](/en/mcp)**: Connect Claude to external services
-- **[Hooks](/en/hooks-guide)**: Automate workflows with hooks
-- **[Plugins](/en/plugins)**: Bundle and share feature sets
-- **[Marketplaces](/en/plugin-marketplaces)**: Host and distribute plugin collections
+- **[CLAUDE.md](/en/memory)**: 프로젝트 컨텍스트, 규칙, 지침 저장
+- **[스킬](/en/skills)**: Claude에게 도메인 전문 지식 및 재사용 가능한 워크플로우 제공
+- **[서브에이전트](/en/sub-agents)**: 격리된 컨텍스트로 작업 오프로드
+- **[에이전트 팀](/en/agent-teams)**: 병렬로 작업하는 여러 세션 조율
+- **[MCP](/en/mcp)**: Claude를 외부 서비스에 연결
+- **[Hooks](/en/hooks-guide)**: hooks로 워크플로우 자동화
+- **[플러그인](/en/plugins)**: 기능 세트 번들 및 공유
+- **[마켓플레이스](/en/plugin-marketplaces)**: 플러그인 컬렉션 호스팅 및 배포

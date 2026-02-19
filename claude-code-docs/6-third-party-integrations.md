@@ -10,173 +10,173 @@ fetchedDate: "2026-02-19"
 
 # Source: https://code.claude.com/docs/en/third-party-integrations.md
 
-# Enterprise deployment overview
+# 서드파티 통합
 
-> Learn how Claude Code can integrate with various third-party services and infrastructure to meet enterprise deployment requirements.
+> 엔터프라이즈 배포 요구사항을 충족하기 위해 Claude Code를 다양한 서드파티 서비스 및 인프라와 통합하는 방법을 알아봅니다.
 
-Organizations can deploy Claude Code through Anthropic directly or through a cloud provider. This page helps you choose the right configuration.
+조직은 Anthropic을 직접 통해 또는 클라우드 제공업체를 통해 Claude Code를 배포할 수 있습니다. 이 페이지는 올바른 구성을 선택하는 데 도움을 드립니다.
 
-## Compare deployment options
+## 배포 옵션 비교
 
-For most organizations, Claude for Teams or Claude for Enterprise provides the best experience. Team members get access to both Claude Code and Claude on the web with a single subscription, centralized billing, and no infrastructure setup required.
+대부분의 조직에게는 Claude for Teams 또는 Claude for Enterprise가 최상의 경험을 제공합니다. 팀원들은 단일 구독으로 Claude Code와 웹의 Claude 모두에 접근하고, 중앙화된 청구와 별도의 인프라 설정이 필요하지 않습니다.
 
-**Claude for Teams** is self-service and includes collaboration features, admin tools, and billing management. Best for smaller teams that need to get started quickly.
+**Claude for Teams**는 셀프 서비스이며 협업 기능, 관리자 도구, 청구 관리가 포함됩니다. 빠르게 시작해야 하는 소규모 팀에 적합합니다.
 
-**Claude for Enterprise** adds SSO and domain capture, role-based permissions, compliance API access, and managed policy settings for deploying organization-wide Claude Code configurations. Best for larger organizations with security and compliance requirements.
+**Claude for Enterprise**는 SSO 및 도메인 캡처, 역할 기반 권한, 규정 준수 API 접근, 조직 전체 Claude Code 구성을 배포하기 위한 관리형 정책 설정을 추가합니다. 보안 및 규정 준수 요구 사항이 있는 대규모 조직에 적합합니다.
 
-Learn more about [Team plans](https://support.claude.com/en/articles/9266767-what-is-the-team-plan) and [Enterprise plans](https://support.claude.com/en/articles/9797531-what-is-the-enterprise-plan).
+[팀 플랜](https://support.claude.com/en/articles/9266767-what-is-the-team-plan)과 [엔터프라이즈 플랜](https://support.claude.com/en/articles/9797531-what-is-the-enterprise-plan)에 대해 자세히 알아보세요.
 
-If your organization has specific infrastructure requirements, compare the options below:
+조직에 특정 인프라 요구 사항이 있다면 아래 옵션을 비교하세요:
 
-| Feature | Claude for Teams/Enterprise | Anthropic Console | Amazon Bedrock | Google Vertex AI | Microsoft Foundry |
+| 기능 | Claude for Teams/Enterprise | Anthropic Console | Amazon Bedrock | Google Vertex AI | Microsoft Foundry |
 |---------|----------------------------|-------------------|----------------|-----------------|-------------------|
-| Best for | Most organizations (recommended) | Individual developers | AWS-native deployments | GCP-native deployments | Azure-native deployments |
-| Billing | **Teams:** $150/seat (Premium) with PAYG available **Enterprise:** Contact Sales | PAYG | PAYG through AWS | PAYG through GCP | PAYG through Azure |
-| Regions | Supported countries | Supported countries | Multiple AWS regions | Multiple GCP regions | Multiple Azure regions |
-| Prompt caching | Enabled by default | Enabled by default | Enabled by default | Enabled by default | Enabled by default |
-| Authentication | Claude.ai SSO or email | API key | API key or AWS credentials | GCP credentials | API key or Microsoft Entra ID |
-| Cost tracking | Usage dashboard | Usage dashboard | AWS Cost Explorer | GCP Billing | Azure Cost Management |
-| Includes Claude on web | Yes | No | No | No | No |
-| Enterprise features | Team management, SSO, usage monitoring | None | IAM policies, CloudTrail | IAM roles, Cloud Audit Logs | RBAC policies, Azure Monitor |
+| 최적 용도 | 대부분의 조직 (권장) | 개인 개발자 | AWS 네이티브 배포 | GCP 네이티브 배포 | Azure 네이티브 배포 |
+| 청구 | **Teams:** PAYG 제공, 좌석당 $150 (Premium) **Enterprise:** 영업팀 문의 | PAYG | AWS를 통한 PAYG | GCP를 통한 PAYG | Azure를 통한 PAYG |
+| 지역 | 지원 국가 | 지원 국가 | 다수의 AWS 리전 | 다수의 GCP 리전 | 다수의 Azure 리전 |
+| 프롬프트 캐싱 | 기본으로 활성화 | 기본으로 활성화 | 기본으로 활성화 | 기본으로 활성화 | 기본으로 활성화 |
+| 인증 | Claude.ai SSO 또는 이메일 | API 키 | API 키 또는 AWS 자격 증명 | GCP 자격 증명 | API 키 또는 Microsoft Entra ID |
+| 비용 추적 | 사용량 대시보드 | 사용량 대시보드 | AWS Cost Explorer | GCP Billing | Azure Cost Management |
+| 웹의 Claude 포함 | 예 | 아니오 | 아니오 | 아니오 | 아니오 |
+| 엔터프라이즈 기능 | 팀 관리, SSO, 사용량 모니터링 | 없음 | IAM 정책, CloudTrail | IAM 역할, Cloud Audit Logs | RBAC 정책, Azure Monitor |
 
-Select a deployment option to view setup instructions:
+배포 옵션을 선택하여 설정 지침을 확인하세요:
 
-* [Claude for Teams or Enterprise](/en/authentication#claude-for-teams-or-enterprise)
+* [Claude for Teams 또는 Enterprise](/en/authentication#claude-for-teams-or-enterprise)
 * [Anthropic Console](/en/authentication#claude-console-authentication)
 * [Amazon Bedrock](/en/amazon-bedrock)
 * [Google Vertex AI](/en/google-vertex-ai)
 * [Microsoft Foundry](/en/microsoft-foundry)
 
-## Configure proxies and gateways
+## 프록시 및 게이트웨이 구성
 
-Most organizations can use a cloud provider directly without additional configuration. However, you may need to configure a corporate proxy or LLM gateway if your organization has specific network or management requirements. These are different configurations that can be used together:
+대부분의 조직은 추가 구성 없이 클라우드 제공업체를 직접 사용할 수 있습니다. 그러나 조직에 특정 네트워크 또는 관리 요구 사항이 있는 경우 기업 프록시 또는 LLM 게이트웨이를 구성해야 할 수 있습니다. 이 두 가지는 함께 사용할 수 있는 서로 다른 구성입니다:
 
-* **Corporate proxy**: Routes traffic through an HTTP/HTTPS proxy. Use this if your organization requires all outbound traffic to pass through a proxy server for security monitoring, compliance, or network policy enforcement. Configure with the `HTTPS_PROXY` or `HTTP_PROXY` environment variables. Learn more in [Enterprise network configuration](/en/network-config).
-* **LLM Gateway**: A service that sits between Claude Code and the cloud provider to handle authentication and routing. Use this if you need centralized usage tracking across teams, custom rate limiting or budgets, or centralized authentication management. Configure with the `ANTHROPIC_BASE_URL`, `ANTHROPIC_BEDROCK_BASE_URL`, or `ANTHROPIC_VERTEX_BASE_URL` environment variables. Learn more in [LLM gateway configuration](/en/llm-gateway).
+* **기업 프록시**: 트래픽을 HTTP/HTTPS 프록시를 통해 라우팅합니다. 조직에서 보안 모니터링, 규정 준수, 또는 네트워크 정책 적용을 위해 모든 발신 트래픽이 프록시 서버를 통과하도록 요구하는 경우 사용하세요. `HTTPS_PROXY` 또는 `HTTP_PROXY` 환경 변수로 구성합니다. 자세한 내용은 [엔터프라이즈 네트워크 구성](/en/network-config)을 참조하세요.
+* **LLM 게이트웨이**: Claude Code와 클라우드 제공업체 사이에서 인증 및 라우팅을 처리하는 서비스입니다. 팀 간 중앙화된 사용량 추적, 커스텀 속도 제한 또는 예산, 중앙화된 인증 관리가 필요한 경우 사용하세요. `ANTHROPIC_BASE_URL`, `ANTHROPIC_BEDROCK_BASE_URL`, 또는 `ANTHROPIC_VERTEX_BASE_URL` 환경 변수로 구성합니다. 자세한 내용은 [LLM 게이트웨이 구성](/en/llm-gateway)을 참조하세요.
 
-The following examples show the environment variables to set in your shell or shell profile (`.bashrc`, `.zshrc`). See [Settings](/en/settings) for other configuration methods.
+다음 예시는 셸 또는 셸 프로필(`.bashrc`, `.zshrc`)에서 설정할 환경 변수를 보여줍니다. 다른 구성 방법은 [설정](/en/settings)을 참조하세요.
 
 ### Amazon Bedrock
 
-#### Corporate proxy
+#### 기업 프록시
 
-Route Bedrock traffic through your corporate proxy by setting the following environment variables:
+다음 환경 변수를 설정하여 Bedrock 트래픽을 기업 프록시를 통해 라우팅하세요:
 
 ```bash
-# Enable Bedrock
+# Bedrock 활성화
 export CLAUDE_CODE_USE_BEDROCK=1
 export AWS_REGION=us-east-1
 
-# Configure corporate proxy
+# 기업 프록시 구성
 export HTTPS_PROXY='https://proxy.example.com:8080'
 ```
 
-#### LLM Gateway
+#### LLM 게이트웨이
 
-Route Bedrock traffic through your LLM gateway by setting the following environment variables:
+다음 환경 변수를 설정하여 Bedrock 트래픽을 LLM 게이트웨이를 통해 라우팅하세요:
 
 ```bash
-# Enable Bedrock
+# Bedrock 활성화
 export CLAUDE_CODE_USE_BEDROCK=1
 
-# Configure LLM gateway
+# LLM 게이트웨이 구성
 export ANTHROPIC_BEDROCK_BASE_URL='https://your-llm-gateway.com/bedrock'
-export CLAUDE_CODE_SKIP_BEDROCK_AUTH=1  # If gateway handles AWS auth
+export CLAUDE_CODE_SKIP_BEDROCK_AUTH=1  # 게이트웨이가 AWS 인증을 처리하는 경우
 ```
 
 ### Microsoft Foundry
 
-#### Corporate proxy
+#### 기업 프록시
 
-Route Foundry traffic through your corporate proxy by setting the following environment variables:
+다음 환경 변수를 설정하여 Foundry 트래픽을 기업 프록시를 통해 라우팅하세요:
 
 ```bash
-# Enable Microsoft Foundry
+# Microsoft Foundry 활성화
 export CLAUDE_CODE_USE_FOUNDRY=1
 export ANTHROPIC_FOUNDRY_RESOURCE=your-resource
-export ANTHROPIC_FOUNDRY_API_KEY=your-api-key  # Or omit for Entra ID auth
+export ANTHROPIC_FOUNDRY_API_KEY=your-api-key  # Entra ID 인증 사용 시 생략
 
-# Configure corporate proxy
+# 기업 프록시 구성
 export HTTPS_PROXY='https://proxy.example.com:8080'
 ```
 
-#### LLM Gateway
+#### LLM 게이트웨이
 
-Route Foundry traffic through your LLM gateway by setting the following environment variables:
+다음 환경 변수를 설정하여 Foundry 트래픽을 LLM 게이트웨이를 통해 라우팅하세요:
 
 ```bash
-# Enable Microsoft Foundry
+# Microsoft Foundry 활성화
 export CLAUDE_CODE_USE_FOUNDRY=1
 
-# Configure LLM gateway
+# LLM 게이트웨이 구성
 export ANTHROPIC_FOUNDRY_BASE_URL='https://your-llm-gateway.com'
-export CLAUDE_CODE_SKIP_FOUNDRY_AUTH=1  # If gateway handles Azure auth
+export CLAUDE_CODE_SKIP_FOUNDRY_AUTH=1  # 게이트웨이가 Azure 인증을 처리하는 경우
 ```
 
 ### Google Vertex AI
 
-#### Corporate proxy
+#### 기업 프록시
 
-Route Vertex AI traffic through your corporate proxy by setting the following environment variables:
+다음 환경 변수를 설정하여 Vertex AI 트래픽을 기업 프록시를 통해 라우팅하세요:
 
 ```bash
-# Enable Vertex
+# Vertex 활성화
 export CLAUDE_CODE_USE_VERTEX=1
 export CLOUD_ML_REGION=us-east5
 export ANTHROPIC_VERTEX_PROJECT_ID=your-project-id
 
-# Configure corporate proxy
+# 기업 프록시 구성
 export HTTPS_PROXY='https://proxy.example.com:8080'
 ```
 
-#### LLM Gateway
+#### LLM 게이트웨이
 
-Route Vertex AI traffic through your LLM gateway by setting the following environment variables:
+다음 환경 변수를 설정하여 Vertex AI 트래픽을 LLM 게이트웨이를 통해 라우팅하세요:
 
 ```bash
-# Enable Vertex
+# Vertex 활성화
 export CLAUDE_CODE_USE_VERTEX=1
 
-# Configure LLM gateway
+# LLM 게이트웨이 구성
 export ANTHROPIC_VERTEX_BASE_URL='https://your-llm-gateway.com/vertex'
-export CLAUDE_CODE_SKIP_VERTEX_AUTH=1  # If gateway handles GCP auth
+export CLAUDE_CODE_SKIP_VERTEX_AUTH=1  # 게이트웨이가 GCP 인증을 처리하는 경우
 ```
 
-> Use `/status` in Claude Code to verify your proxy and gateway configuration is applied correctly.
+> Claude Code에서 `/status`를 사용하여 프록시 및 게이트웨이 구성이 올바르게 적용되었는지 확인하세요.
 
-## Best practices for organizations
+## 조직을 위한 모범 사례
 
-### Invest in documentation and memory
+### 문서 및 메모리에 투자
 
-We strongly recommend investing in documentation so that Claude Code understands your codebase. Organizations can deploy CLAUDE.md files at multiple levels:
+Claude Code가 코드베이스를 이해할 수 있도록 문서에 투자할 것을 강력히 권장합니다. 조직은 여러 수준에서 CLAUDE.md 파일을 배포할 수 있습니다:
 
-* **Organization-wide**: Deploy to system directories like `/Library/Application Support/ClaudeCode/CLAUDE.md` (macOS) for company-wide standards
-* **Repository-level**: Create `CLAUDE.md` files in repository roots containing project architecture, build commands, and contribution guidelines. Check these into source control so all users benefit
+* **조직 전체**: 회사 전체 표준을 위해 `/Library/Application Support/ClaudeCode/CLAUDE.md` (macOS)와 같은 시스템 디렉터리에 배포
+* **저장소 수준**: 프로젝트 아키텍처, 빌드 명령어, 기여 가이드라인이 포함된 `CLAUDE.md` 파일을 저장소 루트에 만드세요. 모든 사용자가 혜택을 받을 수 있도록 소스 컨트롤에 체크인하세요
 
-Learn more in [Memory and CLAUDE.md files](/en/memory).
+자세한 내용은 [메모리 및 CLAUDE.md 파일](/en/memory)을 참조하세요.
 
-### Simplify deployment
+### 배포 간소화
 
-If you have a custom development environment, we find that creating a "one click" way to install Claude Code is key to growing adoption across an organization.
+커스텀 개발 환경이 있는 경우, Claude Code를 "원클릭"으로 설치하는 방법을 만드는 것이 조직 전체의 도입을 늘리는 핵심입니다.
 
-### Start with guided usage
+### 안내형 사용으로 시작
 
-Encourage new users to try Claude Code for codebase Q&A, or on smaller bug fixes or feature requests. Ask Claude Code to make a plan. Check Claude's suggestions and give feedback if it's off-track. Over time, as users understand this new paradigm better, then they'll be more effective at letting Claude Code run more agentically.
+새 사용자에게 코드베이스 Q&A나 소규모 버그 수정 또는 기능 요청에 Claude Code를 시도해 보도록 권장하세요. Claude Code에게 계획을 세우도록 요청하세요. Claude의 제안을 확인하고 방향이 맞지 않으면 피드백을 제공하세요. 시간이 지남에 따라 사용자들이 이 새로운 패러다임을 더 잘 이해하게 되면 Claude Code가 더 에이전틱하게 실행되도록 더 효과적으로 활용할 수 있습니다.
 
-### Configure security policies
+### 보안 정책 구성
 
-Security teams can configure managed permissions for what Claude Code is and is not allowed to do, which cannot be overwritten by local configuration. [Learn more](/en/security).
+보안 팀은 Claude Code가 허용되거나 허용되지 않는 작업에 대한 관리형 권한을 구성할 수 있으며, 이는 로컬 구성으로 덮어쓸 수 없습니다. [자세히 알아보기](/en/security).
 
-### Leverage MCP for integrations
+### 통합을 위한 MCP 활용
 
-MCP is a great way to give Claude Code more information, such as connecting to ticket management systems or error logs. We recommend that one central team configures MCP servers and checks a `.mcp.json` configuration into the codebase so that all users benefit. [Learn more](/en/mcp).
+MCP는 티켓 관리 시스템이나 오류 로그 연결과 같이 Claude Code에 더 많은 정보를 제공하는 좋은 방법입니다. 중앙 팀이 MCP 서버를 구성하고 `.mcp.json` 구성을 코드베이스에 체크인하여 모든 사용자가 혜택을 받을 수 있도록 권장합니다. [자세히 알아보기](/en/mcp).
 
-At Anthropic, we trust Claude Code to power development across every Anthropic codebase. We hope you enjoy using Claude Code as much as we do.
+Anthropic에서는 모든 Anthropic 코드베이스 전반의 개발을 위해 Claude Code를 신뢰합니다. Claude Code를 저희만큼 즐겨 사용하시길 바랍니다.
 
-## Next steps
+## 다음 단계
 
-Once you've chosen a deployment option and configured access for your team:
+배포 옵션을 선택하고 팀의 접근을 구성한 후:
 
-1. **Roll out to your team**: Share installation instructions and have team members [install Claude Code](/en/setup) and authenticate with their credentials.
-2. **Set up shared configuration**: Create a [CLAUDE.md file](/en/memory) in your repositories to help Claude Code understand your codebase and coding standards.
-3. **Configure permissions**: Review [security settings](/en/security) to define what Claude Code can and cannot do in your environment.
+1. **팀에 롤아웃**: 팀원들과 설치 지침을 공유하고 [Claude Code를 설치](/en/setup)하여 자격 증명으로 인증하게 하세요.
+2. **공유 구성 설정**: 저장소에 [CLAUDE.md 파일](/en/memory)을 만들어 Claude Code가 코드베이스와 코딩 표준을 이해하도록 도우세요.
+3. **권한 구성**: Claude Code가 환경에서 할 수 있는 것과 없는 것을 정의하기 위해 [보안 설정](/en/security)을 검토하세요.

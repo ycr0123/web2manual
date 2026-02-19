@@ -8,23 +8,21 @@ sourceUrl: "https://code.claude.com/docs/en/overview.md"
 fetchedDate: "2026-02-19"
 ---
 
-# Source: https://code.claude.com/docs/en/overview.md
+# Claude Code 개요
 
-# Claude Code overview
+> Claude Code는 코드베이스를 읽고, 파일을 편집하며, 명령을 실행하고, 개발 도구와 통합되는 에이전트형 코딩 도구입니다. 터미널, IDE, 데스크탑 앱, 브라우저에서 사용할 수 있습니다.
 
-> Claude Code is an agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools. Available in your terminal, IDE, desktop app, and browser.
+Claude Code는 AI 기반 코딩 어시스턴트로, 기능 개발, 버그 수정, 개발 작업 자동화를 도와줍니다. 코드베이스 전체를 이해하고 여러 파일과 도구에 걸쳐 작업을 수행합니다.
 
-Claude Code is an AI-powered coding assistant that helps you build features, fix bugs, and automate development tasks. It understands your entire codebase and can work across multiple files and tools to get things done.
+## 시작하기
 
-## Get started
+사용할 환경을 선택하여 시작합니다. 대부분의 환경에는 [Claude 구독](https://claude.com/pricing) 또는 [Anthropic Console](https://console.anthropic.com/) 계정이 필요합니다. 터미널 CLI와 VS Code는 서드파티 제공자도 지원합니다.
 
-Choose your environment to get started. Most surfaces require a [Claude subscription](https://claude.com/pricing) or [Anthropic Console](https://console.anthropic.com/) account. The Terminal CLI and VS Code also support third-party providers.
+### 터미널
 
-### Terminal
+터미널에서 Claude Code를 직접 사용할 수 있는 완전한 기능의 CLI입니다. 파일을 편집하고, 명령을 실행하며, 커맨드라인에서 전체 프로젝트를 관리합니다.
 
-The full-featured CLI for working with Claude Code directly in your terminal. Edit files, run commands, and manage your entire project from the command line.
-
-**Native Install (Recommended)**
+**네이티브 설치 (권장)**
 
 macOS, Linux, WSL:
 
@@ -44,7 +42,7 @@ Windows CMD:
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
 
-Native installations automatically update in the background to keep you on the latest version.
+네이티브 설치는 최신 버전을 유지하기 위해 백그라운드에서 자동으로 업데이트됩니다.
 
 **Homebrew**
 
@@ -52,7 +50,7 @@ Native installations automatically update in the background to keep you on the l
 brew install --cask claude-code
 ```
 
-Homebrew installations do not auto-update. Run `brew upgrade claude-code` periodically to get the latest features and security fixes.
+Homebrew 설치는 자동 업데이트되지 않습니다. 최신 기능과 보안 수정을 받으려면 주기적으로 `brew upgrade claude-code`를 실행하세요.
 
 **WinGet**
 
@@ -60,137 +58,137 @@ Homebrew installations do not auto-update. Run `brew upgrade claude-code` period
 winget install Anthropic.ClaudeCode
 ```
 
-WinGet installations do not auto-update. Run `winget upgrade Anthropic.ClaudeCode` periodically to get the latest features and security fixes.
+WinGet 설치는 자동 업데이트되지 않습니다. 최신 기능과 보안 수정을 받으려면 주기적으로 `winget upgrade Anthropic.ClaudeCode`를 실행하세요.
 
-Then start Claude Code in any project:
+그런 다음 프로젝트에서 Claude Code를 시작하세요:
 
 ```bash
 cd your-project
 claude
 ```
 
-You'll be prompted to log in on first use.
+첫 사용 시 로그인하라는 안내가 표시됩니다.
 
 ### VS Code
 
-The VS Code extension provides inline diffs, @-mentions, plan review, and conversation history directly in your editor.
+VS Code 확장 프로그램은 인라인 diff, @-멘션, 계획 검토, 대화 기록을 에디터에서 직접 제공합니다.
 
-- Install for VS Code
-- Install for Cursor
+- VS Code에 설치
+- Cursor에 설치
 
-Or search for "Claude Code" in the Extensions view (`Cmd+Shift+X` on Mac, `Ctrl+Shift+X` on Windows/Linux). After installing, open the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`), type "Claude Code", and select **Open in New Tab**.
+또는 확장 프로그램 보기(`Mac: Cmd+Shift+X`, Windows/Linux: `Ctrl+Shift+X`)에서 "Claude Code"를 검색하세요. 설치 후 명령 팔레트(`Cmd+Shift+P` / `Ctrl+Shift+P`)를 열고 "Claude Code"를 입력한 다음 **새 탭에서 열기**를 선택하세요.
 
-### Desktop app
+### 데스크탑 앱
 
-A standalone app for running Claude Code outside your IDE or terminal. Review diffs visually, run multiple sessions side by side, and kick off cloud sessions.
+IDE나 터미널 외부에서 Claude Code를 실행할 수 있는 독립형 앱입니다. 시각적으로 diff를 검토하고, 여러 세션을 나란히 실행하며, 클라우드 세션을 시작할 수 있습니다.
 
-Download and install:
+다운로드 및 설치:
 
-- macOS (Intel and Apple Silicon)
+- macOS (Intel 및 Apple Silicon)
 - Windows (x64)
-- Windows ARM64 (remote sessions only)
+- Windows ARM64 (원격 세션만 지원)
 
-After installing, launch Claude, sign in, and click the **Code** tab to start coding. A paid subscription is required.
+설치 후 Claude를 실행하고, 로그인한 다음 **Code** 탭을 클릭하여 코딩을 시작하세요. 유료 구독이 필요합니다.
 
-### Web
+### 웹
 
-Run Claude Code in your browser with no local setup. Kick off long-running tasks and check back when they're done, work on repos you don't have locally, or run multiple tasks in parallel. Available on desktop browsers and the Claude iOS app.
+로컬 설정 없이 브라우저에서 Claude Code를 실행합니다. 오래 걸리는 작업을 시작하고 완료 후 확인하거나, 로컬에 없는 저장소에서 작업하거나, 여러 작업을 병렬로 실행할 수 있습니다. 데스크탑 브라우저와 Claude iOS 앱에서 사용 가능합니다.
 
-Start coding at [claude.ai/code](https://claude.ai/code).
+[claude.ai/code](https://claude.ai/code)에서 코딩을 시작하세요.
 
 ### JetBrains
 
-A plugin for IntelliJ IDEA, PyCharm, WebStorm, and other JetBrains IDEs with interactive diff viewing and selection context sharing.
+IntelliJ IDEA, PyCharm, WebStorm 및 기타 JetBrains IDE용 플러그인으로 인터랙티브 diff 보기와 선택 컨텍스트 공유를 제공합니다.
 
-Install the Claude Code plugin from the JetBrains Marketplace and restart your IDE.
+JetBrains Marketplace에서 Claude Code 플러그인을 설치하고 IDE를 재시작하세요.
 
-## What you can do
+## 할 수 있는 것들
 
-Here are some of the ways you can use Claude Code:
+Claude Code로 할 수 있는 몇 가지 방법입니다:
 
-### Automate the work you keep putting off
+### 미뤄두던 작업 자동화
 
-Claude Code handles the tedious tasks that eat up your day: writing tests for untested code, fixing lint errors across a project, resolving merge conflicts, updating dependencies, and writing release notes.
+Claude Code는 하루를 잡아먹는 지루한 작업을 처리합니다: 테스트가 없는 코드에 테스트 작성, 프로젝트 전반의 lint 오류 수정, 머지 충돌 해결, 의존성 업데이트, 릴리스 노트 작성.
 
 ```bash
 claude "write tests for the auth module, run them, and fix any failures"
 ```
 
-### Build features and fix bugs
+### 기능 개발 및 버그 수정
 
-Describe what you want in plain language. Claude Code plans the approach, writes the code across multiple files, and verifies it works.
+원하는 것을 일반 언어로 설명하세요. Claude Code는 접근 방식을 계획하고, 여러 파일에 걸쳐 코드를 작성하며, 작동하는지 확인합니다.
 
-For bugs, paste an error message or describe the symptom. Claude Code traces the issue through your codebase, identifies the root cause, and implements a fix.
+버그의 경우 오류 메시지를 붙여넣거나 증상을 설명하세요. Claude Code는 코드베이스에서 문제를 추적하고, 근본 원인을 파악하여 수정을 구현합니다.
 
-### Create commits and pull requests
+### 커밋 및 풀 리퀘스트 생성
 
-Claude Code works directly with git. It stages changes, writes commit messages, creates branches, and opens pull requests.
+Claude Code는 git과 직접 연동됩니다. 변경사항을 스테이징하고, 커밋 메시지를 작성하며, 브랜치를 생성하고, 풀 리퀘스트를 열 수 있습니다.
 
 ```bash
 claude "commit my changes with a descriptive message"
 ```
 
-In CI, you can automate code review and issue triage with GitHub Actions or GitLab CI/CD.
+CI에서는 GitHub Actions 또는 GitLab CI/CD로 코드 리뷰와 이슈 분류를 자동화할 수 있습니다.
 
-### Connect your tools with MCP
+### MCP로 도구 연결
 
-The Model Context Protocol (MCP) is an open standard for connecting AI tools to external data sources. With MCP, Claude Code can read your design docs in Google Drive, update tickets in Jira, pull data from Slack, or use your own custom tooling.
+Model Context Protocol (MCP)은 AI 도구를 외부 데이터 소스에 연결하는 개방형 표준입니다. MCP를 사용하면 Claude Code가 Google Drive의 설계 문서를 읽고, Jira의 티켓을 업데이트하거나, Slack에서 데이터를 가져오거나, 사용자 정의 도구를 사용할 수 있습니다.
 
-### Customize with instructions, skills, and hooks
+### 지침, 스킬, 훅으로 커스터마이즈
 
-`CLAUDE.md` is a markdown file you add to your project root that Claude Code reads at the start of every session. Use it to set coding standards, architecture decisions, preferred libraries, and review checklists.
+`CLAUDE.md`는 프로젝트 루트에 추가하는 마크다운 파일로, Claude Code가 매 세션 시작 시 읽습니다. 코딩 표준, 아키텍처 결정, 선호 라이브러리, 리뷰 체크리스트를 설정하는 데 사용합니다.
 
-Create custom slash commands to package repeatable workflows your team can share, like `/review-pr` or `/deploy-staging`.
+팀이 공유할 수 있는 반복 가능한 워크플로우를 패키징하기 위해 `/review-pr` 또는 `/deploy-staging`과 같은 커스텀 슬래시 명령어를 만들 수 있습니다.
 
-Hooks let you run shell commands before or after Claude Code actions, like auto-formatting after every file edit or running lint before a commit.
+훅을 사용하면 파일 편집 후 자동 포맷팅이나 커밋 전 lint 실행 등 Claude Code 작업 전후에 셸 명령을 실행할 수 있습니다.
 
-### Run agent teams and build custom agents
+### 에이전트 팀 실행 및 커스텀 에이전트 빌드
 
-Spawn multiple Claude Code agents that work on different parts of a task simultaneously. A lead agent coordinates the work, assigns subtasks, and merges results.
+여러 Claude Code 에이전트를 생성하여 작업의 서로 다른 부분에서 동시에 작업하도록 합니다. 리드 에이전트가 작업을 조율하고, 하위 작업을 할당하며, 결과를 병합합니다.
 
-For fully custom workflows, the Agent SDK lets you build your own agents powered by Claude Code's tools and capabilities, with full control over orchestration, tool access, and permissions.
+완전히 커스텀된 워크플로우를 위해 Agent SDK를 사용하면 Claude Code의 도구와 기능을 기반으로 오케스트레이션, 도구 접근, 권한에 대한 완전한 제어권을 가진 자체 에이전트를 빌드할 수 있습니다.
 
-### Pipe, script, and automate with the CLI
+### CLI로 파이프, 스크립트, 자동화
 
-Claude Code is composable and follows the Unix philosophy. Pipe logs into it, run it in CI, or chain it with other tools:
+Claude Code는 구성 가능하며 Unix 철학을 따릅니다. 로그를 파이프로 전달하거나, CI에서 실행하거나, 다른 도구와 연결하세요:
 
 ```bash
-# Monitor logs and get alerted
+# 로그 모니터링 및 알림
 tail -f app.log | claude -p "Slack me if you see any anomalies"
 
-# Automate translations in CI
+# CI에서 번역 자동화
 claude -p "translate new strings into French and raise a PR for review"
 
-# Bulk operations across files
+# 파일 일괄 작업
 git diff main --name-only | claude -p "review these changed files for security issues"
 ```
 
-### Work from anywhere
+### 어디서나 작업
 
-Sessions aren't tied to a single surface. Move work between environments as your context changes:
+세션은 단일 환경에 종속되지 않습니다. 컨텍스트에 맞게 환경 간에 작업을 이동할 수 있습니다:
 
-- Kick off a long-running task on the web or iOS app, then pull it into your terminal with `/teleport`
-- Hand off a terminal session to the Desktop app with `/desktop` for visual diff review
-- Route tasks from team chat: mention `@Claude` in Slack with a bug report and get a pull request back
+- 웹 또는 iOS 앱에서 오래 걸리는 작업을 시작한 다음 `/teleport`으로 터미널로 가져오기
+- 시각적 diff 검토를 위해 `/desktop`으로 터미널 세션을 데스크탑 앱에 넘기기
+- 팀 채팅에서 작업 라우팅: Slack에서 버그 리포트와 함께 `@Claude`를 멘션하면 풀 리퀘스트를 받음
 
-## Use Claude Code everywhere
+## 어디서나 Claude Code 사용하기
 
-Each surface connects to the same underlying Claude Code engine, so your CLAUDE.md files, settings, and MCP servers work across all of them.
+모든 환경은 동일한 기반 Claude Code 엔진에 연결되므로 CLAUDE.md 파일, 설정, MCP 서버가 모든 곳에서 동작합니다.
 
-| I want to...                                  | Best option                    |
+| 원하는 것...                                  | 최적의 선택                    |
 | --------------------------------------------- | ------------------------------ |
-| Start a task locally, continue on mobile      | Web or Claude iOS app          |
-| Automate PR reviews and issue triage          | GitHub Actions or GitLab CI/CD |
-| Route bug reports from Slack to pull requests | Slack                          |
-| Debug live web applications                   | Chrome                         |
-| Build custom agents for your own workflows    | Agent SDK                      |
+| 로컬에서 작업 시작 후 모바일에서 계속         | 웹 또는 Claude iOS 앱          |
+| PR 리뷰 및 이슈 분류 자동화                   | GitHub Actions 또는 GitLab CI/CD |
+| Slack의 버그 리포트를 풀 리퀘스트로 라우팅    | Slack                          |
+| 라이브 웹 애플리케이션 디버깅                 | Chrome                         |
+| 자체 워크플로우를 위한 커스텀 에이전트 빌드   | Agent SDK                      |
 
-## Next steps
+## 다음 단계
 
-Once you've installed Claude Code, these guides help you go deeper.
+Claude Code를 설치했다면 이 가이드로 더 깊이 파고들 수 있습니다.
 
-- **Quickstart**: walk through your first real task, from exploring a codebase to committing a fix
-- Level up with **best practices** and **common workflows**
-- **Settings**: customize Claude Code for your workflow
-- **Troubleshooting**: solutions for common issues
-- [code.claude.com](https://code.claude.com/): demos, pricing, and product details
+- **빠른 시작**: 코드베이스 탐색부터 수정 커밋까지 첫 번째 실제 작업 진행
+- **모범 사례** 및 **일반 워크플로우**로 실력 향상
+- **설정**: 워크플로우에 맞게 Claude Code 커스터마이즈
+- **문제 해결**: 일반적인 문제에 대한 해결책
+- [code.claude.com](https://code.claude.com/): 데모, 가격, 제품 세부 정보
