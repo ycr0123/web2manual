@@ -1,35 +1,37 @@
+'use client';
+
 import Link from 'next/link';
 import { BookOpen, ExternalLink } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
 
   return (
     <footer className="border-t bg-muted/50" role="contentinfo">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* 브랜드 */}
+          {/* Brand */}
           <div className="space-y-3">
             <Link href="/" className="flex items-center gap-2 font-bold text-lg">
               <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span>Claude Code 완전정복 가이드</span>
+              <span>Claude Code 가이드</span>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Claude Code 공식 문서를 한국어로 번역한 인터랙티브 학습 플랫폼입니다.
-            </p>
+            <p className="text-sm text-muted-foreground">{t.footer.desc}</p>
           </div>
 
-          {/* 링크 */}
+          {/* Links */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-sm">바로가기</h3>
-            <nav aria-label="푸터 메뉴">
+            <h3 className="font-semibold text-sm">{t.footer.links}</h3>
+            <nav aria-label={t.footer.links}>
               <ul className="space-y-2">
                 <li>
                   <Link
                     href="/"
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    홈
+                    {t.footer.home}
                   </Link>
                 </li>
                 <li>
@@ -37,16 +39,16 @@ export function Footer() {
                     href="/reference"
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    레퍼런스
+                    {t.footer.reference}
                   </Link>
                 </li>
               </ul>
             </nav>
           </div>
 
-          {/* 외부 링크 */}
+          {/* External links */}
           <div className="space-y-3">
-            <h3 className="font-semibold text-sm">공식 문서</h3>
+            <h3 className="font-semibold text-sm">{t.footer.official}</h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -55,22 +57,22 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                 >
-                  Anthropic 공식 문서
+                  {t.footer.official_link}
                   <ExternalLink className="h-3 w-3" aria-hidden="true" />
-                  <span className="sr-only">(새 탭에서 열림)</span>
+                  <span className="sr-only">{t.common.new_tab}</span>
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* 하단 */}
+        {/* Bottom bar */}
         <div className="mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            &copy; {currentYear} Claude Code 완전정복 가이드. 학습 목적으로 제작되었습니다.
+            {t.footer.copyright(currentYear)}
           </p>
           <p className="text-xs text-muted-foreground">
-            원본 문서:{' '}
+            {t.footer.original}{' '}
             <a
               href="https://docs.anthropic.com"
               target="_blank"

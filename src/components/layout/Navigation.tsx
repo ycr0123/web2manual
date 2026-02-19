@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { CATEGORY_INFO, CATEGORY_ORDER } from '@/lib/constants';
+import { useLanguage } from '@/hooks/useLanguage';
 import type { ReferenceCategory } from '@/types/content';
 
 interface NavigationProps {
@@ -9,10 +12,12 @@ interface NavigationProps {
 }
 
 export function Navigation({ currentCategory, className }: NavigationProps) {
+  const { t } = useLanguage();
+
   return (
     <nav
       className={cn('space-y-1', className)}
-      aria-label="카테고리 메뉴"
+      aria-label={t.nav.reference}
     >
       <Link
         href="/reference"
@@ -22,10 +27,12 @@ export function Navigation({ currentCategory, className }: NavigationProps) {
           !currentCategory && 'bg-accent text-accent-foreground'
         )}
       >
-        전체 문서
+        {t.nav.all_docs}
       </Link>
       {CATEGORY_ORDER.map((category) => {
         const info = CATEGORY_INFO[category];
+        const categoryT = t.categories[category];
+        const label = categoryT ? categoryT.label : info.label;
         return (
           <Link
             key={category}
@@ -37,7 +44,7 @@ export function Navigation({ currentCategory, className }: NavigationProps) {
             )}
             aria-current={currentCategory === category ? 'page' : undefined}
           >
-            {info.label}
+            {label}
           </Link>
         );
       })}

@@ -1,9 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { Clock, ChevronRight } from 'lucide-react';
 import type { ReferenceDocument } from '@/types/content';
 import { CATEGORY_INFO } from '@/lib/constants';
-import { formatReadingTimeKo, truncate } from '@/lib/format';
+import { truncate } from '@/lib/format';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ReferenceCardProps {
   document: ReferenceDocument;
@@ -12,6 +15,18 @@ interface ReferenceCardProps {
 
 export function ReferenceCard({ document, className }: ReferenceCardProps) {
   const categoryInfo = CATEGORY_INFO[document.category];
+  const { locale, t } = useLanguage();
+
+  // Locale-aware title and description
+  const displayTitle = locale === 'ko' ? document.titleKo : document.title;
+  const displayDescription =
+    locale === 'ko' ? document.descriptionKo : document.description;
+
+  // Category label from translations
+  const categoryLabel =
+    t.categories[document.category]?.label ?? categoryInfo?.label;
+
+  const readingTimeText = t.common.reading_time(Math.ceil(document.readingTime));
 
   return (
     <Link
@@ -23,12 +38,12 @@ export function ReferenceCard({ document, className }: ReferenceCardProps) {
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
         className
       )}
-      aria-label={`${document.titleKo} 문서 열기`}
+      aria-label={`${displayTitle}`}
     >
-      {/* 헤더 */}
+      {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
-          {/* 섹션 번호 + 제목 */}
+          {/* Section number + title */}
           <div className="flex items-center gap-2 mb-1">
             {document.sectionNumber && document.sectionNumber !== '0' && (
               <span className="text-xs font-mono text-muted-foreground flex-shrink-0">
@@ -36,13 +51,18 @@ export function ReferenceCard({ document, className }: ReferenceCardProps) {
               </span>
             )}
             <h3 className="font-semibold text-sm leading-tight group-hover:text-primary transition-colors line-clamp-2">
-              {document.titleKo}
+              {displayTitle}
             </h3>
           </div>
-          {/* 영어 제목 */}
-          {document.title !== document.titleKo && (
+          {/* Subtitle in the other language */}
+          {locale === 'ko' && document.title !== document.titleKo && (
             <p className="text-xs text-muted-foreground truncate">
               {document.title}
+            </p>
+          )}
+          {locale === 'en' && document.titleKo !== document.title && (
+            <p className="text-xs text-muted-foreground truncate">
+              {document.titleKo}
             </p>
           )}
         </div>
@@ -52,14 +72,14 @@ export function ReferenceCard({ document, className }: ReferenceCardProps) {
         />
       </div>
 
-      {/* 설명 */}
-      {document.descriptionKo && (
+      {/* Description */}
+      {displayDescription && (
         <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-          {truncate(document.descriptionKo, 120)}
+          {truncate(displayDescription, 120)}
         </p>
       )}
 
-      {/* 푸터 */}
+      {/* Footer */}
       <div className="flex items-center justify-between gap-2">
         <span
           className={cn(
@@ -67,11 +87,11 @@ export function ReferenceCard({ document, className }: ReferenceCardProps) {
             categoryInfo?.color
           )}
         >
-          {categoryInfo?.label}
+          {categoryLabel}
         </span>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Clock className="h-3 w-3" aria-hidden="true" />
-          <span>{formatReadingTimeKo(document.readingTime)}</span>
+          <span>{readingTimeText}</span>
         </div>
       </div>
     </Link>

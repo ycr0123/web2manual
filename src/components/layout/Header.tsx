@@ -4,57 +4,61 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { BookOpen, Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { SearchBar } from '@/components/search/SearchBar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between gap-4">
-          {/* 로고 */}
+          {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition-opacity flex-shrink-0"
-            aria-label="홈으로 이동"
+            aria-label={t.nav.home}
           >
             <BookOpen className="h-6 w-6 text-primary" aria-hidden="true" />
             <span className="hidden sm:inline">Claude Code 가이드</span>
             <span className="sm:hidden">CC 가이드</span>
           </Link>
 
-          {/* 검색바 (데스크탑) */}
+          {/* Search bar (desktop) */}
           <div className="flex-1 max-w-xl hidden md:block">
             <SearchBar />
           </div>
 
-          {/* 우측 메뉴 */}
+          {/* Right side menu */}
           <div className="flex items-center gap-2">
-            <nav className="hidden md:flex items-center gap-1" aria-label="주요 메뉴">
+            <nav className="hidden md:flex items-center gap-1" aria-label={t.nav.reference}>
               <Link href="/reference">
                 <Button variant="ghost" size="sm">
-                  레퍼런스
+                  {t.nav.reference}
                 </Button>
               </Link>
               <Link href="/playground">
                 <Button variant="ghost" size="sm">
-                  플레이그라운드
+                  {t.nav.playground}
                 </Button>
               </Link>
             </nav>
 
+            <LanguageSwitcher />
             <ThemeToggle />
 
-            {/* 모바일 메뉴 버튼 */}
+            {/* Mobile menu button */}
             <Button
               variant="ghost"
               size="icon"
               className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+              aria-label={isMobileMenuOpen ? t.nav.menu_close : t.nav.menu_open}
               aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
@@ -66,7 +70,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* 모바일 메뉴 */}
+        {/* Mobile menu */}
         <div
           className={cn(
             'md:hidden overflow-hidden transition-all duration-200',
@@ -76,15 +80,15 @@ export function Header() {
         >
           <div className="pt-2 pb-3 space-y-3">
             <SearchBar />
-            <nav className="flex flex-col gap-1" aria-label="모바일 메뉴">
+            <nav className="flex flex-col gap-1" aria-label={t.nav.reference}>
               <Link href="/reference" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
-                  레퍼런스
+                  {t.nav.reference}
                 </Button>
               </Link>
               <Link href="/playground" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button variant="ghost" className="w-full justify-start">
-                  플레이그라운드
+                  {t.nav.playground}
                 </Button>
               </Link>
             </nav>
