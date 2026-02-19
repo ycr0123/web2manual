@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cn, formatDate, formatReadingTime, truncateText, generateHeadingId } from '@/lib/utils';
+import { cn, formatDate, formatReadingTime, truncateText, generateHeadingId, createSlug, highlightText, extractSectionNumber } from '@/lib/utils';
 
 describe('cn 유틸리티', () => {
   it('클래스명을 병합한다', () => {
@@ -63,5 +63,78 @@ describe('generateHeadingId', () => {
     const id = generateHeadingId('한국어 헤딩');
     expect(id).toBeTruthy();
     expect(typeof id).toBe('string');
+  });
+
+  it('앞뒤 하이픈을 제거한다', () => {
+    const id = generateHeadingId('  Hello World  ');
+    expect(id).not.toMatch(/^-/);
+    expect(id).not.toMatch(/-$/);
+  });
+
+  it('연속 공백을 단일 하이픈으로 변환한다', () => {
+    const id = generateHeadingId('Hello   World');
+    expect(id).toBe('hello-world');
+  });
+});
+
+describe('createSlug', () => {
+  it('.md 확장자를 제거한다', () => {
+    expect(createSlug('overview.md')).toBe('overview');
+  });
+
+  it('.md가 없는 파일명은 그대로 반환한다', () => {
+    expect(createSlug('overview')).toBe('overview');
+  });
+
+  it('경로가 포함된 파일명을 처리한다', () => {
+    expect(createSlug('getting-started.md')).toBe('getting-started');
+  });
+
+  it('숫자가 포함된 파일명을 처리한다', () => {
+    expect(createSlug('01-intro.md')).toBe('01-intro');
+  });
+});
+
+describe('highlightText', () => {
+  it('쿼리가 없으면 원본 텍스트를 반환한다', () => {
+    expect(highlightText('Hello World', '')).toBe('Hello World');
+  });
+
+  it('공백만 있는 쿼리는 원본 텍스트를 반환한다', () => {
+    expect(highlightText('Hello World', '   ')).toBe('Hello World');
+  });
+
+  it('매칭된 텍스트를 mark 태그로 감싼다', () => {
+    const result = highlightText('Hello World', 'World');
+    expect(result).toContain('<mark');
+    expect(result).toContain('World');
+    expect(result).toContain('</mark>');
+  });
+
+  it('대소문자 구분 없이 하이라이트한다', () => {
+    const result = highlightText('Hello World', 'hello');
+    expect(result).toContain('<mark');
+  });
+
+  it('특수문자가 포함된 쿼리를 안전하게 처리한다', () => {
+    expect(() => highlightText('price is $10', '$10')).not.toThrow();
+  });
+});
+
+describe('extractSectionNumber', () => {
+  it('파일명에서 섹션 번호를 추출한다', () => {
+    expect(extractSectionNumber('1-overview.md')).toBe('1');
+  });
+
+  it('점이 포함된 섹션 번호를 추출한다', () => {
+    expect(extractSectionNumber('1.2-details.md')).toBe('1.2');
+  });
+
+  it('섹션 번호가 없으면 0을 반환한다', () => {
+    expect(extractSectionNumber('overview.md')).toBe('0');
+  });
+
+  it('다중 레벨 섹션 번호를 추출한다', () => {
+    expect(extractSectionNumber('10.1.2-advanced.md')).toBe('10.1.2');
   });
 });

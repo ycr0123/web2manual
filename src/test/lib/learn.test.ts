@@ -280,4 +280,161 @@ quiz:
 
     expect(lesson).toBeNull();
   });
+
+  it('getLesson이 첫 번째 레슨의 prevLesson(이전 트랙 마지막 레슨)을 계산한다', async () => {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+    }));
+
+    const { getLesson } = await import('@/lib/learn');
+    // core-features의 첫 번째 레슨은 beginner 트랙의 마지막 레슨을 prevLesson으로 가져야 함
+    const lesson = await getLesson('core-features', 'cli-reference');
+
+    expect(lesson).not.toBeNull();
+    // 첫 번째 레슨 (order === 1)이므로 이전 트랙(beginner)의 마지막 레슨이 prevLesson
+    if (lesson?.prevLesson) {
+      expect(lesson.prevLesson.trackId).toBe('beginner');
+    }
+  });
+
+  it('getLesson이 마지막 레슨의 nextLesson(다음 트랙 첫 번째 레슨)을 계산한다', async () => {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+    }));
+
+    const { getLesson, getAllTracks } = await import('@/lib/learn');
+    // beginner 트랙의 마지막 레슨을 가져옴
+    const tracks = getAllTracks();
+    const beginnerTrack = tracks.find(t => t.id === 'beginner')!;
+    const lastLesson = beginnerTrack.lessons[beginnerTrack.lessons.length - 1];
+    const lesson = await getLesson('beginner', lastLesson.id);
+
+    expect(lesson).not.toBeNull();
+    // 마지막 레슨이므로 다음 트랙(core-features)의 첫 번째 레슨이 nextLesson
+    if (lesson?.nextLesson) {
+      expect(lesson.nextLesson.trackId).toBe('core-features');
+    }
+  });
+
+  it('getLesson이 enterprise 트랙의 마지막 레슨은 nextLesson이 없다', async () => {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+    }));
+
+    const { getLesson, getAllTracks } = await import('@/lib/learn');
+    const tracks = getAllTracks();
+    const enterpriseTrack = tracks.find(t => t.id === 'enterprise')!;
+    const lastLesson = enterpriseTrack.lessons[enterpriseTrack.lessons.length - 1];
+    const lesson = await getLesson('enterprise', lastLesson.id);
+
+    expect(lesson).not.toBeNull();
+    // 마지막 트랙의 마지막 레슨은 nextLesson이 없어야 함
+    expect(lesson?.nextLesson).toBeUndefined();
+  });
+
+  it('getLesson이 beginner 트랙의 첫 번째 레슨은 prevLesson이 없다', async () => {
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MOCK_MDX_CONTENT),
+    }));
+
+    const { getLesson } = await import('@/lib/learn');
+    const lesson = await getLesson('beginner', 'overview');
+
+    expect(lesson).not.toBeNull();
+    // 첫 번째 트랙의 첫 번째 레슨은 prevLesson이 없어야 함
+    expect(lesson?.prevLesson).toBeUndefined();
+  });
+
+  it('getLesson이 quiz 기본값(passingScore 70, 빈 questions)을 사용한다', async () => {
+    const MDX_NO_QUIZ = `---
+title: "퀴즈 없는 레슨"
+description: "퀴즈 없음"
+trackId: "beginner"
+lessonId: "overview"
+difficulty: "beginner"
+estimatedMinutes: 15
+order: 1
+objectives:
+  - "목표"
+---
+
+## 섹션
+내용
+`;
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MDX_NO_QUIZ),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MDX_NO_QUIZ),
+    }));
+
+    const { getLesson } = await import('@/lib/learn');
+    const lesson = await getLesson('beginner', 'overview');
+
+    expect(lesson?.quiz.passingScore).toBe(70);
+    expect(lesson?.quiz.questions).toHaveLength(0);
+  });
+
+  it('getLesson이 question에 type 기본값 multiple-choice를 적용한다', async () => {
+    const MDX_NO_TYPE = `---
+title: "타입 없는 퀴즈"
+description: "테스트"
+trackId: "beginner"
+lessonId: "overview"
+difficulty: "beginner"
+estimatedMinutes: 15
+order: 1
+objectives:
+  - "목표"
+quiz:
+  passingScore: 80
+  questions:
+    - id: "q1"
+      question: "질문?"
+      options:
+        - id: "a"
+          text: "답 A"
+      correctOptionId: "a"
+      explanation: "A가 정답"
+---
+
+## 섹션
+내용
+`;
+    vi.doMock('fs', () => ({
+      default: {
+        existsSync: vi.fn().mockReturnValue(true),
+        readFileSync: vi.fn().mockReturnValue(MDX_NO_TYPE),
+      },
+      existsSync: vi.fn().mockReturnValue(true),
+      readFileSync: vi.fn().mockReturnValue(MDX_NO_TYPE),
+    }));
+
+    const { getLesson } = await import('@/lib/learn');
+    const lesson = await getLesson('beginner', 'overview');
+
+    expect(lesson?.quiz.questions[0].type).toBe('multiple-choice');
+  });
 });

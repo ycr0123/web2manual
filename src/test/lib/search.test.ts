@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { SearchClient } from '@/lib/search';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { SearchClient, getSearchClient, loadSearchIndex } from '@/lib/search';
 import type { SearchIndexItem } from '@/types/content';
 
 const mockIndex: SearchIndexItem[] = [
@@ -81,5 +81,104 @@ describe('SearchClient', () => {
   it('getIndex가 인덱스를 반환한다', () => {
     const index = client.getIndex();
     expect(index).toHaveLength(mockIndex.length);
+  });
+
+  it('초기화 전에는 빈 인덱스를 반환한다', () => {
+    const newClient = new SearchClient();
+    const index = newClient.getIndex();
+    expect(index).toHaveLength(0);
+  });
+
+  it('description으로 검색할 수 있다', () => {
+    const results = client.search('agentic');
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it('headings로 검색할 수 있다', () => {
+    const results = client.search('Installation');
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it('검색 결과에 item과 score가 포함된다', () => {
+    const results = client.search('Claude');
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0]).toHaveProperty('item');
+    expect(results[0]).toHaveProperty('score');
+  });
+
+  it('재초기화 시 새 인덱스로 업데이트된다', () => {
+    const newIndex: SearchIndexItem[] = [
+      {
+        slug: 'new-item',
+        title: 'New Item',
+        titleKo: '새 항목',
+        description: 'New description',
+        descriptionKo: '새 설명',
+        category: 'new',
+        headings: [],
+        bodyPreview: 'New body',
+      },
+    ];
+    client.initialize(newIndex);
+    expect(client.getIndex()).toHaveLength(1);
+    expect(client.getIndex()[0].slug).toBe('new-item');
+  });
+});
+
+describe('getSearchClient', () => {
+  it('SearchClient 인스턴스를 반환한다', () => {
+    const client = getSearchClient();
+    expect(client).toBeInstanceOf(SearchClient);
+  });
+
+  it('동일한 인스턴스를 반환한다 (싱글톤)', () => {
+    const client1 = getSearchClient();
+    const client2 = getSearchClient();
+    expect(client1).toBe(client2);
+  });
+});
+
+describe('loadSearchIndex', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('성공적으로 인덱스를 로드한다', async () => {
+    const mockData: SearchIndexItem[] = [
+      {
+        slug: 'test',
+        title: 'Test',
+        titleKo: '테스트',
+        description: 'Test description',
+        descriptionKo: '테스트 설명',
+        category: 'test',
+        headings: [],
+        bodyPreview: 'Test body',
+      },
+    ];
+    vi.mocked(global.fetch).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockData,
+    } as Response);
+
+    const result = await loadSearchIndex();
+    expect(result).toHaveLength(1);
+    expect(result[0].slug).toBe('test');
+  });
+
+  it('fetch 실패 시 빈 배열을 반환한다', async () => {
+    vi.mocked(global.fetch).mockResolvedValueOnce({
+      ok: false,
+    } as Response);
+
+    const result = await loadSearchIndex();
+    expect(result).toHaveLength(0);
+  });
+
+  it('네트워크 오류 시 빈 배열을 반환한다', async () => {
+    vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'));
+
+    const result = await loadSearchIndex();
+    expect(result).toHaveLength(0);
   });
 });

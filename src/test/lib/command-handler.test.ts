@@ -150,4 +150,63 @@ describe('command-handler', () => {
       expect(result.response.content).toContain('claude');
     });
   });
+
+  describe('empty and whitespace commands', () => {
+    it('empty string returns empty text response', () => {
+      const result = handleCommand('', ctx);
+      expect(result.response.type).toBe('text');
+      expect(result.response.content).toBe('');
+    });
+
+    it('whitespace-only string returns empty text response', () => {
+      const result = handleCommand('   ', ctx);
+      expect(result.response.type).toBe('text');
+      expect(result.response.content).toBe('');
+    });
+  });
+
+  describe('ls variants', () => {
+    it('ls -la returns file list', () => {
+      const result = handleCommand('ls -la', ctx);
+      expect(result.response.type).toBe('file-list');
+    });
+
+    it('ls -l returns file list', () => {
+      const result = handleCommand('ls -l', ctx);
+      expect(result.response.type).toBe('file-list');
+    });
+  });
+
+  describe('cd variants', () => {
+    it('bare cd (no args) changes to home', () => {
+      const result = handleCommand('cd', ctx);
+      expect(result.response.type).toBe('text');
+      expect(result.response.content).toContain('~');
+    });
+  });
+
+  describe('claude -p / --print flag', () => {
+    it('-p flag works like query', () => {
+      const result = handleCommand('claude -p "describe this project"', ctx);
+      expect(result.response.type).toBe('ai-response');
+    });
+  });
+
+  describe('claude query - natural language fallback', () => {
+    it('unknown query returns default ai-response', () => {
+      const result = handleCommand('claude "what is the meaning of life"', ctx);
+      expect(result.response.type).toBe('ai-response');
+      expect(result.response.content).toContain('분석');
+    });
+
+    it('explain command with filename', () => {
+      const result = handleCommand('claude "explain index.js"', ctx);
+      expect(result.response.type).toBe('ai-response');
+    });
+
+    it('explain command in Korean', () => {
+      const result = handleCommand('claude "index.js 설명해"', ctx);
+      expect(result.response.type).toBe('ai-response');
+    });
+  });
 });
