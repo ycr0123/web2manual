@@ -13,7 +13,7 @@ interface ReferenceNavProps {
 }
 
 export function ReferenceNav({ prev, next, className }: ReferenceNavProps) {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const prevLabel = locale === 'ko' ? '이전 문서' : 'Previous';
   const nextLabel = locale === 'ko' ? '다음 문서' : 'Next';
 
@@ -25,7 +25,7 @@ export function ReferenceNav({ prev, next, className }: ReferenceNavProps) {
         'flex items-center justify-between gap-4 pt-8 mt-8 border-t',
         className
       )}
-      aria-label="이전/다음 문서 탐색"
+      aria-label={t.reference_slug.nav_label}
     >
       {/* 이전 문서 */}
       <div className="flex-1">

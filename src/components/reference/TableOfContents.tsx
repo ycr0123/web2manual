@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { List } from 'lucide-react';
 import type { Heading } from '@/types/content';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface TableOfContentsProps {
   headings: Heading[];
@@ -12,6 +13,7 @@ interface TableOfContentsProps {
 
 export function TableOfContents({ headings, className }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
+  const { t } = useLanguage();
 
   // 스크롤 기반 활성 헤딩 감지
   useEffect(() => {
@@ -46,11 +48,11 @@ export function TableOfContents({ headings, className }: TableOfContentsProps) {
   return (
     <nav
       className={cn('sticky top-24', className)}
-      aria-label="목차"
+      aria-label={t.toc.nav_label}
     >
       <div className="flex items-center gap-2 mb-3">
         <List className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-        <span className="text-sm font-semibold">목차</span>
+        <span className="text-sm font-semibold">{t.toc.label}</span>
       </div>
       <ul className="space-y-1" role="list">
         {filteredHeadings.map((heading) => (

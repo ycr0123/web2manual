@@ -25,8 +25,8 @@ export function Header() {
             aria-label={t.nav.home}
           >
             <BookOpen className="h-6 w-6 text-primary" aria-hidden="true" />
-            <span className="hidden sm:inline">Claude Code 가이드</span>
-            <span className="sm:hidden">CC 가이드</span>
+            <span className="hidden sm:inline">{t.common.site_title}</span>
+            <span className="sm:hidden">{t.common.site_title_short}</span>
           </Link>
 
           {/* Search bar (desktop) */}

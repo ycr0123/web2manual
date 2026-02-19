@@ -3,6 +3,7 @@
 import { CheckCircle2, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useProgressStore } from '@/stores/progressStore';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface MarkCompleteProps {
   lessonId: string;
@@ -12,6 +13,7 @@ interface MarkCompleteProps {
 
 export function MarkComplete({ lessonId, trackId, className }: MarkCompleteProps) {
   const { isLessonCompleted, completeLesson, uncompleteLesson } = useProgressStore();
+  const { t } = useLanguage();
   const completed = isLessonCompleted(lessonId);
 
   const handleToggle = () => {
@@ -32,7 +34,7 @@ export function MarkComplete({ lessonId, trackId, className }: MarkCompleteProps
           ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-950/50 dark:text-green-300 dark:hover:bg-green-950/80 border border-green-200 dark:border-green-800'
           : 'bg-muted hover:bg-muted/80 text-foreground border border-border'
       )}
-      aria-label={completed ? '레슨 완료 취소' : '레슨 완료로 표시'}
+      aria-label={completed ? t.lesson.mark_uncomplete_aria : t.lesson.mark_complete_aria}
       aria-pressed={completed}
     >
       {completed ? (
@@ -40,7 +42,7 @@ export function MarkComplete({ lessonId, trackId, className }: MarkCompleteProps
       ) : (
         <Circle className="h-4 w-4" aria-hidden="true" />
       )}
-      {completed ? '완료됨' : '완료로 표시'}
+      {completed ? t.lesson.mark_completed : t.lesson.mark_complete}
     </button>
   );
 }

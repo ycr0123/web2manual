@@ -5,6 +5,7 @@ import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Quiz, QuizQuestion } from '@/types/content';
 import { useProgressStore } from '@/stores/progressStore';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface InteractiveQuizProps {
   quiz: Quiz;
@@ -21,6 +22,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
   const [showExplanation, setShowExplanation] = useState<string | null>(null);
 
   const { saveQuizResult, completeLesson } = useProgressStore();
+  const { t } = useLanguage();
 
   const currentQuestion: QuizQuestion | undefined = quiz.questions[currentQuestionIndex];
   const totalQuestions = quiz.questions.length;
@@ -36,7 +38,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
 
   const handleNext = () => {
     if (isLastQuestion) {
-      // 퀴즈 완료 처리
+      // Quiz completion
       const correctCount = quiz.questions.filter(
         (q) => selectedAnswers[q.id] === q.correctOptionId
       ).length;
@@ -73,7 +75,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
     setShowExplanation(null);
   };
 
-  // 완료 화면
+  // Completion screen
   if (quizState === 'completed') {
     const correctCount = quiz.questions.filter(
       (q) => selectedAnswers[q.id] === q.correctOptionId
@@ -90,15 +92,15 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
             <XCircle className="h-12 w-12 text-red-500 mx-auto mb-3" aria-hidden="true" />
           )}
           <h3 className="text-lg font-bold mb-1">
-            {passed ? '퀴즈 통과!' : '다시 도전해보세요'}
+            {passed ? t.quiz.passed : t.quiz.failed}
           </h3>
           <p className="text-muted-foreground text-sm mb-4">
-            {totalQuestions}문제 중 {correctCount}문제 정답 ({score}점 / 합격점 {quiz.passingScore}점)
+            {t.quiz.score(correctCount, totalQuestions, score, quiz.passingScore)}
           </p>
           {passed && (
             <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-4">
               <p className="text-green-700 dark:text-green-300 text-sm font-medium">
-                레슨이 완료로 표시되었습니다!
+                {t.quiz.lesson_completed}
               </p>
             </div>
           )}
@@ -110,7 +112,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
             )}
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
-            다시 풀기
+            {t.quiz.retry}
           </button>
         </div>
       </div>
@@ -123,10 +125,10 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
   const isCorrect = selectedOption === currentQuestion.correctOptionId;
 
   return (
-    <div className="rounded-xl border border-border p-6 my-6 bg-muted/20" role="region" aria-label="퀴즈">
+    <div className="rounded-xl border border-border p-6 my-6 bg-muted/20" role="region" aria-label={t.quiz.label}>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-muted-foreground">
-          퀴즈 {currentQuestionIndex + 1} / {totalQuestions}
+          {t.quiz.counter(currentQuestionIndex + 1, totalQuestions)}
         </h3>
         <div className="flex gap-1">
           {quiz.questions.map((_, i) => (
@@ -151,7 +153,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
       <p className="text-base font-medium mb-4">{currentQuestion.question}</p>
 
       <fieldset>
-        <legend className="sr-only">답을 선택하세요</legend>
+        <legend className="sr-only">{t.quiz.choose}</legend>
         <div className="space-y-2" role="group">
           {currentQuestion.options.map((option) => {
             const isSelected = selectedOption === option.id;
@@ -173,7 +175,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
                   showResult && !isSelected && !isCorrectOption && 'cursor-default border-border opacity-50',
                 )}
                 aria-pressed={isSelected}
-                aria-label={`${option.id.toUpperCase()}. ${option.text}${showResult && isCorrectOption ? ' (정답)' : ''}${showResult && isSelected && !isCorrectOption ? ' (오답)' : ''}`}
+                aria-label={`${option.id.toUpperCase()}. ${option.text}${showResult && isCorrectOption ? ` (${t.quiz.correct_label})` : ''}${showResult && isSelected && !isCorrectOption ? ` (${t.quiz.incorrect_label})` : ''}`}
               >
                 <div className="flex items-start gap-3">
                   <span
@@ -214,7 +216,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
           role="alert"
         >
           <p className={cn('font-medium mb-1', isCorrect ? 'text-green-700 dark:text-green-300' : 'text-orange-700 dark:text-orange-300')}>
-            {isCorrect ? '정답입니다!' : '아쉽네요, 정답은 다른 것입니다.'}
+            {isCorrect ? t.quiz.correct : t.quiz.incorrect}
           </p>
           <p className="text-foreground/80">{currentQuestion.explanation}</p>
         </div>
@@ -226,7 +228,7 @@ export function InteractiveQuiz({ quiz, trackId, onPass }: InteractiveQuizProps)
             onClick={handleNext}
             className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            {isLastQuestion ? '결과 보기' : '다음 문제'}
+            {isLastQuestion ? t.quiz.show_results : t.quiz.next_question}
           </button>
         </div>
       )}

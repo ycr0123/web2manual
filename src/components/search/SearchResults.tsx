@@ -28,7 +28,7 @@ export function SearchResults({
   if (isLoading) {
     return (
       <div className="p-4 text-center text-sm text-muted-foreground" role="status" aria-live="polite">
-        검색 중...
+        {t.search.searching}
       </div>
     );
   }
@@ -40,7 +40,7 @@ export function SearchResults({
   if (results.length === 0) {
     return (
       <div className="p-4 text-center text-sm text-muted-foreground" role="status" aria-live="polite">
-        &ldquo;{query}&rdquo;에 대한 검색 결과가 없습니다.
+        {t.search.no_results(query)}
       </div>
     );
   }
@@ -48,12 +48,12 @@ export function SearchResults({
   return (
     <div
       role="listbox"
-      aria-label="검색 결과"
+      aria-label={t.search.results_label}
       aria-live="polite"
       className="py-2"
     >
       <div className="px-3 py-1.5 text-xs font-medium text-muted-foreground">
-        {results.length}개의 결과
+        {t.search.results(results.length)}
       </div>
       {results.map((result, index) => {
         const categoryInfo = CATEGORY_INFO[result.item.category];

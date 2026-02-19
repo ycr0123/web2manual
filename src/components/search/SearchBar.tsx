@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSearch } from '@/hooks/useSearch';
 import { SearchResults } from './SearchResults';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface SearchBarProps {
   className?: string;
@@ -14,8 +15,10 @@ interface SearchBarProps {
 
 export function SearchBar({
   className,
-  placeholder = '문서 검색... (Ctrl+K)',
+  placeholder,
 }: SearchBarProps) {
+  const { t } = useLanguage();
+  const resolvedPlaceholder = placeholder ?? t.search.placeholder;
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -98,7 +101,7 @@ export function SearchBar({
           ref={inputRef}
           type="search"
           role="combobox"
-          aria-label="문서 검색"
+          aria-label={t.search.input_label}
           aria-expanded={showResults}
           aria-controls="search-results"
           aria-autocomplete="list"
@@ -111,7 +114,7 @@ export function SearchBar({
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           className={cn(
             'w-full h-10 pl-10 pr-10 rounded-md border border-input bg-background',
             'text-sm ring-offset-background',
@@ -129,7 +132,7 @@ export function SearchBar({
                 setActiveIndex(-1);
                 inputRef.current?.focus();
               }}
-              aria-label="검색어 지우기"
+              aria-label={t.search.clear}
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="h-4 w-4" />
@@ -158,7 +161,7 @@ export function SearchBar({
             'animate-in fade-in-0 zoom-in-95 duration-100'
           )}
           role="listbox"
-          aria-label="검색 결과 목록"
+          aria-label={t.search.results_list_label}
         >
           <SearchResults
             results={results}

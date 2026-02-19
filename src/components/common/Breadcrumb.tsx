@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export interface BreadcrumbItem {
   label: string;
@@ -13,6 +16,8 @@ interface BreadcrumbProps {
 }
 
 export function Breadcrumb({ items, className }: BreadcrumbProps) {
+  const { t } = useLanguage();
+
   return (
     <nav
       aria-label="breadcrumb"
@@ -23,7 +28,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
           <Link
             href="/"
             className="flex items-center gap-1 hover:text-foreground transition-colors"
-            aria-label="홈으로"
+            aria-label={t.common.home_aria}
           >
             <Home className="h-4 w-4" />
           </Link>

@@ -16,7 +16,7 @@ export function Footer() {
           <div className="space-y-3">
             <Link href="/" className="flex items-center gap-2 font-bold text-lg">
               <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
-              <span>Claude Code 가이드</span>
+              <span>{t.common.site_title}</span>
             </Link>
             <p className="text-sm text-muted-foreground">{t.footer.desc}</p>
           </div>

@@ -12,6 +12,21 @@ export function formatDateKo(dateStr: string): string {
   }
 }
 
+// Locale-aware date format
+export function formatDate(dateStr: string, locale: 'ko' | 'en' = 'ko'): string {
+  try {
+    const date = new Date(dateStr);
+    const localeStr = locale === 'ko' ? 'ko-KR' : 'en-US';
+    return date.toLocaleDateString(localeStr, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
 // 읽기 시간 포맷
 export function formatReadingTimeKo(minutes: number): string {
   const rounded = Math.ceil(minutes);
