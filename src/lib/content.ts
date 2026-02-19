@@ -27,13 +27,16 @@ function extractHeadings(content: string): Heading[] {
   return headings;
 }
 
-// 마크다운에서 첫 번째 H1 헤딩 추출
+// 마크다운에서 첫 번째 H1 헤딩 추출 (Source: URL 라인 스킵)
 function extractFirstH1(content: string): string | null {
   const lines = content.split('\n');
   for (const line of lines) {
     const match = line.match(/^#\s+(.+)$/);
     if (match) {
-      return match[1].trim();
+      const text = match[1].trim();
+      // "# Source: URL" 형태의 메타데이터 라인은 제목으로 사용하지 않음
+      if (text.startsWith('Source:') || text.startsWith('http')) continue;
+      return text;
     }
   }
   return null;

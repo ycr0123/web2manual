@@ -1,3 +1,13 @@
+---
+title: "Security"
+titleKo: "보안"
+description: "Learn about Claude Code's security safeguards and best practices for safe usage."
+descriptionKo: "Claude Code의 보안 안전장치와 안전한 사용을 위한 모범 사례를 알아봅니다."
+category: "security"
+sourceUrl: "https://code.claude.com/docs/en/security.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/security.md
 
 # Security

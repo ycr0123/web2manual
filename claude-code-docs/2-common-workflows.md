@@ -1,3 +1,13 @@
+---
+title: "Common workflows"
+titleKo: "일반 워크플로우"
+description: "Step-by-step guides for exploring codebases, fixing bugs, refactoring, testing, and other everyday tasks with Claude Code."
+descriptionKo: "코드베이스 탐색, 버그 수정, 리팩토링, 테스트 등 Claude Code의 일상적인 작업 단계별 가이드입니다."
+category: "common-workflows"
+sourceUrl: "https://code.claude.com/docs/en/common-workflows.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/common-workflows.md
 
 # Common workflows

@@ -1,4 +1,8 @@
 ---
+title: "Claude Code overview"
+titleKo: "Claude Code 개요"
+description: "Claude Code is an agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools."
+descriptionKo: "코드베이스를 읽고 파일을 편집하며 명령을 실행하고 개발 도구와 통합되는 에이전트형 코딩 도구입니다."
 source: https://code.claude.com/docs
 fetched: 2026-02-18
 section: 0

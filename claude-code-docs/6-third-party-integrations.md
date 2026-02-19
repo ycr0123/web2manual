@@ -1,3 +1,13 @@
+---
+title: "Enterprise deployment overview"
+titleKo: "서드파티 통합"
+description: "Learn how Claude Code can integrate with various third-party services and infrastructure to meet enterprise deployment requirements."
+descriptionKo: "엔터프라이즈 배포 요구사항을 충족하기 위해 Claude Code를 다양한 서드파티 서비스 및 인프라와 통합하는 방법을 알아봅니다."
+category: "third-party"
+sourceUrl: "https://code.claude.com/docs/en/third-party-integrations.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/third-party-integrations.md
 
 # Enterprise deployment overview

@@ -1,3 +1,13 @@
+---
+title: "CLI reference"
+titleKo: "CLI 레퍼런스"
+description: "Complete reference for Claude Code command-line interface, including commands and flags."
+descriptionKo: "명령어와 플래그를 포함한 Claude Code 커맨드라인 인터페이스 완전 레퍼런스입니다."
+category: "cli-reference"
+sourceUrl: "https://code.claude.com/docs/en/cli-reference.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/cli-reference.md
 
 # CLI reference

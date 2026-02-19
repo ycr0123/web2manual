@@ -1,3 +1,13 @@
+---
+title: "Extend Claude Code"
+titleKo: "기능 개요"
+description: "Understand when to use CLAUDE.md, Skills, subagents, hooks, MCP, and plugins."
+descriptionKo: "CLAUDE.md, 스킬, 서브에이전트, 훅, MCP, 플러그인을 언제 사용할지 이해합니다."
+category: "features"
+sourceUrl: "https://code.claude.com/docs/en/features-overview.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/features-overview.md
 
 # Extend Claude Code

@@ -1,3 +1,13 @@
+---
+title: "Troubleshooting"
+titleKo: "문제 해결"
+description: "Discover solutions to common issues with Claude Code installation and usage."
+descriptionKo: "Claude Code 설치 및 사용 중 발생하는 일반적인 문제의 해결책을 알아봅니다."
+category: "troubleshooting"
+sourceUrl: "https://code.claude.com/docs/en/troubleshooting.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/troubleshooting.md
 
 # Troubleshooting

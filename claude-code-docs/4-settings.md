@@ -1,3 +1,13 @@
+---
+title: "Claude Code Settings"
+titleKo: "Claude Code 설정"
+description: "Configure Claude Code with global and project-level settings, and environment variables."
+descriptionKo: "전역 및 프로젝트 수준 설정과 환경 변수로 Claude Code를 구성합니다."
+category: "settings"
+sourceUrl: "https://code.claude.com/docs/en/settings.md"
+fetchedDate: "2026-02-19"
+---
+
 # Source: https://code.claude.com/docs/en/settings.md
 
 # Claude Code Settings
