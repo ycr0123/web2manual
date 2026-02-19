@@ -1,5 +1,6 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import type { ReactNode } from 'react';
+import remarkGfm from 'remark-gfm';
 import { CodeBlock } from './CodeBlock';
 import { Callout } from './Callout';
 import { CLIExample } from './CLIExample';
@@ -135,7 +136,23 @@ const components = {
     </a>
   ),
   strong: ({ children }: { children: ReactNode }) => (
-    <strong className="font-semibold">{children}</strong>
+    <strong className="font-bold text-foreground">{children}</strong>
+  ),
+  em: ({ children }: { children: ReactNode }) => (
+    <em className="italic text-foreground/90">{children}</em>
+  ),
+  del: ({ children }: { children: ReactNode }) => (
+    <del className="line-through text-muted-foreground">{children}</del>
+  ),
+  mark: ({ children }: { children: ReactNode }) => (
+    <mark className="bg-yellow-200 dark:bg-yellow-800/50 text-foreground rounded px-0.5">
+      {children}
+    </mark>
+  ),
+  kbd: ({ children }: { children: ReactNode }) => (
+    <kbd className="inline-flex items-center rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs font-medium">
+      {children}
+    </kbd>
   ),
 };
 
@@ -151,7 +168,7 @@ export function LessonContent({ content }: LessonContentProps) {
         components={components}
         options={{
           mdxOptions: {
-            remarkPlugins: [],
+            remarkPlugins: [remarkGfm],
             rehypePlugins: [],
           },
         }}
