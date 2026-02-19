@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { ReferenceDocument } from '@/types/content';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ReferenceNavProps {
   prev: ReferenceDocument | null;
@@ -10,6 +13,10 @@ interface ReferenceNavProps {
 }
 
 export function ReferenceNav({ prev, next, className }: ReferenceNavProps) {
+  const { locale } = useLanguage();
+  const prevLabel = locale === 'ko' ? '이전 문서' : 'Previous';
+  const nextLabel = locale === 'ko' ? '다음 문서' : 'Next';
+
   if (!prev && !next) return null;
 
   return (
@@ -31,16 +38,16 @@ export function ReferenceNav({ prev, next, className }: ReferenceNavProps) {
               'transition-all duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
             )}
-            aria-label={`이전 문서: ${prev.titleKo}`}
+            aria-label={`${prevLabel}: ${locale === 'ko' ? prev.titleKo : prev.title}`}
           >
             <ChevronLeft
               className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-all group-hover:-translate-x-0.5 flex-shrink-0"
               aria-hidden="true"
             />
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground mb-0.5">이전 문서</p>
+              <p className="text-xs text-muted-foreground mb-0.5">{prevLabel}</p>
               <p className="text-sm font-medium group-hover:text-primary transition-colors truncate">
-                {prev.titleKo}
+                {locale === 'ko' ? prev.titleKo : prev.title}
               </p>
             </div>
           </Link>
@@ -59,12 +66,12 @@ export function ReferenceNav({ prev, next, className }: ReferenceNavProps) {
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               'justify-end'
             )}
-            aria-label={`다음 문서: ${next.titleKo}`}
+            aria-label={`${nextLabel}: ${locale === 'ko' ? next.titleKo : next.title}`}
           >
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground mb-0.5">다음 문서</p>
+              <p className="text-xs text-muted-foreground mb-0.5">{nextLabel}</p>
               <p className="text-sm font-medium group-hover:text-primary transition-colors truncate">
-                {next.titleKo}
+                {locale === 'ko' ? next.titleKo : next.title}
               </p>
             </div>
             <ChevronRight

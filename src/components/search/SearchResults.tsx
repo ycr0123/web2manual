@@ -6,6 +6,7 @@ import type { SearchResult } from '@/types/content';
 import { CATEGORY_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { truncate } from '@/lib/format';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface SearchResultsProps {
   results: SearchResult[];
@@ -22,6 +23,8 @@ export function SearchResults({
   onClose,
   activeIndex = -1,
 }: SearchResultsProps) {
+  const { locale, t } = useLanguage();
+
   if (isLoading) {
     return (
       <div className="p-4 text-center text-sm text-muted-foreground" role="status" aria-live="polite">
@@ -55,6 +58,9 @@ export function SearchResults({
       {results.map((result, index) => {
         const categoryInfo = CATEGORY_INFO[result.item.category];
         const isActive = index === activeIndex;
+        const displayTitle = locale === 'ko' ? result.item.titleKo : result.item.title;
+        const displayDescription = locale === 'ko' ? result.item.descriptionKo : result.item.description;
+        const categoryLabel = t.categories[result.item.category]?.label ?? categoryInfo?.label;
 
         return (
           <Link
@@ -76,7 +82,7 @@ export function SearchResults({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm font-medium truncate">
-                  {result.item.titleKo}
+                  {displayTitle}
                 </span>
                 <span
                   className={cn(
@@ -84,12 +90,12 @@ export function SearchResults({
                     categoryInfo?.color
                   )}
                 >
-                  {categoryInfo?.label}
+                  {categoryLabel}
                 </span>
               </div>
-              {result.item.descriptionKo && (
+              {displayDescription && (
                 <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
-                  {truncate(result.item.descriptionKo, 100)}
+                  {truncate(displayDescription, 100)}
                 </p>
               )}
             </div>

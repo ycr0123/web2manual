@@ -59,6 +59,37 @@ function extractDescription(content: string): string {
   return '';
 }
 
+// 본문 콘텐츠 전처리: Source URL 헤딩 및 중복 영문 H1 제거
+// Source URL 헤딩이 있는 문서(클로드 공식 문서 원문)에서만 첫 번째 H1도 제거
+function preprocessContent(content: string): string {
+  const lines = content.split('\n');
+  const hasSourceHeading = lines.some((line) =>
+    /^#\s+Source:\s+https?:\/\//.test(line)
+  );
+
+  let firstH1Found = false;
+
+  const processedLines = lines.filter((line) => {
+    // "# Source: URL" 형태의 라인 제거 (이미 sourceUrl 프론트매터에 있음)
+    if (/^#\s+Source:\s+https?:\/\//.test(line)) {
+      return false;
+    }
+    // Source URL 헤딩이 있는 문서에서만 첫 번째 H1 제거
+    // (영문 제목 - UI에서 이미 한국어 제목으로 표시됨)
+    if (hasSourceHeading && !firstH1Found) {
+      const h1Match = line.match(/^#\s+.+$/);
+      if (h1Match) {
+        firstH1Found = true;
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // 선행 공백 라인 제거 후 반환
+  return processedLines.join('\n').replace(/^\n+/, '');
+}
+
 // 슬러그를 사람이 읽을 수 있는 제목으로 변환
 function slugToTitle(slug: string): string {
   return slug
@@ -103,8 +134,11 @@ export function getDocBySlug(slug: string): ReferenceDocument | null {
     processedContent = fileContent;
   }
 
-  const { data, content } = matter(processedContent);
+  const { data, content: rawContent } = matter(processedContent);
   const filename = `${slug}.md`;
+
+  // 본문에서 중복 헤딩 제거 (Source URL 라인, 첫 번째 H1 영문 제목)
+  const content = preprocessContent(rawContent);
 
   const stats = readingTime(content);
   const headings = extractHeadings(content);
